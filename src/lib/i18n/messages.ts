@@ -10,6 +10,7 @@ export const messages = {
       skills: "Stack",
       projects: "Projetos",
       authority: "Lab",
+      instagram: "Instagram",
       contact: "Contato",
     },
     hud: {
@@ -55,6 +56,13 @@ export const messages = {
         "Pretendo usar este bloco para artigos, talks e cases. Por enquanto não tem texto de enchimento: quando publicar, será algo que eu considerar útil de fato.",
       soon: "Em breve",
     },
+    instagram: {
+      title: "Instagram",
+      subtitle: "Outro canal pra me conhecer",
+      body:
+        "Fotos do dia a dia, projeto e viagem. O feed oficial continua no app; aqui é um recorte que combina com o resto do site.",
+      cta: "Abrir perfil",
+    },
     contact: {
       title: "Canal aberto",
       subtitle: "Networking antes de tudo",
@@ -84,6 +92,7 @@ export const messages = {
       skills: "Stack",
       projects: "Projects",
       authority: "Lab",
+      instagram: "Instagram",
       contact: "Contact",
     },
     hud: {
@@ -128,6 +137,13 @@ export const messages = {
       body:
         "I'll use this section for articles, talks, and case studies. No filler for now—when something goes live, it'll be because it's worth your time.",
       soon: "Coming soon",
+    },
+    instagram: {
+      title: "Instagram",
+      subtitle: "Another way to get to know me",
+      body:
+        "Day-to-day, builds, trips. The real feed lives in the app; this panel matches the rest of the site.",
+      cta: "Open profile",
     },
     contact: {
       title: "Open channel",

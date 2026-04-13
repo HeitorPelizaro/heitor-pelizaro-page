@@ -22,8 +22,14 @@ npm run build
 | `NEXT_PUBLIC_SITE_URL` | URL canônica (default `https://heitor.pelizaro.com.br`) |
 | `NEXT_PUBLIC_GITHUB_URL` | Perfil/repo GitHub |
 | `NEXT_PUBLIC_EMAIL` | E-mail do CTA |
-| `NEXT_PUBLIC_PRONTO_DENTAL_URL` | Link público do Pronto Dental |
+| `NEXT_PUBLIC_PRONTO_DENTAL_URL` | Link “Visitar” do card Pronto Dental (default `https://italo.pelizaro.com.br`) |
+| `NEXT_PUBLIC_INSTAGRAM_URL` | URL do perfil Instagram (default `https://www.instagram.com/heitor.pelizaro/`) |
+| `NEXT_PUBLIC_INSTAGRAM_WIDGET_IFRAME_SRC` | Opcional: URL de iframe (ex. SnapWidget) para feed embutido acima da grade |
 | `NEXT_PUBLIC_LINKEDIN_URL` | LinkedIn (opcional) |
+
+### Grade de fotos (Instagram)
+
+Coloque até **6** imagens em `public/instagram/` com nomes `grid-1.jpg` … `grid-6.jpg` (`.webp` também funciona se ajustar extensão no código). Células sem arquivo mostram o placeholder com gradiente do Instagram. Cada miniatura abre o perfil no Instagram.
 
 Copie `.env.example` para `.env.local` se quiser testar localmente.
 
