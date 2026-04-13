@@ -25,6 +25,14 @@ sudo chown -R www-data:www-data /var/www/heitor-pelizaro
 
 ## 3. Nginx
 
+### Opção A — junto com o deploy do Pronto Dental (recomendado na mesma VPS)
+
+No repositório **Pronto Dental**, o workflow de deploy já copia [deploy/nginx-heitor-pelizaro.conf](../Pronto%20Dental/deploy/nginx-heitor-pelizaro.conf) para a VPS, ativa o site e tenta o Certbot para `heitor.pelizaro.com.br`. Faça um deploy do Pronto Dental depois de atualizar esse repo (push na `main`).
+
+Garanta o registro **DNS A** para `heitor` antes, senão o Certbot pode falhar (o deploy continua; rode o certbot de novo depois).
+
+### Opção B — manual
+
 1. Copie o exemplo [nginx/heitor.pelizaro.com.br.conf](./nginx/heitor.pelizaro.com.br.conf) para `/etc/nginx/sites-available/heitor.pelizaro.com.br`.
 2. Ajuste `root` se usar outro path.
 3. Ative o site:

@@ -35,9 +35,23 @@ Substitua `public/og.png` por uma imagem **1200×630** (PNG/JPG) para compartilh
 
 Substitua `public/heitor.svg` por `public/heitor.jpg` (ou ajuste o `src` em `src/components/sections/HeroSection.tsx`).
 
+## Repositório GitHub
+
+Remoto padrão: `https://github.com/HeitorPelizaro/heitor-pelizaro-page`
+
+Se o `git push` falhar com **“refusing to allow an OAuth App … workflow … without workflow scope”**, o token do `gh` precisa do escopo `workflow`:
+
+```bash
+gh auth refresh -s workflow -h github.com
+git remote set-url origin https://github.com/HeitorPelizaro/heitor-pelizaro-page.git
+git push -u origin main
+```
+
+Se usar **SSH** e aparecer **Permission denied to heitorpelizaro-nh**, ou você adiciona essa conta como colaborador com escrita no repositório, ou configura outra chave SSH para a conta **HeitorPelizaro** (ex.: `~/.ssh/config` com `Host github-heitor` + `git@github-heitor:HeitorPelizaro/heitor-pelizaro-page.git`).
+
 ## Deploy (VPS + Nginx)
 
-Passo a passo: [DEPLOY.md](./DEPLOY.md). Inclui DNS, SSL (Certbot), bloco Nginx de exemplo e workflow GitHub Actions.
+Passo a passo: [DEPLOY.md](./DEPLOY.md). O projeto **Pronto Dental** (mesma VPS) pode instalar o vhost de `heitor.pelizaro.com.br` no próximo deploy; os arquivos estáticos vêm deste repositório via **GitHub Actions** (`rsync` de `out/`).
 
 ## Lighthouse
 
