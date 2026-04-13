@@ -31,7 +31,7 @@ export function EasterEggListener() {
           i.current = 0;
           onAchievement("easter_egg");
           console.log(
-            "%c[heitor.lab] init 0 — sistema nervoso estável.",
+            "%c[heitor.lab] combinação registrada.",
             "color:#00f0ff;font-weight:bold;"
           );
         }

@@ -4,7 +4,7 @@ export const messages = {
   pt: {
     metaTitle: "Heitor Pelizaro — DevOps, automação & fullcycle",
     metaDescription:
-      "DevOps na NovaHaus. Infra, CI/CD, Python, cloud e sistemas fullcycle. Laboratório neural em heitor.pelizaro.com.br.",
+      "DevOps na NovaHaus. Infra, CI/CD, Python, cloud e sistemas fullcycle.",
     nav: {
       hero: "Início",
       skills: "Stack",
@@ -22,9 +22,9 @@ export const messages = {
     hero: {
       role: "DevOps · Fullcycle · IA",
       tagline:
-        "Curiosidade e criatividade no mesmo pipeline. Infra que respira, automações que escutam.",
+        "Infra, automação e entrega ponta a ponta. O foco é o que sobe, aguenta carga e tem causa clara quando dá ruim.",
       sub:
-        "Quando o sistema falha, eu leio os logs antes de culpar o DNS. (Às vezes é o DNS.)",
+        "Ciência da Computação (IFTM). DevOps na NovaHaus; fullcycle quando o projeto exige ir além do pipe.",
       ctaGithub: "GitHub",
       ctaEmail: "E-mail",
     },
@@ -43,16 +43,16 @@ export const messages = {
       },
       pronto: {
         name: "Pronto Dental",
-        desc: "Prontuário odontológico online — stack completa, servidor e DNS sob controle.",
+        desc: "Prontuário odontológico online. Stack completa, servidor e DNS sob controle.",
         tag: "Produto",
         link: "Visitar",
       },
     },
     authority: {
       title: "Laboratório",
-      subtitle: "Autoridade & conteúdo (em construção)",
+      subtitle: "Conteúdo (em construção)",
       body:
-        "Espaço reservado para artigos, talks e cases. Se você chegou até aqui, já sabe que eu gosto de sistema nervoso estável.",
+        "Pretendo usar este bloco para artigos, talks e cases. Por enquanto não tem texto de enchimento: quando publicar, será algo que eu considerar útil de fato.",
       soon: "Em breve",
     },
     contact: {
@@ -78,7 +78,7 @@ export const messages = {
   en: {
     metaTitle: "Heitor Pelizaro — DevOps, automation & fullcycle",
     metaDescription:
-      "DevOps at NovaHaus. Infra, CI/CD, Python, cloud and fullcycle systems. Neural lab at heitor.pelizaro.com.br.",
+      "DevOps at NovaHaus. Infra, CI/CD, Python, cloud and fullcycle systems.",
     nav: {
       hero: "Home",
       skills: "Stack",
@@ -96,9 +96,9 @@ export const messages = {
     hero: {
       role: "DevOps · Fullcycle · AI",
       tagline:
-        "Curiosity and creativity in the same pipeline. Infra that breathes, automations that listen.",
+        "Infra, automation, and shipping end to end. I care about what stays up under load and has a clear trail when it fails.",
       sub:
-        "When things break, I read the logs before blaming DNS. (Sometimes it is DNS.)",
+        "Computer Science (IFTM). DevOps at NovaHaus; fullcycle work when the project needs more than the pipeline.",
       ctaGithub: "GitHub",
       ctaEmail: "Email",
     },
@@ -117,16 +117,16 @@ export const messages = {
       },
       pronto: {
         name: "Pronto Dental",
-        desc: "Online dental records — full stack, server and DNS under control.",
+        desc: "Online dental records. Full stack, server and DNS under control.",
         tag: "Product",
         link: "Visit",
       },
     },
     authority: {
       title: "Lab",
-      subtitle: "Authority & content (under construction)",
+      subtitle: "Content (under construction)",
       body:
-        "Reserved for articles, talks and case studies. If you made it here, you know I like a stable nervous system.",
+        "I'll use this section for articles, talks, and case studies. No filler for now—when something goes live, it'll be because it's worth your time.",
       soon: "Coming soon",
     },
     contact: {

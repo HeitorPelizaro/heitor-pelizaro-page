@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     siteName: "Heitor Pelizaro",
     title: "Heitor Pelizaro — DevOps & fullcycle",
     description:
-      "Infra, automação, IA e sistemas fullcycle. Laboratório neural em heitor.pelizaro.com.br.",
+      "DevOps na NovaHaus. Infra, CI/CD, Python, cloud e sistemas fullcycle.",
     images: [{ url: "/og.png", alt: "Heitor Pelizaro" }],
   },
   twitter: {
