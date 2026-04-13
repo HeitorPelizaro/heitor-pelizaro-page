@@ -47,6 +47,33 @@ jobs:
           npm ci
           npm run build
 
+      - name: Secrets obrigatórios (VPS)
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+        run: |
+          set -e
+          err=0
+          if [ -z "$VPS_HOST" ]; then
+            echo "::error::Cadastre o secret VPS_HOST (mesmo valor do repositório Pronto-Dental)."
+            err=1
+          fi
+          if [ -z "$VPS_USER" ]; then
+            echo "::error::Cadastre o secret VPS_USER."
+            err=1
+          fi
+          if [ -z "$VPS_SSH_KEY" ]; then
+            echo "::error::Cadastre o secret VPS_SSH_KEY (chave privada OpenSSH completa, uma linha ou PEM multilinha)."
+            err=1
+          fi
+          if [ "$err" -ne 0 ]; then
+            echo "::notice::GitHub → heitor-pelizaro-page → Settings → Secrets and variables → Actions → New repository secret"
+            echo "::notice::Ou no terminal: gh secret set VPS_HOST -R HeitorPelizaro/heitor-pelizaro-page  (e VPS_USER, VPS_SSH_KEY)"
+            exit 1
+          fi
+          echo "Secrets VPS_HOST / VPS_USER / VPS_SSH_KEY OK (valores não são exibidos)."
+
       - name: SSH key
         run: |
           mkdir -p ~/.ssh

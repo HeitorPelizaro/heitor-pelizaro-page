@@ -38,7 +38,18 @@ Substitua `public/heitor.svg` por `public/heitor.jpg` (ou ajuste o `src` em `src
 ## Repositório GitHub
 
 - **URL:** https://github.com/HeitorPelizaro/heitor-pelizaro-page  
-- **Secrets do Actions** (Settings → Secrets): os mesmos do Pronto Dental — `VPS_HOST`, `VPS_USER`, `VPS_SSH_KEY`; opcional `VPS_SSH_PORT`.  
+- **Secrets do Actions** (Settings → Secrets and variables → Actions): **os mesmos nomes e valores** do repositório **Pronto-Dental** — `VPS_HOST`, `VPS_USER`, `VPS_SSH_KEY`; opcional `VPS_SSH_PORT`.  
+  O agente da IDE **não consegue** criar isso por você (precisa IP, usuário e chave privada). Com `gh` logado:
+
+  ```bash
+  cd /caminho/do/heitor-pelizaro
+  gh secret set VPS_HOST -R HeitorPelizaro/heitor-pelizaro-page
+  gh secret set VPS_USER -R HeitorPelizaro/heitor-pelizaro-page
+  gh secret set VPS_SSH_KEY -R HeitorPelizaro/heitor-pelizaro-page < ~/.ssh/sua_chave_privada_deploy
+  ```
+
+  (Cole o IP/usuário quando o `gh` pedir, ou use a UI do GitHub e copie do Pronto-Dental.)
+
 - **Variables:** `HEITOR_DEPLOY_PATH` (opcional, default `/var/www/heitor-pelizaro`), e `NEXT_PUBLIC_*` se quiser sobrescrever links no build.
 
 Se você usa alias SSH (ex.: `Host github-gmail` no `~/.ssh/config`), o remoto pode ser `git@github-gmail:HeitorPelizaro/heitor-pelizaro-page.git`.
