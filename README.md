@@ -43,12 +43,12 @@ Substitua `public/heitor.svg` por `public/heitor.jpg` (ou ajuste o `src` em `src
 
   ```bash
   cd /caminho/do/heitor-pelizaro
-  gh secret set VPS_HOST -R HeitorPelizaro/heitor-pelizaro-page
-  gh secret set VPS_USER -R HeitorPelizaro/heitor-pelizaro-page
+  echo "SEU_IP_VPS" | gh secret set VPS_HOST -R HeitorPelizaro/heitor-pelizaro-page
+  echo "SEU_USUARIO_SSH" | gh secret set VPS_USER -R HeitorPelizaro/heitor-pelizaro-page
   gh secret set VPS_SSH_KEY -R HeitorPelizaro/heitor-pelizaro-page < ~/.ssh/sua_chave_privada_deploy
   ```
 
-  (Cole o IP/usuário quando o `gh` pedir, ou use a UI do GitHub e copie do Pronto-Dental.)
+  Ou na UI: **Settings → Secrets and variables → Actions → New repository secret** (mesmos três nomes/valores do Pronto-Dental).
 
 - **Variables:** `HEITOR_DEPLOY_PATH` (opcional, default `/var/www/heitor-pelizaro`), e `NEXT_PUBLIC_*` se quiser sobrescrever links no build.
 
