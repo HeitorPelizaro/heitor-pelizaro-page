@@ -1,7 +1,9 @@
 # Deploy estático (out/) para VPS — heitor.pelizaro.com.br
+#
+# Usa o Environment "vps" (igual ao Pronto Dental) para secrets/variables:
+#   Settings → Environments → vps
 # Secrets: VPS_HOST, VPS_USER, VPS_SSH_KEY  |  Opcional: VPS_SSH_PORT
-# Variables: HEITOR_DEPLOY_PATH (default /var/www/heitor-pelizaro)
-# Opcional: NEXT_PUBLIC_SITE_URL, NEXT_PUBLIC_GITHUB_URL, NEXT_PUBLIC_EMAIL, etc.
+# Variables: HEITOR_DEPLOY_PATH (default /var/www/heitor-pelizaro), NEXT_PUBLIC_*, etc.
 
 name: Deploy heitor.pelizaro
 
@@ -25,6 +27,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    environment: vps
 
     steps:
       - name: Checkout
@@ -68,8 +71,8 @@ jobs:
             err=1
           fi
           if [ "$err" -ne 0 ]; then
-            echo "::notice::GitHub → heitor-pelizaro-page → Settings → Secrets and variables → Actions → New repository secret"
-            echo "::notice::Ou no terminal: gh secret set VPS_HOST -R HeitorPelizaro/heitor-pelizaro-page  (e VPS_USER, VPS_SSH_KEY)"
+            echo "::notice::Configure os secrets no Environment \"vps\": Settings → Environments → vps → Environment secrets"
+            echo "::notice::Ou em Repository secrets, se não usar environment."
             exit 1
           fi
           echo "Secrets VPS_HOST / VPS_USER / VPS_SSH_KEY OK (valores não são exibidos)."

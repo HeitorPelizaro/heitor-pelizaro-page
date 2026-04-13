@@ -38,17 +38,21 @@ Substitua `public/heitor.svg` por `public/heitor.jpg` (ou ajuste o `src` em `src
 ## Repositório GitHub
 
 - **URL:** https://github.com/HeitorPelizaro/heitor-pelizaro-page  
-- **Secrets do Actions** (Settings → Secrets and variables → Actions): **os mesmos nomes e valores** do repositório **Pronto-Dental** — `VPS_HOST`, `VPS_USER`, `VPS_SSH_KEY`; opcional `VPS_SSH_PORT`.  
-  O agente da IDE **não consegue** criar isso por você (precisa IP, usuário e chave privada). Com `gh` logado:
+- O workflow usa o **Environment `vps`** (como o Pronto Dental). Em **heitor-pelizaro-page**: **Settings → Environments → New environment** → nome `vps` → adicione os mesmos **Environment secrets** (`VPS_HOST`, `VPS_USER`, `VPS_SSH_KEY`, opcional `VPS_SSH_PORT`).  
+  Environments são **por repositório**: copie os valores do ambiente `vps` do Pronto-Dental para o `vps` deste repo.  
+  (Se preferir só **Repository secrets**, remova `environment: vps` do workflow ou duplique os secrets no nível do repo.)
+
+- **Secrets** — `VPS_HOST`, `VPS_USER`, `VPS_SSH_KEY`; opcional `VPS_SSH_PORT`. Com `gh` logado (exemplo para **environment**; ajuste se usar só repo):
 
   ```bash
   cd /caminho/do/heitor-pelizaro
-  echo "SEU_IP_VPS" | gh secret set VPS_HOST -R HeitorPelizaro/heitor-pelizaro-page
-  echo "SEU_USUARIO_SSH" | gh secret set VPS_USER -R HeitorPelizaro/heitor-pelizaro-page
-  gh secret set VPS_SSH_KEY -R HeitorPelizaro/heitor-pelizaro-page < ~/.ssh/sua_chave_privada_deploy
+  # Crie o environment "vps" na UI uma vez; depois:
+  echo "SEU_IP_VPS" | gh secret set VPS_HOST --env vps -R HeitorPelizaro/heitor-pelizaro-page
+  echo "SEU_USUARIO_SSH" | gh secret set VPS_USER --env vps -R HeitorPelizaro/heitor-pelizaro-page
+  gh secret set VPS_SSH_KEY --env vps -R HeitorPelizaro/heitor-pelizaro-page < ~/.ssh/sua_chave_privada_deploy
   ```
 
-  Ou na UI: **Settings → Secrets and variables → Actions → New repository secret** (mesmos três nomes/valores do Pronto-Dental).
+  Ou na UI: **Settings → Environments → vps → Add secret**.
 
 - **Variables:** `HEITOR_DEPLOY_PATH` (opcional, default `/var/www/heitor-pelizaro`), e `NEXT_PUBLIC_*` se quiser sobrescrever links no build.
 
