@@ -37,7 +37,11 @@ Substitua `public/heitor.svg` por `public/heitor.jpg` (ou ajuste o `src` em `src
 
 ## Repositório GitHub
 
-Remoto padrão: `https://github.com/HeitorPelizaro/heitor-pelizaro-page`
+- **URL:** https://github.com/HeitorPelizaro/heitor-pelizaro-page  
+- **Secrets do Actions** (Settings → Secrets): os mesmos do Pronto Dental — `VPS_HOST`, `VPS_USER`, `VPS_SSH_KEY`; opcional `VPS_SSH_PORT`.  
+- **Variables:** `HEITOR_DEPLOY_PATH` (opcional, default `/var/www/heitor-pelizaro`), e `NEXT_PUBLIC_*` se quiser sobrescrever links no build.
+
+Se você usa alias SSH (ex.: `Host github-gmail` no `~/.ssh/config`), o remoto pode ser `git@github-gmail:HeitorPelizaro/heitor-pelizaro-page.git`.
 
 Se o `git push` falhar com **“refusing to allow an OAuth App … workflow … without workflow scope”**, o token do `gh` precisa do escopo `workflow`:
 
