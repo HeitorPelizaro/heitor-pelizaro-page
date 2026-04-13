@@ -98,27 +98,48 @@ jobs:
         env:
           REMOTE_PATH: ${{ vars.HEITOR_DEPLOY_PATH }}
         run: |
+          set -e
           DP="${REMOTE_PATH:-/var/www/heitor-pelizaro}"
-          ssh -i ~/.ssh/deploy_key -p ${{ env.SSH_PORT }} \
-            -o BatchMode=yes \
-            -o StrictHostKeyChecking=accept-new \
-            -o ConnectTimeout=30 \
-            "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" \
-            "sudo mkdir -p \"$DP\" && sudo chown -R \"\$USER:\$USER\" \"$DP\" || true"
+          TARGET="${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}"
+          ok=0
+          for attempt in 1 2 3; do
+            if ssh -i ~/.ssh/deploy_key -p ${{ env.SSH_PORT }} \
+              -o BatchMode=yes \
+              -o StrictHostKeyChecking=accept-new \
+              -o ConnectTimeout=30 \
+              "$TARGET" \
+              "sudo mkdir -p \"$DP\" && sudo chown -R \"\$USER:\$USER\" \"$DP\" || true"; then
+              ok=1
+              break
+            fi
+            echo "::notice::SSH tentativa $attempt/3 falhou; nova tentativa em 20s..."
+            sleep 20
+          done
+          if [ "$ok" -ne 1 ]; then
+            echo "::error::Não foi possível SSH na VPS. Confira VPS_HOST (IPv4 público ou DNS público; Actions não alcança IP privado). Erro comum: Network is unreachable."
+            exit 255
+          fi
 
       - name: Rsync out/
         env:
           REMOTE_PATH: ${{ vars.HEITOR_DEPLOY_PATH }}
         run: |
+          set -e
           DP="${REMOTE_PATH:-/var/www/heitor-pelizaro}"
-          rsync -azP --delete \
-            -e "ssh -i ~/.ssh/deploy_key -p ${{ env.SSH_PORT }} -o BatchMode=yes -o StrictHostKeyChecking=accept-new -o ConnectTimeout=30" \
-            ./out/ "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:$DP/"
+          RSYNC_SSH="ssh -i ~/.ssh/deploy_key -p ${{ env.SSH_PORT }} -o BatchMode=yes -o StrictHostKeyChecking=accept-new -o ConnectTimeout=30"
+          ok=0
+          for attempt in 1 2 3; do
+            if rsync -azP --delete -e "$RSYNC_SSH" ./out/ "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:$DP/"; then ok=1; break; fi
+            echo "::notice::rsync tentativa $attempt/3 falhou; nova tentativa em 20s..."
+            sleep 20
+          done
+          [ "$ok" -eq 1 ] || exit 255
 
       - name: Fix permissions and reload Nginx
         env:
           REMOTE_PATH: ${{ vars.HEITOR_DEPLOY_PATH }}
         run: |
+          set -e
           DP="${REMOTE_PATH:-/var/www/heitor-pelizaro}"
           ssh -i ~/.ssh/deploy_key -p ${{ env.SSH_PORT }} \
             -o BatchMode=yes \
