@@ -28,6 +28,9 @@ export const messages = {
         "Ciência da Computação (IFTM). DevOps na NovaHaus; fullcycle quando o projeto exige ir além do pipe.",
       ctaGithub: "GitHub",
       ctaEmail: "E-mail",
+      themePicker: "Escolher cores de destaque do tema",
+      themeWheelHint: "Arraste na roda para ajustar o matiz",
+      themeReset: "Repor padrão",
     },
     skills: {
       title: "Módulos",
@@ -110,6 +113,9 @@ export const messages = {
         "Computer Science (IFTM). DevOps at NovaHaus; fullcycle work when the project needs more than the pipeline.",
       ctaGithub: "GitHub",
       ctaEmail: "Email",
+      themePicker: "Choose accent theme colors",
+      themeWheelHint: "Drag on the wheel to adjust hue",
+      themeReset: "Restore default",
     },
     skills: {
       title: "Modules",

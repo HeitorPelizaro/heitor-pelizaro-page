@@ -89,15 +89,15 @@ body.reduce-fx .scanlines::after {
   background: var(--bg-panel);
   border: 1px solid var(--border-glow);
   box-shadow:
-    0 0 0 1px rgba(255, 45, 106, 0.12),
-    0 0 40px rgba(0, 240, 255, 0.06);
+    0 0 0 1px color-mix(in srgb, var(--neon-magenta) 12%, transparent),
+    0 0 40px color-mix(in srgb, var(--neon-cyan) 6%, transparent);
   backdrop-filter: blur(12px);
 }
 
 .text-glow-cyan {
-  text-shadow: 0 0 24px rgba(0, 240, 255, 0.45);
+  text-shadow: 0 0 24px color-mix(in srgb, var(--neon-cyan) 45%, transparent);
 }
 
 .text-glow-magenta {
-  text-shadow: 0 0 20px rgba(255, 45, 106, 0.4);
+  text-shadow: 0 0 20px color-mix(in srgb, var(--neon-magenta) 40%, transparent);
 }

@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { AppSettingsProvider } from "@/context/AppSettingsContext";
+import { ThemeAccentProvider } from "@/context/ThemeAccentContext";
 import type { Locale } from "@/lib/i18n/messages";
 import { GraphCanvas } from "@/components/immersive/GraphCanvas";
 import { CustomCursor } from "@/components/immersive/CustomCursor";
@@ -28,24 +29,26 @@ const DistortionBackdrop = dynamic(
 export function HomeShell({ initialLocale }: { initialLocale: Locale }) {
   return (
     <AppSettingsProvider initialLocale={initialLocale}>
-      <HtmlLangSync locale={initialLocale} />
-      <div className="scanlines relative min-h-dvh">
-        <GraphCanvas />
-        <DistortionBackdrop />
-        <HUD />
-        <main>
-          <HeroSection locale={initialLocale} />
-          <SkillsSection locale={initialLocale} />
-          <ProjectsSection locale={initialLocale} />
-          <AuthoritySection locale={initialLocale} />
-          <InstagramSection locale={initialLocale} />
-          <ContactSection locale={initialLocale} />
-        </main>
+      <ThemeAccentProvider>
+        <HtmlLangSync locale={initialLocale} />
+        <div className="scanlines relative min-h-dvh">
+          <GraphCanvas />
+          <DistortionBackdrop />
+          <HUD />
+          <main>
+            <HeroSection locale={initialLocale} />
+            <SkillsSection locale={initialLocale} />
+            <ProjectsSection locale={initialLocale} />
+            <AuthoritySection locale={initialLocale} />
+            <InstagramSection locale={initialLocale} />
+            <ContactSection locale={initialLocale} />
+          </main>
         <CustomCursor />
         <EasterEggListener />
         <AchievementToast />
         <AchievementBadge />
-      </div>
+        </div>
+      </ThemeAccentProvider>
     </AppSettingsProvider>
   );
 }

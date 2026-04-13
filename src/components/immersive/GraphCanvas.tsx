@@ -2,27 +2,61 @@
 
 import { useEffect, useRef } from "react";
 import { useAppSettings } from "@/context/AppSettingsContext";
+import { hexToRgb, readCssHexVar } from "@/lib/cssColor";
 
-type Node = { x: number; y: number; vx: number; vy: number; id: number };
+type Node = {
+  id: number;
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  restX: number;
+  restY: number;
+  pinned: boolean;
+};
 type Edge = { a: number; b: number };
 
 function buildGraph(nNodes: number, w: number, h: number) {
+  const cx = w / 2;
+  const cy = h / 2;
+  const spreadR = Math.min(w, h) * 0.22;
   const nodes: Node[] = [];
-  for (let i = 0; i < nNodes; i++) {
+
+  nodes.push({
+    id: 0,
+    x: cx,
+    y: cy,
+    vx: 0,
+    vy: 0,
+    restX: cx,
+    restY: cy,
+    pinned: true,
+  });
+
+  const ring = Math.max(1, nNodes - 1);
+  for (let i = 1; i < nNodes; i++) {
+    const t = ((i - 1) / ring) * Math.PI * 2 + (Math.random() - 0.5) * 0.45;
+    const rr = spreadR * (0.28 + Math.random() * 0.72);
+    const restX = cx + Math.cos(t) * rr;
+    const restY = cy + Math.sin(t) * rr;
     nodes.push({
       id: i,
-      x: Math.random() * w,
-      y: Math.random() * h,
+      x: restX + (Math.random() - 0.5) * 10,
+      y: restY + (Math.random() - 0.5) * 10,
       vx: 0,
       vy: 0,
+      restX,
+      restY,
+      pinned: false,
     });
   }
+
   const edges: Edge[] = [];
   for (let i = 0; i < nNodes; i++) {
     edges.push({ a: i, b: (i + 1) % nNodes });
     edges.push({ a: i, b: (i + 7) % nNodes });
   }
-  return { nodes, edges };
+  return { nodes, edges, cx, cy };
 }
 
 export function GraphCanvas() {
@@ -40,6 +74,20 @@ export function GraphCanvas() {
 
     let raf = 0;
     let graph = buildGraph(64, 1, 1);
+    let colorFrame = 0;
+    let strokeRgb = "0, 240, 255";
+    let gradC = "0, 240, 255";
+    let gradM = "255, 45, 106";
+
+    const syncColors = () => {
+      const cyanH = readCssHexVar("--neon-cyan", "#00f0ff");
+      const magH = readCssHexVar("--neon-magenta", "#ff2d6a");
+      const c = hexToRgb(cyanH);
+      const m = hexToRgb(magH);
+      if (c) strokeRgb = `${c.r}, ${c.g}, ${c.b}`;
+      if (c) gradC = `${c.r}, ${c.g}, ${c.b}`;
+      if (m) gradM = `${m.r}, ${m.g}, ${m.b}`;
+    };
 
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -52,6 +100,7 @@ export function GraphCanvas() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       const count = performanceMode ? 24 : 64;
       graph = buildGraph(count, w, h);
+      syncColors();
     };
 
     const onMove = (e: MouseEvent) => {
@@ -68,15 +117,19 @@ export function GraphCanvas() {
     window.addEventListener("mousemove", onMove);
     window.addEventListener("mouseleave", onLeave);
 
-    const attractR = performanceMode ? 120 : 200;
+    const attractR = performanceMode ? 72 : 105;
     const repulse = 4200;
     const spring = 0.018;
+    const kHome = 0.034;
     const damping = 0.92;
 
     const step = () => {
-      const { nodes, edges } = graph;
+      const { nodes, edges, cx, cy } = graph;
       const w = window.innerWidth;
       const h = window.innerHeight;
+
+      colorFrame += 1;
+      if (colorFrame % 6 === 0) syncColors();
 
       for (let i = 0; i < nodes.length; i++) {
         for (let j = i + 1; j < nodes.length; j++) {
@@ -84,8 +137,9 @@ export function GraphCanvas() {
           const dy = nodes[j].y - nodes[i].y;
           const d2 = dx * dx + dy * dy + 40;
           const f = repulse / d2;
-          const nx = (dx / Math.sqrt(d2)) * f;
-          const ny = (dy / Math.sqrt(d2)) * f;
+          const inv = 1 / Math.sqrt(d2);
+          const nx = dx * inv * f;
+          const ny = dy * inv * f;
           nodes[i].vx -= nx;
           nodes[i].vy -= ny;
           nodes[j].vx += nx;
@@ -109,17 +163,26 @@ export function GraphCanvas() {
         B.vy -= fy;
       }
 
+      for (const n of nodes) {
+        if (!n.pinned) {
+          n.vx += kHome * (n.restX - n.x);
+          n.vy += kHome * (n.restY - n.y);
+        }
+      }
+
       if (mouse.current.active) {
         const mx = mouse.current.x;
         const my = mouse.current.y;
+        const outer = attractR * 1.75;
         for (const n of nodes) {
+          if (n.pinned) continue;
           const dx = n.x - mx;
           const dy = n.y - my;
           const d = Math.sqrt(dx * dx + dy * dy) + 1;
-          if (d < attractR * 2.5) {
-            const pull = (1 - d / (attractR * 2.5)) * 0.85;
-            n.vx -= (dx / d) * pull * 3;
-            n.vy -= (dy / d) * pull * 3;
+          if (d < outer) {
+            const pull = (1 - d / outer) * 0.32;
+            n.vx -= (dx / d) * pull * 1.15;
+            n.vy -= (dy / d) * pull * 1.15;
           }
         }
       }
@@ -129,14 +192,21 @@ export function GraphCanvas() {
         n.vy *= damping;
         n.x += n.vx;
         n.y += n.vy;
-        n.x = Math.max(8, Math.min(w - 8, n.x));
-        n.y = Math.max(8, Math.min(h - 8, n.y));
+        if (n.pinned) {
+          n.x = cx;
+          n.y = cy;
+          n.vx = 0;
+          n.vy = 0;
+        } else {
+          n.x = Math.max(8, Math.min(w - 8, n.x));
+          n.y = Math.max(8, Math.min(h - 8, n.y));
+        }
       }
 
       ctx.fillStyle = "rgba(3, 6, 10, 0.22)";
       ctx.fillRect(0, 0, w, h);
 
-      ctx.strokeStyle = "rgba(0, 240, 255, 0.14)";
+      ctx.strokeStyle = `rgba(${strokeRgb}, 0.14)`;
       ctx.lineWidth = 1;
       for (const e of edges) {
         const A = nodes[e.a];
@@ -149,8 +219,8 @@ export function GraphCanvas() {
 
       for (const n of nodes) {
         const g = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, 5);
-        g.addColorStop(0, "rgba(0, 240, 255, 0.95)");
-        g.addColorStop(0.5, "rgba(255, 45, 106, 0.35)");
+        g.addColorStop(0, `rgba(${gradC}, 0.95)`);
+        g.addColorStop(0.5, `rgba(${gradM}, 0.35)`);
         g.addColorStop(1, "transparent");
         ctx.fillStyle = g;
         ctx.beginPath();
@@ -187,4 +257,3 @@ export function GraphCanvas() {
     />
   );
 }
-
