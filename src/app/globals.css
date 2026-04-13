@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+:root {
+  --bg-deep: #03060a;
+  --bg-panel: rgba(6, 14, 28, 0.72);
+  --neon-cyan: #00f0ff;
+  --neon-magenta: #ff2d6a;
+  --neon-amber: #ffc14d;
+  --text-primary: #e8f4ff;
+  --text-muted: #7a9bb8;
+  --border-glow: rgba(0, 240, 255, 0.35);
+  --grid-line: rgba(0, 240, 255, 0.08);
+  --danger: #ff2d6a;
+  --success: #3dff9c;
+}
+
+@theme inline {
+  --color-bg-deep: var(--bg-deep);
+  --color-neon-cyan: var(--neon-cyan);
+  --color-neon-magenta: var(--neon-magenta);
+  --color-neon-amber: var(--neon-amber);
+  --color-text-primary: var(--text-primary);
+  --color-text-muted: var(--text-muted);
+  --font-sans: var(--font-orbitron);
+  --font-mono: var(--font-jetbrains);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+/* Custom cursor: hide system when immersive mode */
+body.immersive-cursor {
+  cursor: none;
+}
+
+body.immersive-cursor a,
+body.immersive-cursor button,
+body.immersive-cursor [role="button"] {
+  cursor: none;
+}
+
+/* Scanline overlay (subtle) */
+.scanlines::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.12) 2px,
+    rgba(0, 0, 0, 0.12) 4px
+  );
+  opacity: 0.35;
+  mix-blend-mode: multiply;
+}
+
+body.reduce-fx .scanlines::after {
+  opacity: 0;
+}
+
+/* Grid background */
+.cyber-grid {
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, black 20%, transparent 100%);
+}
+
+.panel-glass {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-glow);
+  box-shadow:
+    0 0 0 1px rgba(255, 45, 106, 0.12),
+    0 0 40px rgba(0, 240, 255, 0.06);
+  backdrop-filter: blur(12px);
+}
+
+.text-glow-cyan {
+  text-shadow: 0 0 24px rgba(0, 240, 255, 0.45);
+}
+
+.text-glow-magenta {
+  text-shadow: 0 0 20px rgba(255, 45, 106, 0.4);
+}

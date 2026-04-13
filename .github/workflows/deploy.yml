@@ -1,0 +1,83 @@
+# Deploy estático (out/) para VPS — heitor.pelizaro.com.br
+# Secrets: VPS_HOST, VPS_USER, VPS_SSH_KEY  |  Opcional: VPS_SSH_PORT
+# Variables: HEITOR_DEPLOY_PATH (default /var/www/heitor-pelizaro)
+# Opcional: NEXT_PUBLIC_SITE_URL, NEXT_PUBLIC_GITHUB_URL, NEXT_PUBLIC_EMAIL, etc.
+
+name: Deploy heitor.pelizaro
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-heitor-pelizaro
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: "20"
+  SSH_PORT: ${{ secrets.VPS_SSH_PORT || '22' }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install and build
+        env:
+          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL || 'https://heitor.pelizaro.com.br' }}
+          NEXT_PUBLIC_GITHUB_URL: ${{ vars.NEXT_PUBLIC_GITHUB_URL }}
+          NEXT_PUBLIC_EMAIL: ${{ vars.NEXT_PUBLIC_EMAIL }}
+          NEXT_PUBLIC_PRONTO_DENTAL_URL: ${{ vars.NEXT_PUBLIC_PRONTO_DENTAL_URL }}
+          NEXT_PUBLIC_LINKEDIN_URL: ${{ vars.NEXT_PUBLIC_LINKEDIN_URL }}
+        run: |
+          npm ci
+          npm run build
+
+      - name: SSH key
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -p ${{ env.SSH_PORT }} -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Ensure remote directory
+        env:
+          REMOTE_PATH: ${{ vars.HEITOR_DEPLOY_PATH }}
+        run: |
+          DP="${REMOTE_PATH:-/var/www/heitor-pelizaro}"
+          ssh -i ~/.ssh/deploy_key -p ${{ env.SSH_PORT }} \
+            "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" \
+            "sudo mkdir -p \"$DP\" && sudo chown -R \"\$USER:\$USER\" \"$DP\" || true"
+
+      - name: Rsync out/
+        env:
+          REMOTE_PATH: ${{ vars.HEITOR_DEPLOY_PATH }}
+        run: |
+          DP="${REMOTE_PATH:-/var/www/heitor-pelizaro}"
+          rsync -azP --delete \
+            -e "ssh -i ~/.ssh/deploy_key -p ${{ env.SSH_PORT }}" \
+            ./out/ "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:$DP/"
+
+      - name: Fix permissions and reload Nginx
+        env:
+          REMOTE_PATH: ${{ vars.HEITOR_DEPLOY_PATH }}
+        run: |
+          DP="${REMOTE_PATH:-/var/www/heitor-pelizaro}"
+          ssh -i ~/.ssh/deploy_key -p ${{ env.SSH_PORT }} \
+            "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" \
+            "sudo chown -R www-data:www-data \"$DP\" && (sudo nginx -t && sudo systemctl reload nginx) || true"
