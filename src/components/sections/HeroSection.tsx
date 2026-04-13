@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef } from "react";
 import { messages, type Locale } from "@/lib/i18n/messages";
 import { EMAIL, GITHUB_URL } from "@/lib/site";
 import { MagneticButton } from "@/components/ui/MagneticButton";
@@ -37,10 +37,7 @@ export function HeroSection({ locale }: { locale: Locale }) {
   const t = messages[locale].hero;
   const { applyFromHue, reset } = useThemeAccent();
   const { performanceMode, effectiveReduceMotion } = useAppSettings();
-  const [open, setOpen] = useState(false);
-  const wrapRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
-  const wheelRef = useRef<HTMLDivElement>(null);
   const ringDrag = useRef(false);
 
   const simpleThemeUi = performanceMode || effectiveReduceMotion;
@@ -59,31 +56,6 @@ export function HeroSection({ locale }: { locale: Locale }) {
     const { innerR, outerR } = ringMetrics(el);
     return d >= innerR && d <= outerR;
   }, []);
-
-  const isInCenter = useCallback((clientX: number, clientY: number) => {
-    const el = cardRef.current;
-    if (!el) return false;
-    const d = distFromCardCenter(clientX, clientY, el);
-    const { innerR } = ringMetrics(el);
-    return d < innerR;
-  }, []);
-
-  useEffect(() => {
-    if (!open) return;
-    const onDoc = (e: PointerEvent) => {
-      const root = wrapRef.current;
-      if (!root?.contains(e.target as Node)) setOpen(false);
-    };
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-    document.addEventListener("pointerdown", onDoc);
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("pointerdown", onDoc);
-      document.removeEventListener("keydown", onKey);
-    };
-  }, [open]);
 
   const ringGradient =
     "conic-gradient(from 0deg, hsl(0,92%,55%), hsl(60,92%,52%), hsl(120,88%,48%), hsl(180,90%,50%), hsl(240,90%,58%), hsl(300,88%,58%), hsl(0,92%,55%))";
@@ -127,36 +99,22 @@ export function HeroSection({ locale }: { locale: Locale }) {
             </MagneticButton>
           </div>
         </div>
-        <div ref={wrapRef} className="relative mx-auto aspect-square w-full max-w-[320px] md:max-w-none">
+        <div className="relative mx-auto aspect-square w-full max-w-[320px] md:max-w-none">
           <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[var(--neon-cyan)]/20 to-[var(--neon-magenta)]/20 blur-2xl" />
           <div
             ref={cardRef}
             role="group"
             aria-label={t.themePicker}
-            className="panel-glass relative aspect-square w-full cursor-pointer overflow-hidden rounded-2xl border-2 border-[var(--border-glow)] outline-none ring-offset-2 ring-offset-[var(--bg-deep)] focus-visible:ring-2 focus-visible:ring-[var(--neon-cyan)]"
+            aria-describedby="hero-theme-hint"
+            className="panel-glass relative aspect-square w-full overflow-hidden rounded-2xl border-2 border-[var(--border-glow)] outline-none ring-offset-2 ring-offset-[var(--bg-deep)] focus-visible:ring-2 focus-visible:ring-[var(--neon-cyan)]"
             tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                setOpen((o) => !o);
-              }
-            }}
             onPointerDown={(e) => {
               const el = cardRef.current;
-              if (!el) return;
-              if (simpleThemeUi) {
-                if (isInCenter(e.clientX, e.clientY) || isInRing(e.clientX, e.clientY)) {
-                  setOpen((o) => !o);
-                }
-                return;
-              }
-              if (isInRing(e.clientX, e.clientY)) {
-                ringDrag.current = true;
-                e.currentTarget.setPointerCapture(e.pointerId);
-                applyFromPointer(e.clientX, e.clientY, el);
-              } else if (isInCenter(e.clientX, e.clientY)) {
-                setOpen((o) => !o);
-              }
+              if (!el || simpleThemeUi) return;
+              if (!isInRing(e.clientX, e.clientY)) return;
+              ringDrag.current = true;
+              e.currentTarget.setPointerCapture(e.pointerId);
+              applyFromPointer(e.clientX, e.clientY, el);
             }}
             onPointerMove={(e) => {
               const el = cardRef.current;
@@ -188,7 +146,7 @@ export function HeroSection({ locale }: { locale: Locale }) {
               alt="Heitor Pelizaro"
               width={400}
               height={400}
-              className="pointer-events-none relative z-0 h-full w-full object-cover"
+              className={`relative z-0 h-full w-full object-cover ${!simpleThemeUi ? "pointer-events-none" : ""}`}
               priority
             />
             {!simpleThemeUi && (
@@ -213,54 +171,19 @@ export function HeroSection({ locale }: { locale: Locale }) {
               </div>
             )}
           </div>
-          <p className="mt-2 text-center font-mono text-[10px] text-[var(--text-muted)]">
+          <p
+            id="hero-theme-hint"
+            className="mt-2 text-center font-mono text-[10px] text-[var(--text-muted)]"
+          >
             {simpleThemeUi ? t.themeSimpleHint : t.themeRingHint}
           </p>
-          {open && (
-            <div
-              role="dialog"
-              aria-label={t.themePicker}
-              className="absolute left-1/2 top-full z-20 mt-3 w-[min(100%,280px)] -translate-x-1/2 rounded-xl border border-[var(--border-glow)] bg-[var(--bg-panel)] p-4 shadow-lg backdrop-blur-md md:left-auto md:right-0 md:translate-x-0"
-            >
-              {!simpleThemeUi ? (
-                <>
-                  <p className="mb-3 font-mono text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
-                    {t.themeWheelHint}
-                  </p>
-                  <div
-                    ref={wheelRef}
-                    className="mx-auto size-36 cursor-pointer touch-none rounded-full"
-                    style={{
-                      boxShadow:
-                        "0 0 24px color-mix(in srgb, var(--neon-cyan) 25%, transparent)",
-                      background: ringGradient,
-                    }}
-                    onPointerDown={(e) => {
-                      e.stopPropagation();
-                      e.currentTarget.setPointerCapture(e.pointerId);
-                      const el = wheelRef.current;
-                      if (el) applyFromPointer(e.clientX, e.clientY, el);
-                    }}
-                    onPointerMove={(e) => {
-                      if (!e.currentTarget.hasPointerCapture(e.pointerId)) return;
-                      const el = wheelRef.current;
-                      if (el) applyFromPointer(e.clientX, e.clientY, el);
-                    }}
-                  />
-                </>
-              ) : null}
-              <button
-                type="button"
-                onClick={() => {
-                  reset();
-                  setOpen(false);
-                }}
-                className="mt-4 w-full rounded-lg border border-[var(--border-glow)] py-2 font-mono text-xs text-[var(--neon-cyan)] transition hover:bg-[var(--neon-cyan)]/10"
-              >
-                {t.themeReset}
-              </button>
-            </div>
-          )}
+          <button
+            type="button"
+            onClick={() => reset()}
+            className="mt-1 w-full font-mono text-[10px] uppercase tracking-wider text-[var(--neon-cyan)] underline decoration-[var(--border-glow)] underline-offset-2 hover:text-[var(--neon-magenta)]"
+          >
+            {t.themeReset}
+          </button>
         </div>
       </div>
     </section>

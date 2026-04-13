@@ -32,8 +32,8 @@ export const messages = {
       themeWheelHint: "Arraste na roda para ajustar o matiz",
       themeReset: "Repor padrão",
       themeRingHint:
-        "Anel ao redor do H: clique ou arraste na cor. Centro (H): abre opções.",
-      themeSimpleHint: "Toque no cartão para abrir e repor o tema padrão.",
+        "Anel ao redor do H: clique ou arraste na cor para definir o tema.",
+      themeSimpleHint: "Modo reduzido: use Repor padrão abaixo.",
     },
     skills: {
       title: "Módulos",
@@ -120,8 +120,8 @@ export const messages = {
       themeWheelHint: "Drag on the wheel to adjust hue",
       themeReset: "Restore default",
       themeRingHint:
-        "Ring around H: click or drag a color. Center (H): opens options.",
-      themeSimpleHint: "Tap the card to open and restore the default theme.",
+        "Ring around H: click or drag a color to set the theme.",
+      themeSimpleHint: "Reduced mode: use Restore default below.",
     },
     skills: {
       title: "Modules",
