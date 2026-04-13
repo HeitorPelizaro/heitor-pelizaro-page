@@ -117,11 +117,12 @@ export function GraphCanvas() {
     window.addEventListener("mousemove", onMove);
     window.addEventListener("mouseleave", onLeave);
 
-    const attractR = performanceMode ? 72 : 105;
+    const attractR = performanceMode ? 100 : 165;
     const repulse = 4200;
     const spring = 0.018;
-    const kHome = 0.034;
-    const damping = 0.92;
+    /** Mais baixo = nós “respiram” mais com o rato; nó fixo + molas das arestas mantêm o conjunto no centro. */
+    const kHome = 0.017;
+    const damping = 0.91;
 
     const step = () => {
       const { nodes, edges, cx, cy } = graph;
@@ -173,16 +174,24 @@ export function GraphCanvas() {
       if (mouse.current.active) {
         const mx = mouse.current.x;
         const my = mouse.current.y;
-        const outer = attractR * 1.75;
+        const outer = attractR * 2.25;
         for (const n of nodes) {
           if (n.pinned) continue;
           const dx = n.x - mx;
           const dy = n.y - my;
           const d = Math.sqrt(dx * dx + dy * dy) + 1;
           if (d < outer) {
-            const pull = (1 - d / outer) * 0.32;
-            n.vx -= (dx / d) * pull * 1.15;
-            n.vy -= (dy / d) * pull * 1.15;
+            const falloff = 1 - d / outer;
+            const pull = falloff * 0.62;
+            /* Aproximar / afastar do cursor */
+            n.vx -= (dx / d) * pull * 2.1;
+            n.vy -= (dy / d) * pull * 2.1;
+            /* Componente tangencial: “ondulação” sem arrastar o blob inteiro */
+            const tx = -dy / d;
+            const ty = dx / d;
+            const swirl = falloff * 0.38;
+            n.vx += tx * swirl;
+            n.vy += ty * swirl;
           }
         }
       }

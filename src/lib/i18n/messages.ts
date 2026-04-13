@@ -31,6 +31,9 @@ export const messages = {
       themePicker: "Escolher cores de destaque do tema",
       themeWheelHint: "Arraste na roda para ajustar o matiz",
       themeReset: "Repor padrão",
+      themeRingHint:
+        "Anel ao redor do H: clique ou arraste na cor. Centro (H): abre opções.",
+      themeSimpleHint: "Toque no cartão para abrir e repor o tema padrão.",
     },
     skills: {
       title: "Módulos",
@@ -116,6 +119,9 @@ export const messages = {
       themePicker: "Choose accent theme colors",
       themeWheelHint: "Drag on the wheel to adjust hue",
       themeReset: "Restore default",
+      themeRingHint:
+        "Ring around H: click or drag a color. Center (H): opens options.",
+      themeSimpleHint: "Tap the card to open and restore the default theme.",
     },
     skills: {
       title: "Modules",
