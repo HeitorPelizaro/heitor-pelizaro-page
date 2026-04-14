@@ -53,16 +53,17 @@ type GraphSceneProps = {
   performanceMode: boolean;
   dims: { w: number; h: number };
   mouseRef: MutableRefObject<GraphMouseRef>;
-  onGraphSparse: () => void;
+  onGraphCuts50: () => void;
 };
 
 function GraphScene({
   performanceMode,
   dims,
   mouseRef,
-  onGraphSparse,
+  onGraphCuts50,
 }: GraphSceneProps) {
-  const untangleNotified = useRef(false);
+  const cutsTotal = useRef(0);
+  const cut50Notified = useRef(false);
   const graphRef = useRef<GraphState | null>(null);
   const lineMatRef = useRef<THREE.LineBasicMaterial>(null);
   const pointsMatRef = useRef<THREE.PointsMaterial>(null);
@@ -127,6 +128,8 @@ function GraphScene({
     if (w < 16 || h < 16) return;
     const count = performanceMode ? 24 : 64;
     graphRef.current = createGraph(count, w, h);
+    cutsTotal.current = 0;
+    cut50Notified.current = false;
   }, [dims, performanceMode]);
 
   useFrame(({ gl }) => {
@@ -157,20 +160,17 @@ function GraphScene({
       m.vy = 0;
     }
 
-    stepGraph(graph, {
+    const cuts = stepGraph(graph, {
       w,
       h,
       mouse: m,
       performanceMode,
     });
 
-    if (
-      !untangleNotified.current &&
-      graph.nodes.length >= 18 &&
-      graph.edges.length <= 8
-    ) {
-      untangleNotified.current = true;
-      onGraphSparse();
+    cutsTotal.current += cuts;
+    if (!cut50Notified.current && cutsTotal.current >= 50) {
+      cut50Notified.current = true;
+      onGraphCuts50();
     }
 
     const nodes = graph.nodes;
@@ -308,7 +308,7 @@ export function GraphWebGL() {
           performanceMode={performanceMode}
           dims={dims}
           mouseRef={mouseRef}
-          onGraphSparse={() => onAchievement("graph_untangle")}
+          onGraphCuts50={() => onAchievement("graph_cut_50")}
         />
       </Canvas>
     </div>

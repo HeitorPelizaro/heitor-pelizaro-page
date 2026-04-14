@@ -33,8 +33,8 @@ export type GraphState = {
 };
 
 const SPATIAL_CELL = 130;
-const PAIR_COOLDOWN_FRAMES = 112;
-const PAIR_COOLDOWN_MOUSE = 132;
+const PAIR_COOLDOWN_FRAMES = 88;
+const PAIR_COOLDOWN_MOUSE = 28;
 const SWAY_TIME = 0.012;
 const SWAY_AMP = 1.35;
 const SWAY_BLEND = 0.038;
@@ -42,7 +42,7 @@ const SWAY_BLEND = 0.038;
 /** Atração entre nós (simbionte / ímã); repulsão a curta distância evita colapso. */
 const MAGNET_D_MIN = 48;
 const MAGNET_D_MAX = 400;
-const MAGNET_SOFTEN = 7800;
+const MAGNET_SOFTEN = 4800;
 
 /** Distância do ponto ao segmento AB (px). */
 function distPointToSegment(
@@ -336,7 +336,8 @@ function addOneRepairEdge(
   }
 }
 
-export function stepGraph(state: GraphState, p: StepParams): void {
+/** @returns Quantidade de arestas cortadas pelo rato neste passo (para conquistas). */
+export function stepGraph(state: GraphState, p: StepParams): number {
   const { nodes, edges, pairCooldownUntil } = state;
   const n = nodes.length;
   const w = p.w;
@@ -347,7 +348,7 @@ export function stepGraph(state: GraphState, p: StepParams): void {
   const f = state.frame;
 
   const repulse = p.performanceMode ? 2700 : 4000;
-  const spring = p.performanceMode ? 0.0175 : 0.021;
+  const spring = p.performanceMode ? 0.0225 : 0.028;
   const kHome = p.performanceMode ? 0.0052 : 0.0068;
   const damping = p.performanceMode ? 0.92 : 0.93;
   const attractR = p.performanceMode ? 100 : 165;
@@ -389,8 +390,8 @@ export function stepGraph(state: GraphState, p: StepParams): void {
     }
   }
 
-  const magnetMul = p.mouse.active ? 0.36 : 1;
-  const magnetK = (p.performanceMode ? 40 : 64) * magnetMul;
+  const magnetMul = p.mouse.active ? 0.5 : 1;
+  const magnetK = (p.performanceMode ? 56 : 92) * magnetMul;
   for (let i = 0; i < n; i++) {
     if (nodes[i].pinned) continue;
     const xi = Math.floor(nodes[i].x / cell);
@@ -424,11 +425,11 @@ export function stepGraph(state: GraphState, p: StepParams): void {
   {
     const hubK = p.mouse.active
       ? p.performanceMode
-        ? 0.0065
-        : 0.01
+        ? 0.0082
+        : 0.0125
       : p.performanceMode
-        ? 0.028
-        : 0.042;
+        ? 0.036
+        : 0.054;
     const { cx, cy } = state;
     for (let i = 1; i < n; i++) {
       const node = nodes[i];
@@ -461,6 +462,7 @@ export function stepGraph(state: GraphState, p: StepParams): void {
     B.vy -= fy;
   }
 
+  let mouseCuts = 0;
   if (p.mouse.active) {
     const sliceDist = p.performanceMode ? 18 : 24;
     const speedCut = p.performanceMode ? 2.5 : 2.0;
@@ -480,6 +482,7 @@ export function stepGraph(state: GraphState, p: StepParams): void {
           f + PAIR_COOLDOWN_MOUSE,
         );
         edges.splice(ei, 1);
+        mouseCuts++;
       }
     }
   }
@@ -536,23 +539,26 @@ export function stepGraph(state: GraphState, p: StepParams): void {
     }
   }
 
-  if (!p.mouse.active) {
-    snapProximityEdges(
-      state,
-      f,
-      pairCooldownUntil,
-      p.performanceMode ? 54 : 64,
-      7,
-      p.performanceMode,
-      p.performanceMode ? 2 : 4,
-    );
+  snapProximityEdges(
+    state,
+    f,
+    pairCooldownUntil,
+    p.performanceMode ? 60 : 74,
+    7,
+    p.performanceMode,
+    p.performanceMode ? 3 : 6,
+  );
 
-    const minEdges = Math.max(12, Math.floor(n * 0.36));
-    if (edges.length < minEdges) {
-      addOneRepairEdge(state, f, pairCooldownUntil, 7);
-    }
-    if (edges.length < minEdges) {
-      addOneRepairEdge(state, f, pairCooldownUntil, 7);
-    }
+  const minEdges = Math.max(14, Math.floor(n * 0.42));
+  if (edges.length < minEdges) {
+    addOneRepairEdge(state, f, pairCooldownUntil, 7);
   }
+  if (edges.length < minEdges) {
+    addOneRepairEdge(state, f, pairCooldownUntil, 7);
+  }
+  if (!p.performanceMode && edges.length < minEdges) {
+    addOneRepairEdge(state, f, pairCooldownUntil, 7);
+  }
+
+  return mouseCuts;
 }

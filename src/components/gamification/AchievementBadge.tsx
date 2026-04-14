@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { ACHIEVEMENT_KEYS, loadUnlocked, type AchievementId } from "@/lib/achievements";
 import { messages } from "@/lib/i18n/messages";
+import { EMAIL } from "@/lib/site";
 import { useAppSettings } from "@/context/AppSettingsContext";
 
 export function AchievementBadge() {
@@ -80,6 +81,22 @@ export function AchievementBadge() {
                 {t.achievements.close}
               </button>
             </div>
+            {unlocked.size >= ACHIEVEMENT_KEYS.length ? (
+              <div className="border-b border-[var(--neon-amber)]/25 bg-[var(--neon-amber)]/5 px-4 py-3">
+                <p className="font-mono text-[11px] font-semibold text-[var(--neon-amber)]">
+                  {t.achievements.allCompleteTitle}
+                </p>
+                <p className="mt-2 text-[10px] leading-relaxed text-[var(--text-muted)]">
+                  {t.achievements.allCompleteBody.replace(/\{\{email\}\}/g, EMAIL)}
+                </p>
+                <a
+                  href={`mailto:${EMAIL}?subject=${encodeURIComponent("LABMASTER")}`}
+                  className="mt-3 inline-block rounded-lg border border-[var(--neon-cyan)]/40 px-3 py-2 font-mono text-[10px] text-[var(--neon-cyan)] transition hover:border-[var(--neon-magenta)]/50 hover:text-[var(--text-primary)]"
+                >
+                  {t.achievements.allCompleteCta}
+                </a>
+              </div>
+            ) : null}
             <ul className="max-h-[min(60dvh,440px)] space-y-2 overflow-y-auto p-3 font-mono text-xs">
               {ACHIEVEMENT_KEYS.map((id) => {
                 const ok = unlocked.has(id);

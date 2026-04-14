@@ -71,6 +71,10 @@ export const messages = {
       unlocked: "desbloqueada",
       close: "Fechar",
       lockedLabel: "Bloqueada",
+      allCompleteTitle: "Laboratório 100%",
+      allCompleteBody:
+        "Recompensa: envia um e-mail para {{email}} com o assunto LABMASTER. Leio com prioridade e respondo com algo útil (mesmo que seja um não com contexto).",
+      allCompleteCta: "Abrir e-mail",
       items: {
         a11y_motion: {
           name: "Modo acessível",
@@ -88,17 +92,17 @@ export const messages = {
           name: "Explorador de builds",
           desc: "Role até a seção Projetos (ou use o atalho no menu).",
         },
-        graph_untangle: {
-          name: "Teia desfeita",
-          desc: "Corte ligações do grafo de fundo com o mouse até quase não sobrar fios.",
+        graph_cut_50: {
+          name: "Cinquenta cortes",
+          desc: "Desfaz 50 conexões no grafo de fundo cortando os fios com o movimento do rato.",
         },
         theme_chroma_3: {
           name: "Cromático ×3",
           desc: "Mude as cores de destaque pelo anel no hero pelo menos 3 vezes.",
         },
         easter_egg: {
-          name: "Init 0",
-          desc: "Código Konami no teclado: ↑ ↑ ↓ ↓ ← → ← → e em seguida as teclas B e A.",
+          name: "Konami",
+          desc: "Existe um comando secreto neste site. Consegues descobrir qual é?",
         },
       },
     },
@@ -179,6 +183,10 @@ export const messages = {
       unlocked: "unlocked",
       close: "Close",
       lockedLabel: "Locked",
+      allCompleteTitle: "Lab 100%",
+      allCompleteBody:
+        "Reward: email {{email}} with subject line LABMASTER. I read it with priority and reply with something genuinely useful (even if it's a no—with context).",
+      allCompleteCta: "Open email",
       items: {
         a11y_motion: {
           name: "Accessible mode",
@@ -196,17 +204,17 @@ export const messages = {
           name: "Build explorer",
           desc: "Scroll to the Projects section (or use the nav shortcut).",
         },
-        graph_untangle: {
-          name: "Web untangled",
-          desc: "Cut background graph edges with the mouse until almost none remain.",
+        graph_cut_50: {
+          name: "Fifty cuts",
+          desc: "Break 50 connections on the background graph by slicing wires with the mouse.",
         },
         theme_chroma_3: {
           name: "Chromatic ×3",
           desc: "Change accent colors from the hero ring at least 3 times.",
         },
         easter_egg: {
-          name: "Init 0",
-          desc: "Konami code on the keyboard: ↑ ↑ ↓ ↓ ← → ← → then the B and A keys.",
+          name: "Konami",
+          desc: "There's a secret command on this site. Can you figure out what it is?",
         },
       },
     },
