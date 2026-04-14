@@ -73,6 +73,8 @@ Se usar **SSH** e aparecer **Permission denied to heitorpelizaro-nh**, ou você 
 
 Passo a passo: [DEPLOY.md](./DEPLOY.md). O workflow publica `out/` por **rsync**, envia o vhost **Nginx** (`nginx/nginx-heitor-pelizaro.conf`) e tenta **Certbot** para `heitor.pelizaro.com.br`. O **Pronto Dental** mantém uma cópia espelhada do mesmo arquivo em `deploy/nginx-heitor-pelizaro.conf` para deploys desse repo.
 
+**Certificado / browser:** se alguém reportar `ERR_CERT_AUTHORITY_INVALID`, em geral é rede corporativa, VPN ou antivírus a inspecionar HTTPS — ver [DEPLOY.md §9](./DEPLOY.md#9-tls-e-erro-err_cert_authority_invalid) (comandos `openssl`, SSL Labs e checklist).
+
 ## Lighthouse
 
 Após deploy, rode Lighthouse no Chrome (ou `npx lighthouse`) contra a URL HTTPS e valide LCP, acessibilidade e best practices. Use o toggle **Performance** no HUD para comparar.
