@@ -60,7 +60,7 @@ Substitua `public/heitor.svg` por `public/heitor.jpg` (ou ajuste o `src` em `src
 
   Ou na UI: **Settings → Environments → vps → Add secret**.
 
-- **Variables:** `HEITOR_DEPLOY_PATH` (opcional, default `/var/www/heitor-pelizaro`), e `NEXT_PUBLIC_*` se quiser sobrescrever links no build.
+- **Variables:** `HEITOR_DEPLOY_PATH` (opcional, default `/var/www/heitor-pelizaro`), `CERTBOT_EMAIL` (opcional, default `admin@pelizaro.com.br` no passo Certbot), e `NEXT_PUBLIC_*` se quiser sobrescrever links no build.
 
 Se você usa alias SSH (ex.: `Host github-gmail` no `~/.ssh/config`), o remoto pode ser `git@github-gmail:HeitorPelizaro/heitor-pelizaro-page.git`.
 
@@ -76,7 +76,7 @@ Se usar **SSH** e aparecer **Permission denied to heitorpelizaro-nh**, ou você 
 
 ## Deploy (VPS + Nginx)
 
-Passo a passo: [DEPLOY.md](./DEPLOY.md). O projeto **Pronto Dental** (mesma VPS) pode instalar o vhost de `heitor.pelizaro.com.br` no próximo deploy; os arquivos estáticos vêm deste repositório via **GitHub Actions** (`rsync` de `out/`).
+Passo a passo: [DEPLOY.md](./DEPLOY.md). O workflow publica `out/` por **rsync**, envia o vhost **Nginx** (`nginx/nginx-heitor-pelizaro.conf`) e tenta **Certbot** para `heitor.pelizaro.com.br`. O **Pronto Dental** mantém uma cópia espelhada do mesmo arquivo em `deploy/nginx-heitor-pelizaro.conf` para deploys desse repo.
 
 ## Lighthouse
 

@@ -25,20 +25,23 @@ sudo chown -R www-data:www-data /var/www/heitor-pelizaro
 
 ## 3. Nginx
 
-### Opção A — junto com o deploy do Pronto Dental (recomendado na mesma VPS)
+### Opção A — GitHub Actions deste repositório (recomendado)
 
-No repositório **Pronto Dental**, o workflow de deploy já copia [deploy/nginx-heitor-pelizaro.conf](../Pronto%20Dental/deploy/nginx-heitor-pelizaro.conf) para a VPS, ativa o site e tenta o Certbot para `heitor.pelizaro.com.br`. Faça um deploy do Pronto Dental depois de atualizar esse repo (push na `main`).
+Cada push na `main` (ou *workflow dispatch*) do **heitor-pelizaro** copia [nginx/nginx-heitor-pelizaro.conf](./nginx/nginx-heitor-pelizaro.conf) para a VPS (`/etc/nginx/sites-available/heitor-pelizaro`), ativa o site, roda `certbot --nginx -d heitor.pelizaro.com.br` (se o binário existir) e recarrega o Nginx. E-mail do Let's Encrypt: variable `CERTBOT_EMAIL` no environment `vps` (default `admin@pelizaro.com.br`).
 
-Garanta o registro **DNS A** para `heitor` antes, senão o Certbot pode falhar (o deploy continua; rode o certbot de novo depois).
+Garanta o registro **DNS A** para `heitor` antes; sem isso o Certbot pode falhar (o deploy segue; rode de novo quando o DNS propagar).
 
-### Opção B — manual
+### Opção B — deploy do Pronto Dental (mesma VPS)
 
-1. Copie o exemplo [nginx/heitor.pelizaro.com.br.conf](./nginx/heitor.pelizaro.com.br.conf) para `/etc/nginx/sites-available/heitor.pelizaro.com.br`.
-2. Ajuste `root` se usar outro path.
-3. Ative o site:
+O workflow do **Pronto Dental** ainda copia [deploy/nginx-heitor-pelizaro.conf](../Pronto%20Dental/deploy/nginx-heitor-pelizaro.conf), mantido **espelhado** com o arquivo deste repo.
+
+### Opção C — manual
+
+1. Copie [nginx/nginx-heitor-pelizaro.conf](./nginx/nginx-heitor-pelizaro.conf) para `/etc/nginx/sites-available/heitor-pelizaro` e substitua `HEITOR_ROOT_PLACEHOLDER` pelo path (ex.: `/var/www/heitor-pelizaro`).
+2. Ative o site:
 
 ```bash
-sudo ln -sf /etc/nginx/sites-available/heitor.pelizaro.com.br /etc/nginx/sites-enabled/
+sudo ln -sf /etc/nginx/sites-available/heitor-pelizaro /etc/nginx/sites-enabled/heitor-pelizaro
 sudo nginx -t && sudo systemctl reload nginx
 ```
 
