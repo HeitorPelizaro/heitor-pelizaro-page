@@ -43,7 +43,7 @@ jobs:
       - name: Install and build
         env:
           NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL || 'https://heitor.pelizaro.com.br' }}
-          NEXT_PUBLIC_GITHUB_URL: ${{ vars.NEXT_PUBLIC_GITHUB_URL }}
+          NEXT_PUBLIC_GITHUB_URL: ${{ vars.NEXT_PUBLIC_GITHUB_URL || 'https://github.com/heitorpelizaro' }}
           NEXT_PUBLIC_EMAIL: ${{ vars.NEXT_PUBLIC_EMAIL }}
           NEXT_PUBLIC_PRONTO_DENTAL_URL: ${{ vars.NEXT_PUBLIC_PRONTO_DENTAL_URL || 'https://italo.pelizaro.com.br' }}
           NEXT_PUBLIC_INSTAGRAM_URL: ${{ vars.NEXT_PUBLIC_INSTAGRAM_URL }}

@@ -24,9 +24,12 @@ function IgPlaceholder() {
   );
 }
 
+const IG_GRID_EXTENSIONS = [".jpg", ".jpeg", ".webp", ".png"] as const;
+
 function IgCell({ index }: { index: number }) {
+  const [extIdx, setExtIdx] = useState(0);
   const [broken, setBroken] = useState(false);
-  const src = `/instagram/grid-${index}.jpg`;
+  const src = `/instagram/grid-${index}${IG_GRID_EXTENSIONS[extIdx]}`;
 
   return (
     <a
@@ -44,7 +47,13 @@ function IgCell({ index }: { index: number }) {
           alt=""
           className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
           loading="lazy"
-          onError={() => setBroken(true)}
+          onError={() => {
+            if (extIdx + 1 < IG_GRID_EXTENSIONS.length) {
+              setExtIdx((i) => i + 1);
+            } else {
+              setBroken(true);
+            }
+          }}
         />
       )}
     </a>

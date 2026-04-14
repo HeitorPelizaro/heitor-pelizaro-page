@@ -39,6 +39,11 @@ const SWAY_TIME = 0.0165;
 const SWAY_AMP = 4.8;
 const SWAY_BLEND = 0.085;
 
+/** Atração fraca estilo “imã” entre nós (só não-fixos); não colapsa o grupo — arestas continuam a definir vínculos rígidos. */
+const MAGNET_D_MIN = 56;
+const MAGNET_D_MAX = 300;
+const MAGNET_SOFTEN = 14500;
+
 /** Distância do ponto ao segmento AB (px). */
 function distPointToSegment(
   px: number,
@@ -290,6 +295,36 @@ export function stepGraph(state: GraphState, p: StepParams): void {
           nodes[i].vy -= ny;
           nodes[j].vx += nx;
           nodes[j].vy += ny;
+        }
+      }
+    }
+  }
+
+  const magnetK = p.performanceMode ? 22 : 34;
+  for (let i = 0; i < n; i++) {
+    if (nodes[i].pinned) continue;
+    const xi = Math.floor(nodes[i].x / cell);
+    const yi = Math.floor(nodes[i].y / cell);
+    for (let ox = -2; ox <= 2; ox++) {
+      for (let oy = -2; oy <= 2; oy++) {
+        const list = buckets.get(`${xi + ox},${yi + oy}`);
+        if (!list) continue;
+        for (const j of list) {
+          if (j <= i || nodes[j].pinned) continue;
+          const dx = nodes[j].x - nodes[i].x;
+          const dy = nodes[j].y - nodes[i].y;
+          const d = Math.sqrt(dx * dx + dy * dy);
+          if (d < MAGNET_D_MIN || d > MAGNET_D_MAX) continue;
+          const inv = 1 / d;
+          const ux = dx * inv;
+          const uy = dy * inv;
+          const falloff = 1 - (d - MAGNET_D_MIN) / (MAGNET_D_MAX - MAGNET_D_MIN);
+          const fm =
+            (magnetK * falloff) / (d * d + MAGNET_SOFTEN);
+          nodes[i].vx += ux * fm;
+          nodes[i].vy += uy * fm;
+          nodes[j].vx -= ux * fm;
+          nodes[j].vy -= uy * fm;
         }
       }
     }

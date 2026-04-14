@@ -15,7 +15,7 @@ export const SITE_URL = envOr(
 
 export const GITHUB_URL = envOr(
   process.env.NEXT_PUBLIC_GITHUB_URL,
-  "https://github.com/heitorcpelizaro",
+  "https://github.com/heitorpelizaro",
 );
 
 export const EMAIL = envOr(

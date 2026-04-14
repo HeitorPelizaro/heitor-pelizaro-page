@@ -29,7 +29,10 @@ npm run build
 
 ### Grade de fotos (Instagram)
 
-Coloque até **6** imagens em `public/instagram/` com nomes `grid-1.jpg` … `grid-6.jpg` (`.webp` também funciona se ajustar extensão no código). Células sem arquivo mostram o placeholder com gradiente do Instagram. Cada miniatura abre o perfil no Instagram.
+O site **não lê o feed do Instagram automaticamente** (a API oficial exige app e token; hotlink de `cdninstagram` quebra por política do browser). Há duas opções:
+
+1. **Imagens estáticas:** coloque até **6** ficheiros em `public/instagram/` com nomes `grid-1` … `grid-6` e extensão `.jpg`, `.jpeg`, `.webp` ou `.png` (a página tenta nessa ordem por célula). Células sem ficheiro mostram o placeholder. Cada miniatura abre o teu perfil (`NEXT_PUBLIC_INSTAGRAM_URL`).
+2. **Widget embutido:** define `NEXT_PUBLIC_INSTAGRAM_WIDGET_IFRAME_SRC` com o URL do iframe (ex. SnapWidget / serviço semelhante) no `.env.local` ou nas variáveis do GitHub (environment `vps`).
 
 Copie `.env.example` para `.env.local` se quiser testar localmente.
 
