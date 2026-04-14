@@ -90,7 +90,7 @@ export const messages = {
         },
         graph_untangle: {
           name: "Teia desfeita",
-          desc: "Corte ligações do grafo de fundo com o rato até quase não sobrar fios.",
+          desc: "Corte ligações do grafo de fundo com o mouse até quase não sobrar fios.",
         },
         theme_chroma_3: {
           name: "Cromático ×3",
@@ -98,7 +98,7 @@ export const messages = {
         },
         easter_egg: {
           name: "Init 0",
-          desc: "Há um atalho escondido no teclado. Descubra sozinho.",
+          desc: "Código Konami no teclado: ↑ ↑ ↓ ↓ ← → ← → e em seguida as teclas B e A.",
         },
       },
     },
@@ -206,7 +206,7 @@ export const messages = {
         },
         easter_egg: {
           name: "Init 0",
-          desc: "There is a hidden keyboard shortcut. Find it on your own.",
+          desc: "Konami code on the keyboard: ↑ ↑ ↓ ↓ ← → ← → then the B and A keys.",
         },
       },
     },

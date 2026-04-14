@@ -1,6 +1,6 @@
 /**
  * Física do grafo de fundo: molas, repulsão (grade espacial), teia dinâmica.
- * Arestas rompem por esticamento, pelo rato “cortando” o fio, e religam por proximidade.
+ * Arestas rompem por esticamento, pelo mouse “cortando” o fio, e religam por proximidade.
  */
 
 export type GraphNode = {
@@ -35,14 +35,14 @@ export type GraphState = {
 const SPATIAL_CELL = 130;
 const PAIR_COOLDOWN_FRAMES = 112;
 const PAIR_COOLDOWN_MOUSE = 38;
-const SWAY_TIME = 0.0165;
-const SWAY_AMP = 4.8;
-const SWAY_BLEND = 0.085;
+const SWAY_TIME = 0.012;
+const SWAY_AMP = 1.35;
+const SWAY_BLEND = 0.038;
 
-/** Atração fraca estilo “imã” entre nós (só não-fixos); não colapsa o grupo — arestas continuam a definir vínculos rígidos. */
-const MAGNET_D_MIN = 52;
-const MAGNET_D_MAX = 340;
-const MAGNET_SOFTEN = 12800;
+/** Atração entre nós (simbionte / ímã); repulsão a curta distância evita colapso. */
+const MAGNET_D_MIN = 48;
+const MAGNET_D_MAX = 400;
+const MAGNET_SOFTEN = 7800;
 
 /** Distância do ponto ao segmento AB (px). */
 function distPointToSegment(
@@ -347,8 +347,8 @@ export function stepGraph(state: GraphState, p: StepParams): void {
   const f = state.frame;
 
   const repulse = p.performanceMode ? 2700 : 4000;
-  const spring = p.performanceMode ? 0.016 : 0.019;
-  const kHome = p.performanceMode ? 0.0048 : 0.0064;
+  const spring = p.performanceMode ? 0.0175 : 0.021;
+  const kHome = p.performanceMode ? 0.0052 : 0.0068;
   const damping = p.performanceMode ? 0.92 : 0.93;
   const attractR = p.performanceMode ? 100 : 165;
 
@@ -389,8 +389,8 @@ export function stepGraph(state: GraphState, p: StepParams): void {
     }
   }
 
-  const magnetMul = p.mouse.active ? 0.48 : 1;
-  const magnetK = (p.performanceMode ? 26 : 40) * magnetMul;
+  const magnetMul = p.mouse.active ? 0.36 : 1;
+  const magnetK = (p.performanceMode ? 40 : 64) * magnetMul;
   for (let i = 0; i < n; i++) {
     if (nodes[i].pinned) continue;
     const xi = Math.floor(nodes[i].x / cell);
@@ -417,6 +417,26 @@ export function stepGraph(state: GraphState, p: StepParams): void {
           nodes[j].vy -= uy * fm;
         }
       }
+    }
+  }
+
+  /** Puxo ao núcleo (colônia / simbionte): sem mouse, a teia tende a reunir-se ao hub. */
+  {
+    const hubK = p.mouse.active
+      ? p.performanceMode
+        ? 0.0065
+        : 0.01
+      : p.performanceMode
+        ? 0.028
+        : 0.042;
+    const { cx, cy } = state;
+    for (let i = 1; i < n; i++) {
+      const node = nodes[i];
+      const dx = cx - node.x;
+      const dy = cy - node.y;
+      const d = Math.sqrt(dx * dx + dy * dy) + 52;
+      node.vx += (dx / d) * hubK;
+      node.vy += (dy / d) * hubK;
     }
   }
 
@@ -520,13 +540,16 @@ export function stepGraph(state: GraphState, p: StepParams): void {
     state,
     f,
     pairCooldownUntil,
-    p.performanceMode ? 50 : 58,
+    p.performanceMode ? 54 : 64,
     7,
     p.performanceMode,
-    p.performanceMode ? 1 : 2,
+    p.performanceMode ? 2 : 4,
   );
 
   const minEdges = Math.max(12, Math.floor(n * 0.36));
+  if (edges.length < minEdges) {
+    addOneRepairEdge(state, f, pairCooldownUntil, 7);
+  }
   if (edges.length < minEdges) {
     addOneRepairEdge(state, f, pairCooldownUntil, 7);
   }
