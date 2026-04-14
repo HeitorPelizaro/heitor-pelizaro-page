@@ -102,12 +102,24 @@ body.reduce-fx .scanlines::after {
   text-shadow: 0 0 20px color-mix(in srgb, var(--neon-magenta) 40%, transparent);
 }
 
-/* --- Tema Glitch / Digital breakdown (lab 100%): interferência, camadas, VHS leve --- */
-/* Tudo com pointer-events: none; conteúdo continua clicável. Respeita .glitch-lab-reduced. */
+/* --- Tema Glitch / Digital breakdown (lab 100%): cyberpunk, falhas controladas, ainda legível --- */
+/* Camadas extras: pointer-events: none. Interação (cursor/clique): GlitchInteractiveLayer.tsx */
+
+html.glitch-lab-active {
+  --bg-deep: #020208;
+  --bg-panel: rgba(6, 6, 14, 0.82);
+  --neon-cyan: #00ffff;
+  --neon-magenta: #ff00ff;
+  --text-primary: #f4f6fb;
+  --text-muted: #8799b5;
+  --border-glow: rgba(0, 255, 255, 0.28);
+  --grid-line: rgba(0, 255, 255, 0.1);
+  letter-spacing: 0.014em;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   html.glitch-lab-active:not(.glitch-lab-reduced) {
-    animation: glitch-signal-drift 7.2s ease-in-out infinite;
+    animation: glitch-signal-drift 4.6s steps(16, end) infinite;
   }
 }
 
@@ -116,11 +128,11 @@ body.reduce-fx .scanlines::after {
   100% {
     filter: hue-rotate(0deg) saturate(1) contrast(1);
   }
-  30% {
-    filter: hue-rotate(2.8deg) saturate(1.04) contrast(1.01);
+  33% {
+    filter: hue-rotate(3.5deg) saturate(1.06) contrast(1.02);
   }
-  65% {
-    filter: hue-rotate(-2deg) saturate(1.03) contrast(1.02);
+  66% {
+    filter: hue-rotate(-2.5deg) saturate(1.04) contrast(1.03);
   }
 }
 
@@ -286,8 +298,21 @@ html.glitch-lab-reduced .scanlines::after {
 
 @keyframes glitch-render-skip {
   0%,
-  99.35%,
+  97.6%,
   100% {
+    clip-path: inset(0 0 0 0);
+    transform: translate3d(0, 0, 0);
+  }
+  /* slice horizontal tipo “frame corrompido” */
+  97.75% {
+    clip-path: inset(42% 0 52% 0);
+    transform: translate3d(-2px, 0, 0);
+  }
+  97.85% {
+    clip-path: inset(0 0 22% 0);
+    transform: translate3d(1px, 0, 0);
+  }
+  97.95% {
     clip-path: inset(0 0 0 0);
     transform: translate3d(0, 0, 0);
   }
@@ -317,7 +342,7 @@ html.glitch-lab-active h2 {
 @media (prefers-reduced-motion: no-preference) {
   html.glitch-lab-active:not(.glitch-lab-reduced) h1,
   html.glitch-lab-active:not(.glitch-lab-reduced) h2 {
-    animation: glitch-chroma-jitter 3.8s ease-in-out infinite;
+    animation: glitch-chroma-jitter 3.2s steps(5, end) infinite;
   }
 }
 
@@ -412,6 +437,83 @@ html.glitch-lab-active .panel-glass::before {
   }
 }
 
+/* RGB split ocasional em imagens */
+@media (prefers-reduced-motion: no-preference) {
+  html.glitch-lab-active:not(.glitch-lab-reduced) img {
+    animation: glitch-img-chroma 13s steps(1, end) infinite;
+  }
+}
+
+@keyframes glitch-img-chroma {
+  0%,
+  96.4%,
+  100% {
+    filter: none;
+    transform: none;
+  }
+  96.75% {
+    filter: drop-shadow(2px 0 0 rgba(0, 255, 255, 0.35))
+      drop-shadow(-2px 0 0 rgba(255, 0, 255, 0.28));
+    transform: translate(0.5px, 0);
+  }
+  97.1% {
+    filter: none;
+    transform: none;
+  }
+}
+
+/* Hover: micro “quebra” em links e botões (HUD + miolo) */
+@media (prefers-reduced-motion: no-preference) {
+  html.glitch-lab-active:not(.glitch-lab-reduced) main :is(a, button):hover,
+  html.glitch-lab-active:not(.glitch-lab-reduced) header :is(a, button):hover {
+    transition:
+      transform 0.08s steps(2),
+      text-shadow 0.08s steps(2),
+      filter 0.08s steps(2);
+    transform: translate(0.5px, -0.5px) skewX(-0.45deg);
+    text-shadow:
+      0.06em 0 0 color-mix(in srgb, var(--neon-cyan) 42%, transparent),
+      -0.05em 0 0 color-mix(in srgb, var(--neon-magenta) 38%, transparent);
+    filter: contrast(1.06);
+  }
+}
+
+/* Grade CRT levemente fora de eixo */
+@media (prefers-reduced-motion: no-preference) {
+  html.glitch-lab-active:not(.glitch-lab-reduced) .cyber-grid {
+    animation: glitch-grid-warp 14s steps(4, end) infinite;
+    transform-origin: 50% 20%;
+  }
+}
+
+@keyframes glitch-grid-warp {
+  0%,
+  90%,
+  100% {
+    transform: skewX(0deg) translateX(0);
+  }
+  92% {
+    transform: skewX(0.14deg) translateX(-1px);
+  }
+  94% {
+    transform: skewX(-0.11deg) translateX(1px);
+  }
+}
+
+/* Micro “crash” visual em clique (classe pós-JS) */
+@keyframes glitch-click-flash {
+  0% {
+    filter: invert(0.14) contrast(1.12) hue-rotate(95deg);
+  }
+  100% {
+    filter: none;
+  }
+}
+
+html.glitch-lab-flash {
+  animation: glitch-click-flash 0.11s steps(1) forwards;
+}
+
 /* Modo reduzido: sem animações pesadas, só camadas estáticas leves */
 html.glitch-lab-active.glitch-lab-reduced::after {
   content: "";
@@ -450,4 +552,14 @@ html.glitch-lab-reduced.glitch-lab-active .panel-glass::before {
 
 html.glitch-lab-reduced.glitch-lab-active .panel-glass {
   animation: none !important;
+}
+
+html.glitch-lab-active.glitch-lab-reduced img {
+  animation: none !important;
+  filter: none !important;
+}
+
+html.glitch-lab-active.glitch-lab-reduced .cyber-grid {
+  animation: none !important;
+  transform: none !important;
 }

@@ -130,6 +130,17 @@ export const messages = {
       glitchAlreadyUnlocked: "O tema glitch já está liberado neste navegador.",
       backHome: "Voltar ao início",
     },
+    glitchLab: {
+      flares: [
+        "[SYS] buffer inconsistente — ignorado",
+        "GPU: jitter no scanout (simulado)",
+        "heap: suspicious.free() — é pegadinha",
+        "render: OK (na verdade tá bonito)",
+        "TCP: pacote fantasma 0xDEAD",
+        "WARN: framebuffer drift > 0.5px",
+        "shader_compile: retry (1)",
+      ],
+    },
     footer: {
       copy: "Heitor Cunha Pelizaro · IFTM · Ciência da Computação",
     },
@@ -265,6 +276,17 @@ export const messages = {
         "Theme unlocked. Toggle it anytime from the top bar (Glitch switch).",
       glitchAlreadyUnlocked: "The glitch theme is already unlocked in this browser.",
       backHome: "Back to home",
+    },
+    glitchLab: {
+      flares: [
+        "[SYS] buffer inconsistent — ignored",
+        "GPU: scanout jitter (simulated)",
+        "heap: suspicious.free() — joke",
+        "render: OK (actually looks fine)",
+        "TCP: ghost packet 0xDEAD",
+        "WARN: framebuffer drift > 0.5px",
+        "shader_compile: retry (1)",
+      ],
     },
     footer: {
       copy: "Heitor Cunha Pelizaro · IFTM · Computer Science",

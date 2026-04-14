@@ -1,5 +1,6 @@
 "use client";
 
+import { GlitchInteractiveLayer } from "@/components/gamification/GlitchInteractiveLayer";
 import { GlitchLabThemeProvider } from "@/context/GlitchLabThemeContext";
 
 export function ClientLabProviders({
@@ -7,5 +8,10 @@ export function ClientLabProviders({
 }: {
   children: React.ReactNode;
 }) {
-  return <GlitchLabThemeProvider>{children}</GlitchLabThemeProvider>;
+  return (
+    <GlitchLabThemeProvider>
+      {children}
+      <GlitchInteractiveLayer />
+    </GlitchLabThemeProvider>
+  );
 }
