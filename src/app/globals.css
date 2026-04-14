@@ -101,6 +101,13 @@ body.reduce-fx .scanlines::after {
     color-mix(in srgb, var(--bg-deep) 85%, transparent);
 }
 
+/* Modal ACH: reserva faixa para a scrollbar não sobrepor ✓ / bordas dos cards */
+.achievement-modal-scroll {
+  scrollbar-gutter: stable;
+  /* fallback quando stable não aplica: afasta conteúdo da borda direita */
+  padding-inline-end: max(10px, 0.5rem);
+}
+
 .scroll-panel-themed::-webkit-scrollbar {
   width: 6px;
 }

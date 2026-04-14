@@ -66,8 +66,8 @@ export function AchievementBadge() {
             aria-label={t.achievements.close}
             onClick={() => setOpen(false)}
           />
-          <div className="panel-glass relative z-[1] max-h-[min(72dvh,520px)] w-full max-w-md overflow-hidden rounded-2xl border border-white/15 shadow-[0_0_40px_rgba(0,240,255,0.08)]">
-            <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
+          <div className="panel-glass relative z-[1] flex max-h-[min(72dvh,520px)] min-h-0 w-full max-w-md flex-col overflow-hidden rounded-2xl border border-white/15 shadow-[0_0_40px_rgba(0,240,255,0.08)]">
+            <div className="flex shrink-0 items-center justify-between border-b border-white/10 px-4 py-3">
               <h2
                 id="ach-modal-title"
                 className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--neon-cyan)]"
@@ -82,11 +82,11 @@ export function AchievementBadge() {
                 {t.achievements.close}
               </button>
             </div>
-            <p className="border-b border-white/10 bg-black/30 px-4 py-2.5 text-[10px] leading-relaxed text-[var(--text-muted)]">
+            <p className="shrink-0 border-b border-white/10 bg-black/30 px-4 py-2.5 text-[10px] leading-relaxed text-[var(--text-muted)]">
               {t.achievements.exclusiveThemeHint}
             </p>
             {unlocked.size >= ACHIEVEMENT_KEYS.length ? (
-              <div className="border-b border-[var(--neon-amber)]/25 bg-[var(--neon-amber)]/5 px-4 py-3">
+              <div className="shrink-0 border-b border-[var(--neon-amber)]/25 bg-[var(--neon-amber)]/5 px-4 py-3">
                 <p className="font-mono text-[11px] font-semibold text-[var(--neon-amber)]">
                   {t.achievements.allCompleteTitle}
                 </p>
@@ -102,44 +102,46 @@ export function AchievementBadge() {
                 </Link>
               </div>
             ) : null}
-            <ul className="scroll-panel-themed max-h-[min(60dvh,440px)] space-y-2 overflow-y-auto overscroll-contain p-3 font-mono text-xs">
-              {ACHIEVEMENT_KEYS.map((id) => {
-                const ok = unlocked.has(id);
-                const row = items[id];
-                return (
-                  <li
-                    key={id}
-                    className={`rounded-lg border px-3 py-2.5 ${
-                      ok
-                        ? "border-[var(--neon-magenta)]/35 bg-[var(--neon-magenta)]/5"
-                        : "border-white/10 bg-black/20 opacity-75"
-                    }`}
-                  >
-                    <div className="flex items-start justify-between gap-2">
-                      <p
-                        className={
-                          ok
-                            ? "text-[var(--neon-amber)]"
-                            : "text-[var(--text-muted)]"
-                        }
-                      >
-                        {row.name}
+            <div className="scroll-panel-themed achievement-modal-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain pl-3 pt-2 pb-6">
+              <ul className="flex list-none flex-col gap-2 font-mono text-xs">
+                {ACHIEVEMENT_KEYS.map((id) => {
+                  const ok = unlocked.has(id);
+                  const row = items[id];
+                  return (
+                    <li
+                      key={id}
+                      className={`rounded-lg border px-3 py-2.5 ${
+                        ok
+                          ? "border-[var(--neon-magenta)]/35 bg-[var(--neon-magenta)]/5"
+                          : "border-white/10 bg-black/20 opacity-75"
+                      }`}
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <p
+                          className={
+                            ok
+                              ? "min-w-0 flex-1 text-[var(--neon-amber)]"
+                              : "min-w-0 flex-1 text-[var(--text-muted)]"
+                          }
+                        >
+                          {row.name}
+                        </p>
+                        <span
+                          className={`shrink-0 tabular-nums text-[9px] uppercase tracking-wider ${
+                            ok ? "text-[var(--neon-cyan)]" : "text-[var(--text-muted)]"
+                          }`}
+                        >
+                          {ok ? "✓" : t.achievements.lockedLabel}
+                        </span>
+                      </div>
+                      <p className="mt-1 text-[10px] leading-relaxed text-[var(--text-muted)]">
+                        {row.desc}
                       </p>
-                      <span
-                        className={`shrink-0 text-[9px] uppercase tracking-wider ${
-                          ok ? "text-[var(--neon-cyan)]" : "text-[var(--text-muted)]"
-                        }`}
-                      >
-                        {ok ? "✓" : t.achievements.lockedLabel}
-                      </span>
-                    </div>
-                    <p className="mt-1 text-[10px] leading-relaxed text-[var(--text-muted)]">
-                      {row.desc}
-                    </p>
-                  </li>
-                );
-              })}
-            </ul>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
           </div>
         </div>
       ) : null}
