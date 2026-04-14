@@ -37,5 +37,3 @@ export const INSTAGRAM_URL = envOr(
   process.env.NEXT_PUBLIC_INSTAGRAM_URL,
   "https://www.instagram.com/heitor.pelizaro",
 );
-
-export const INSTAGRAM_HANDLE = "heitor.pelizaro";
