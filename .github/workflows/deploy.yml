@@ -49,6 +49,8 @@ jobs:
           NEXT_PUBLIC_INSTAGRAM_URL: ${{ vars.NEXT_PUBLIC_INSTAGRAM_URL }}
           NEXT_PUBLIC_INSTAGRAM_WIDGET_IFRAME_SRC: ${{ vars.NEXT_PUBLIC_INSTAGRAM_WIDGET_IFRAME_SRC }}
           NEXT_PUBLIC_LINKEDIN_URL: ${{ vars.NEXT_PUBLIC_LINKEDIN_URL }}
+          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+          INSTAGRAM_USER_ID: ${{ secrets.INSTAGRAM_USER_ID }}
         run: |
           npm ci
           npm run build

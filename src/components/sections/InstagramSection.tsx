@@ -1,7 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { messages, type Locale } from "@/lib/i18n/messages";
+import {
+  isInstagramFeedFile,
+  type InstagramFeedItem,
+} from "@/lib/instagramFeed";
 import {
   INSTAGRAM_HANDLE,
   INSTAGRAM_URL,
@@ -26,7 +30,7 @@ function IgPlaceholder() {
 
 const IG_GRID_EXTENSIONS = [".jpg", ".jpeg", ".webp", ".png"] as const;
 
-function IgCell({ index }: { index: number }) {
+function IgCellStatic({ index }: { index: number }) {
   const [extIdx, setExtIdx] = useState(0);
   const [broken, setBroken] = useState(false);
   const src = `/instagram/grid-${index}${IG_GRID_EXTENSIONS[extIdx]}`;
@@ -60,8 +64,73 @@ function IgCell({ index }: { index: number }) {
   );
 }
 
+function IgCellFromApi({ item }: { item: InstagramFeedItem }) {
+  const [broken, setBroken] = useState(false);
+
+  return (
+    <a
+      href={item.permalink}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group relative block aspect-square overflow-hidden rounded-xl border border-white/10 transition hover:border-[var(--neon-magenta)]/50"
+    >
+      {broken ? (
+        <IgPlaceholder />
+      ) : (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={item.imageUrl}
+          alt=""
+          className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+          loading="lazy"
+          referrerPolicy="no-referrer"
+          onError={() => setBroken(true)}
+        />
+      )}
+    </a>
+  );
+}
+
+function IgGridLoading() {
+  return (
+    <>
+      {[1, 2, 3, 4, 5, 6].map((i) => (
+        <div
+          key={i}
+          className="aspect-square animate-pulse rounded-xl border border-white/10 bg-white/5"
+        />
+      ))}
+    </>
+  );
+}
+
 export function InstagramSection({ locale }: { locale: Locale }) {
   const t = messages[locale].instagram;
+  const [remoteItems, setRemoteItems] = useState<InstagramFeedItem[] | null>(
+    null,
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/instagram-feed.json", { cache: "no-store" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data: unknown) => {
+        if (cancelled || !isInstagramFeedFile(data)) {
+          if (!cancelled) setRemoteItems([]);
+          return;
+        }
+        setRemoteItems(data.items.slice(0, 6));
+      })
+      .catch(() => {
+        if (!cancelled) setRemoteItems([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const showApi = remoteItems !== null && remoteItems.length > 0;
+  const loading = remoteItems === null;
 
   return (
     <section
@@ -122,9 +191,17 @@ export function InstagramSection({ locale }: { locale: Locale }) {
 
           <div className="border-t border-white/10 bg-black/20 p-4 md:p-6">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4">
-              {[1, 2, 3, 4, 5, 6].map((i) => (
-                <IgCell key={i} index={i} />
-              ))}
+              {loading ? (
+                <IgGridLoading />
+              ) : showApi ? (
+                remoteItems!.map((item) => (
+                  <IgCellFromApi key={item.id} item={item} />
+                ))
+              ) : (
+                [1, 2, 3, 4, 5, 6].map((i) => (
+                  <IgCellStatic key={i} index={i} />
+                ))
+              )}
             </div>
           </div>
         </div>
