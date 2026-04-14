@@ -94,6 +94,32 @@ body.reduce-fx .scanlines::after {
   backdrop-filter: blur(12px);
 }
 
+/* Scrollbar em painéis (modal ACH, etc.) — evita trilho branco do sistema */
+.scroll-panel-themed {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--neon-cyan) 50%, transparent)
+    color-mix(in srgb, var(--bg-deep) 85%, transparent);
+}
+
+.scroll-panel-themed::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scroll-panel-themed::-webkit-scrollbar-track {
+  margin: 4px 0;
+  background: color-mix(in srgb, var(--bg-deep) 90%, transparent);
+  border-radius: 9999px;
+}
+
+.scroll-panel-themed::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--neon-cyan) 42%, transparent);
+  border-radius: 9999px;
+}
+
+.scroll-panel-themed::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--neon-magenta) 48%, transparent);
+}
+
 .text-glow-cyan {
   text-shadow: 0 0 24px color-mix(in srgb, var(--neon-cyan) 45%, transparent);
 }

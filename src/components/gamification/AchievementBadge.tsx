@@ -102,7 +102,7 @@ export function AchievementBadge() {
                 </Link>
               </div>
             ) : null}
-            <ul className="max-h-[min(60dvh,440px)] space-y-2 overflow-y-auto p-3 font-mono text-xs">
+            <ul className="scroll-panel-themed max-h-[min(60dvh,440px)] space-y-2 overflow-y-auto overscroll-contain p-3 font-mono text-xs">
               {ACHIEVEMENT_KEYS.map((id) => {
                 const ok = unlocked.has(id);
                 const row = items[id];
