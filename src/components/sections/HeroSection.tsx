@@ -65,7 +65,7 @@ export function HeroSection({ locale }: { locale: Locale }) {
       id="hero"
       className="relative flex min-h-[100dvh] flex-col justify-center px-6 pb-24 pt-32 md:px-16"
     >
-      <div className="mx-auto grid w-full max-w-6xl gap-12 md:grid-cols-[1.55fr_1fr] md:items-center md:gap-x-10 lg:gap-x-14">
+      <div className="mx-auto grid w-full max-w-7xl gap-12 md:grid-cols-[1.72fr_1fr] md:items-center md:gap-x-10 lg:gap-x-16">
         <div>
           <p className="font-mono text-xs uppercase tracking-[0.35em] text-[var(--neon-cyan)]">
             heitor.pelizaro.com.br
@@ -99,7 +99,7 @@ export function HeroSection({ locale }: { locale: Locale }) {
             </MagneticButton>
           </div>
         </div>
-        <div className="relative mx-auto aspect-square w-full max-w-[280px] sm:max-w-[300px] md:mx-0 md:ml-auto md:mr-0 md:w-[min(92vw,280px)] lg:w-[min(92vw,300px)]">
+        <div className="relative mx-auto aspect-square w-full max-w-[280px] sm:max-w-[300px] md:mx-0 md:ml-auto md:w-[min(92vw,270px)] md:-mr-1 lg:w-[min(92vw,288px)] lg:translate-x-3 lg:-mr-3 xl:translate-x-5 xl:-mr-4">
           <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[var(--neon-cyan)]/20 to-[var(--neon-magenta)]/20 blur-2xl" />
           <div
             ref={cardRef}

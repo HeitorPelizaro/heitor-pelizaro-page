@@ -4,7 +4,7 @@ export const messages = {
   pt: {
     metaTitle: "Heitor Pelizaro — DevOps, automação & fullcycle",
     metaDescription:
-      "DevOps na NovaHaus. Infra, CI/CD, Python, cloud e sistemas fullcycle.",
+      "DevOps na NovaHaus. Escalabilidade, segurança e automação no ciclo de desenvolvimento — com foco em diagnosticar e corrigir rápido quando algo falha.",
     nav: {
       hero: "Início",
       skills: "Stack",
@@ -23,7 +23,7 @@ export const messages = {
     hero: {
       role: "DevOps · Fullcycle · IA",
       tagline:
-        "Infra, automação e entrega ponta a ponta. O foco é o que sobe, aguenta carga e tem causa clara quando dá ruim.",
+        "Trago escalabilidade, segurança e automação para o ciclo de desenvolvimento. Quando quebra, o foco é achar rápido e corrigir ainda mais rápido.",
       sub:
         "Ciência da Computação (IFTM). DevOps na NovaHaus; fullcycle quando o projeto exige ir além do pipe.",
       ctaGithub: "GitHub",
@@ -92,7 +92,7 @@ export const messages = {
   en: {
     metaTitle: "Heitor Pelizaro — DevOps, automation & fullcycle",
     metaDescription:
-      "DevOps at NovaHaus. Infra, CI/CD, Python, cloud and fullcycle systems.",
+      "DevOps at NovaHaus. Scalability, security, and automation in the development lifecycle—with fast diagnosis and faster fixes when things break.",
     nav: {
       hero: "Home",
       skills: "Stack",
@@ -111,7 +111,7 @@ export const messages = {
     hero: {
       role: "DevOps · Fullcycle · AI",
       tagline:
-        "Infra, automation, and shipping end to end. I care about what stays up under load and has a clear trail when it fails.",
+        "I bring scalability, security, and automation into the development lifecycle. When something breaks, the focus is to find it fast—and fix it faster.",
       sub:
         "Computer Science (IFTM). DevOps at NovaHaus; fullcycle work when the project needs more than the pipeline.",
       ctaGithub: "GitHub",
