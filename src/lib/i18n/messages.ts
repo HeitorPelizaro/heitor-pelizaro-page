@@ -2,9 +2,9 @@ export type Locale = "pt" | "en";
 
 export const messages = {
   pt: {
-    metaTitle: "Heitor Pelizaro — DevOps, automação & fullcycle",
+    metaTitle: "Heitor Pelizaro · DevOps, automação & fullcycle",
     metaDescription:
-      "DevOps na NovaHaus. Escalabilidade, segurança e automação no ciclo de desenvolvimento — com foco em diagnosticar e corrigir rápido quando algo falha.",
+      "DevOps na NovaHaus. Escalabilidade, segurança e automação no ciclo de desenvolvimento, com foco em diagnosticar e corrigir rápido quando algo falha.",
     nav: {
       hero: "Início",
       skills: "Stack",
@@ -26,7 +26,7 @@ export const messages = {
       tagline:
         "Atuo com foco em escalabilidade, segurança e automação ao longo do ciclo de entrega. Em incidentes, priorizo diagnóstico objetivo e restauração do serviço com o menor impacto possível.",
       sub:
-        "Ciência da Computação (IFTM). DevOps na NovaHaus — com escopo full cycle quando o contexto exige ir além da automação do pipeline.",
+        "Ciência da Computação (IFTM). DevOps na NovaHaus, com escopo full cycle quando o contexto exige ir além da automação do pipeline.",
       ctaGithub: "GitHub",
       ctaEmail: "E-mail",
       themePicker: "Escolher cores de destaque do tema",
@@ -132,9 +132,9 @@ export const messages = {
     },
     glitchLab: {
       flares: [
-        "[SYS] buffer inconsistente — ignorado",
+        "[SYS] buffer inconsistente (ignorado)",
         "GPU: jitter no scanout (simulado)",
-        "heap: suspicious.free() — é pegadinha",
+        "heap: suspicious.free() (pegadinha)",
         "render: OK (na verdade tá bonito)",
         "TCP: pacote fantasma 0xDEAD",
         "WARN: framebuffer drift > 0.5px",
@@ -149,9 +149,9 @@ export const messages = {
     },
   },
   en: {
-    metaTitle: "Heitor Pelizaro — DevOps, automation & fullcycle",
+    metaTitle: "Heitor Pelizaro · DevOps, automation & fullcycle",
     metaDescription:
-      "DevOps at NovaHaus. Scalability, security, and automation in the development lifecycle—with fast diagnosis and faster fixes when things break.",
+      "DevOps at NovaHaus. Scalability, security, and automation in the development lifecycle, with fast diagnosis and faster fixes when things break.",
     nav: {
       hero: "Home",
       skills: "Stack",
@@ -173,7 +173,7 @@ export const messages = {
       tagline:
         "I focus on scalability, security, and automation across the delivery lifecycle. In incidents, I prioritize clear root-cause analysis and restoring service with minimal downtime.",
       sub:
-        "Computer Science (IFTM). DevOps at NovaHaus — with end-to-end ownership when delivery calls for more than CI/CD automation.",
+        "Computer Science (IFTM). DevOps at NovaHaus, with end-to-end ownership when delivery calls for more than CI/CD automation.",
       ctaGithub: "GitHub",
       ctaEmail: "Email",
       themePicker: "Choose accent theme colors",
@@ -207,7 +207,7 @@ export const messages = {
       title: "Lab",
       subtitle: "Content (under construction)",
       body:
-        "I'll use this section for articles, talks, and case studies. No filler for now—when something goes live, it'll be because it's worth your time.",
+        "I'll use this section for articles, talks, and case studies. No filler for now. When something goes live, it'll be because it's worth your time.",
       soon: "Coming soon",
     },
     contact: {
@@ -279,9 +279,9 @@ export const messages = {
     },
     glitchLab: {
       flares: [
-        "[SYS] buffer inconsistent — ignored",
+        "[SYS] buffer inconsistent (ignored)",
         "GPU: scanout jitter (simulated)",
-        "heap: suspicious.free() — joke",
+        "heap: suspicious.free() (joke)",
         "render: OK (actually looks fine)",
         "TCP: ghost packet 0xDEAD",
         "WARN: framebuffer drift > 0.5px",

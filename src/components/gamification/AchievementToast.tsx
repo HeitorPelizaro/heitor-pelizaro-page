@@ -46,7 +46,7 @@ export function AchievementToast() {
       <p className="mt-1 text-[var(--neon-amber)]">
         {row.name}{" "}
         <span className="text-[var(--text-muted)]">
-          — {t.achievements.unlocked}
+          ({t.achievements.unlocked})
         </span>
       </p>
     </div>

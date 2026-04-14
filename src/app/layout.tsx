@@ -19,7 +19,7 @@ const jetbrains = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Heitor Pelizaro — DevOps & fullcycle",
+    default: "Heitor Pelizaro · DevOps & fullcycle",
     template: "%s · Heitor Pelizaro",
   },
   description:
@@ -30,14 +30,14 @@ export const metadata: Metadata = {
     locale: "pt_BR",
     url: SITE_URL,
     siteName: "Heitor Pelizaro",
-    title: "Heitor Pelizaro — DevOps & fullcycle",
+    title: "Heitor Pelizaro · DevOps & fullcycle",
     description:
       "DevOps na NovaHaus. Infra, CI/CD, Python, cloud e sistemas fullcycle.",
     images: [{ url: "/og.png", alt: "Heitor Pelizaro" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Heitor Pelizaro — DevOps & fullcycle",
+    title: "Heitor Pelizaro · DevOps & fullcycle",
     description:
       "Infra, automação, IA e sistemas fullcycle.",
     images: ["/og.png"],

@@ -19,7 +19,7 @@ export function JsonLd({ locale }: { locale: Locale }) {
     jobTitle: m.jsonLd.jobTitle,
     alumniOf: {
       "@type": "CollegeOrUniversity",
-      name: "IFTM — Ciência da Computação",
+      name: "IFTM, Ciência da Computação",
     },
     sameAs,
   };
