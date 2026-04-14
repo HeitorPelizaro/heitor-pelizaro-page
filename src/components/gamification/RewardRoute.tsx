@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { ACHIEVEMENT_KEYS, loadUnlocked } from "@/lib/achievements";
 import { messages, type Locale } from "@/lib/i18n/messages";
 import { RewardFireworks } from "@/components/gamification/RewardFireworks";
+import { useGlitchLab } from "@/context/GlitchLabThemeContext";
 
 export function RewardRoute({ locale }: { locale: Locale }) {
   const t = messages[locale];
@@ -12,6 +13,8 @@ export function RewardRoute({ locale }: { locale: Locale }) {
   const homeHref = locale === "en" ? "/en/" : "/";
   const [allowed, setAllowed] = useState<boolean | null>(null);
   const [reduceMotion, setReduceMotion] = useState(false);
+  const { unlocked: glitchUnlocked, hydrated: glitchHydrated, unlockLabTheme } =
+    useGlitchLab();
 
   useEffect(() => {
     setAllowed(loadUnlocked().size >= ACHIEVEMENT_KEYS.length);
@@ -74,6 +77,23 @@ export function RewardRoute({ locale }: { locale: Locale }) {
             {r.prizeFoot}
           </p>
         </div>
+
+        {glitchHydrated ? (
+          glitchUnlocked ? (
+            <p className="mt-8 max-w-md text-center text-[11px] leading-relaxed text-[var(--neon-amber)]">
+              {r.glitchAlreadyUnlocked}{" "}
+              <span className="text-[var(--text-muted)]">{r.glitchUnlockedHint}</span>
+            </p>
+          ) : (
+            <button
+              type="button"
+              onClick={() => unlockLabTheme()}
+              className="mt-8 rounded-xl border border-[var(--neon-magenta)]/50 bg-[var(--neon-magenta)]/10 px-6 py-3 font-mono text-xs uppercase tracking-wider text-[var(--neon-cyan)] shadow-[0_0_24px_rgba(255,45,106,0.2)] transition hover:border-[var(--neon-cyan)]/60 hover:bg-[var(--neon-cyan)]/10 hover:text-[var(--text-primary)]"
+            >
+              {r.unlockGlitch}
+            </button>
+          )
+        ) : null}
 
         <Link
           href={homeHref}

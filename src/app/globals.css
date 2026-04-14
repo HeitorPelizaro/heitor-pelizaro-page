@@ -101,3 +101,106 @@ body.reduce-fx .scanlines::after {
 .text-glow-magenta {
   text-shadow: 0 0 20px color-mix(in srgb, var(--neon-magenta) 40%, transparent);
 }
+
+/* --- Tema glitch exclusivo (lab 100%) --- */
+html.glitch-lab-active {
+  --glitch-cyan: #5dffe8;
+  --glitch-magenta: #ff5a9d;
+}
+
+html.glitch-lab-active body {
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--neon-cyan) 22%, transparent),
+    inset 0 0 80px color-mix(in srgb, var(--neon-magenta) 8%, transparent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html.glitch-lab-active:not(.glitch-lab-reduced) body {
+    animation: glitch-body-flicker 5.2s steps(2, end) infinite;
+  }
+
+  html.glitch-lab-active:not(.glitch-lab-reduced) .scanlines::after {
+    opacity: 0.62;
+    animation: glitch-scan-jitter 0.45s steps(2) infinite;
+  }
+
+  html.glitch-lab-active:not(.glitch-lab-reduced) main {
+    animation: glitch-hue-drift 7s ease-in-out infinite;
+  }
+}
+
+html.glitch-lab-active .panel-glass {
+  border-color: color-mix(in srgb, var(--neon-magenta) 45%, transparent);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--neon-cyan) 18%, transparent),
+    0 0 28px color-mix(in srgb, var(--neon-magenta) 14%, transparent),
+    0 0 48px color-mix(in srgb, var(--neon-cyan) 8%, transparent);
+}
+
+html.glitch-lab-active h1,
+html.glitch-lab-active h2 {
+  text-shadow:
+    1.5px 0 color-mix(in srgb, var(--neon-cyan) 70%, transparent),
+    -1.5px 0 color-mix(in srgb, var(--neon-magenta) 65%, transparent),
+    0 0 18px color-mix(in srgb, var(--neon-cyan) 35%, transparent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html.glitch-lab-active:not(.glitch-lab-reduced) h1,
+  html.glitch-lab-active:not(.glitch-lab-reduced) h2 {
+    animation: glitch-chroma-nudge 3.2s ease-in-out infinite;
+  }
+}
+
+html.glitch-lab-reduced .scanlines::after {
+  opacity: 0.48;
+}
+
+@keyframes glitch-body-flicker {
+  0%,
+  94%,
+  100% {
+    filter: brightness(1);
+  }
+  95% {
+    filter: brightness(1.04) contrast(1.03);
+  }
+  97% {
+    filter: brightness(0.97) contrast(1.06);
+  }
+}
+
+@keyframes glitch-scan-jitter {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translateY(1px);
+    opacity: 0.68;
+  }
+}
+
+@keyframes glitch-hue-drift {
+  0%,
+  100% {
+    filter: hue-rotate(0deg) saturate(1.05);
+  }
+  50% {
+    filter: hue-rotate(18deg) saturate(1.12);
+  }
+}
+
+@keyframes glitch-chroma-nudge {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  33% {
+    transform: translateX(0.4px);
+  }
+  66% {
+    transform: translateX(-0.35px);
+  }
+}

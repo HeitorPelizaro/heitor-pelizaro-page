@@ -18,6 +18,7 @@ export const messages = {
       perf: "Performance",
       motion: "Reduzir movimento",
       lang: "Idioma",
+      glitch: "Glitch",
     },
     hero: {
       role: "DevOps · Fullcycle · IA",
@@ -71,10 +72,12 @@ export const messages = {
       unlocked: "desbloqueada",
       close: "Fechar",
       lockedLabel: "Bloqueada",
+      exclusiveThemeHint:
+        "Conclui todas as conquistas para desbloquear um tema visual exclusivo na página (modo glitch), ativável no painel superior.",
       allCompleteTitle: "Parabéns!",
       allCompleteBody:
-        "Desbloqueaste todas as conquistas. Clica abaixo para receber a tua recompensa.",
-      allCompleteCta: "Receber recompensa",
+        "Desbloqueaste todas as conquistas. Vais à celebração; lá desbloqueias o tema glitch e depois podes ligá-lo ou desligá-lo no HUD.",
+      allCompleteCta: "Ir à celebração",
       items: {
         a11y_motion: {
           name: "Modo acessível",
@@ -122,6 +125,10 @@ export const messages = {
         "Certifico que completaste o percurso curioso deste site. O troféu físico não existe; o troféu emocional é a curiosidade satisfeita e o direito de dizeres que viste isto até ao fim.",
       prizeFoot:
         "Quando tiveres uma recompensa real (sticker, código, PDF, vídeo), substitui este parágrafo no código ou diz-me o que queres aqui.",
+      unlockGlitch: "Desbloquear tema glitch exclusivo",
+      glitchUnlockedHint:
+        "Tema desbloqueado. Liga ou desliga quando quiseres no painel superior (interruptor «Glitch»).",
+      glitchAlreadyUnlocked: "O tema glitch já está desbloqueado neste browser.",
       backHome: "Voltar ao início",
     },
     footer: {
@@ -148,6 +155,7 @@ export const messages = {
       perf: "Performance",
       motion: "Reduce motion",
       lang: "Language",
+      glitch: "Glitch",
     },
     hero: {
       role: "DevOps · Fullcycle · AI",
@@ -201,10 +209,12 @@ export const messages = {
       unlocked: "unlocked",
       close: "Close",
       lockedLabel: "Locked",
+      exclusiveThemeHint:
+        "Complete every achievement to unlock an exclusive visual theme on this site (glitch mode), available from the top panel.",
       allCompleteTitle: "Congratulations!",
       allCompleteBody:
-        "You've unlocked every achievement. Click below to claim your reward.",
-      allCompleteCta: "Claim reward",
+        "You've unlocked every achievement. Head to the celebration page to unlock the glitch theme, then toggle it anytime in the HUD.",
+      allCompleteCta: "Go to celebration",
       items: {
         a11y_motion: {
           name: "Accessible mode",
@@ -252,6 +262,10 @@ export const messages = {
         "I hereby certify you finished the curious path of this site. There is no physical trophy; the emotional trophy is satisfied curiosity and the right to say you saw this through.",
       prizeFoot:
         "When you have a real reward (sticker, code, PDF, video), swap this paragraph in the code or tell me what you want here.",
+      unlockGlitch: "Unlock exclusive glitch theme",
+      glitchUnlockedHint:
+        "Theme unlocked. Toggle it anytime from the top bar (Glitch switch).",
+      glitchAlreadyUnlocked: "The glitch theme is already unlocked in this browser.",
       backHome: "Back to home",
     },
     footer: {

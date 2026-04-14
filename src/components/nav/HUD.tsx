@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { messages, type Locale } from "@/lib/i18n/messages";
 import { useAppSettings } from "@/context/AppSettingsContext";
+import { useGlitchLab } from "@/context/GlitchLabThemeContext";
 
 const sections = [
   { id: "hero", key: "hero" as const },
@@ -25,6 +26,8 @@ export function HUD() {
     effectiveReduceMotion,
     onAchievement,
   } = useAppSettings();
+  const { unlocked: glitchUnlocked, enabled: glitchOn, setGlitchEnabled, hydrated: glitchHydrated } =
+    useGlitchLab();
   const t = messages[locale];
 
   return (
@@ -96,6 +99,20 @@ export function HUD() {
           />
           {t.hud.motion}
         </label>
+        {glitchHydrated && glitchUnlocked ? (
+          <label
+            className="flex cursor-pointer items-center gap-2 font-mono text-[10px] text-[var(--neon-amber)]"
+            title={locale === "pt" ? "Tema exclusivo do lab 100%" : "Exclusive lab-100% theme"}
+          >
+            <input
+              type="checkbox"
+              checked={glitchOn}
+              onChange={(e) => setGlitchEnabled(e.target.checked)}
+              className="accent-[var(--neon-amber)]"
+            />
+            {t.hud.glitch}
+          </label>
+        ) : null}
       </div>
     </header>
   );

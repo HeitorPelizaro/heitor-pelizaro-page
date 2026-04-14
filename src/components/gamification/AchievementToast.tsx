@@ -1,9 +1,15 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { ACHIEVEMENT_KEYS, loadUnlocked } from "@/lib/achievements";
 import { messages } from "@/lib/i18n/messages";
 import { useAppSettings } from "@/context/AppSettingsContext";
+
+const CELEBRATE_REDIRECT_KEY = "heitor_lab_celebrate_redirect_v1";
+
 export function AchievementToast() {
+  const router = useRouter();
   const { locale, lastAchievement, clearLastAchievement } = useAppSettings();
   const t = messages[locale];
 
@@ -12,6 +18,18 @@ export function AchievementToast() {
     const tmr = window.setTimeout(clearLastAchievement, 4200);
     return () => clearTimeout(tmr);
   }, [lastAchievement, clearLastAchievement]);
+
+  useEffect(() => {
+    if (!lastAchievement) return;
+    if (loadUnlocked().size < ACHIEVEMENT_KEYS.length) return;
+    const path = locale === "en" ? "/en/recompensa" : "/recompensa";
+    const tmr = window.setTimeout(() => {
+      if (sessionStorage.getItem(CELEBRATE_REDIRECT_KEY)) return;
+      sessionStorage.setItem(CELEBRATE_REDIRECT_KEY, "1");
+      router.replace(path);
+    }, 1600);
+    return () => clearTimeout(tmr);
+  }, [lastAchievement, locale, router]);
 
   if (!lastAchievement) return null;
   const row = t.achievements.items[lastAchievement];

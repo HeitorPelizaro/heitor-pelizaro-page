@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Orbitron, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { ClientLabProviders } from "@/components/ClientLabProviders";
 import { SITE_URL } from "@/lib/site";
 
 const orbitron = Orbitron({
@@ -61,7 +62,7 @@ export default function RootLayout({
       <body
         className={`${orbitron.variable} ${jetbrains.variable} font-sans antialiased`}
       >
-        {children}
+        <ClientLabProviders>{children}</ClientLabProviders>
       </body>
     </html>
   );
