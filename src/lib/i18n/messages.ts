@@ -71,10 +71,10 @@ export const messages = {
       unlocked: "desbloqueada",
       close: "Fechar",
       lockedLabel: "Bloqueada",
-      allCompleteTitle: "Laboratório 100%",
+      allCompleteTitle: "Parabéns!",
       allCompleteBody:
-        "Recompensa: envia um e-mail para {{email}} com o assunto LABMASTER. Leio com prioridade e respondo com algo útil (mesmo que seja um não com contexto).",
-      allCompleteCta: "Abrir e-mail",
+        "Desbloqueaste todas as conquistas. Clica abaixo para receber a tua recompensa.",
+      allCompleteCta: "Receber recompensa",
       items: {
         a11y_motion: {
           name: "Modo acessível",
@@ -105,6 +105,24 @@ export const messages = {
           desc: "Existe um comando secreto neste site. Consegues descobrir qual é?",
         },
       },
+    },
+    reward: {
+      metaTitle: "Recompensa",
+      loading: "A carregar…",
+      gateTitle: "Acesso negado (de brincadeira)",
+      gateBody:
+        "Esta sala só abre com 100% das conquistas no ACH. Volta ao site, desbloqueia o que falta e tenta outra vez.",
+      gateCta: "Voltar ao início",
+      fireworksEyebrow: "Modo festa",
+      fireworksTitle: "Boom. Parabéns.",
+      fireworksSub:
+        "Fogos de artifício virtuais: zero ruído para os vizinhos, 100% de poluição luminosa no ecrã.",
+      prizeTitle: "O teu prémio oficial",
+      prizeBody:
+        "Certifico que completaste o percurso curioso deste site. O troféu físico não existe; o troféu emocional é a curiosidade satisfeita e o direito de dizeres que viste isto até ao fim.",
+      prizeFoot:
+        "Quando tiveres uma recompensa real (sticker, código, PDF, vídeo), substitui este parágrafo no código ou diz-me o que queres aqui.",
+      backHome: "Voltar ao início",
     },
     footer: {
       copy: "Heitor Cunha Pelizaro · IFTM · Ciência da Computação",
@@ -183,10 +201,10 @@ export const messages = {
       unlocked: "unlocked",
       close: "Close",
       lockedLabel: "Locked",
-      allCompleteTitle: "Lab 100%",
+      allCompleteTitle: "Congratulations!",
       allCompleteBody:
-        "Reward: email {{email}} with subject line LABMASTER. I read it with priority and reply with something genuinely useful (even if it's a no—with context).",
-      allCompleteCta: "Open email",
+        "You've unlocked every achievement. Click below to claim your reward.",
+      allCompleteCta: "Claim reward",
       items: {
         a11y_motion: {
           name: "Accessible mode",
@@ -217,6 +235,24 @@ export const messages = {
           desc: "There's a secret command on this site. Can you figure out what it is?",
         },
       },
+    },
+    reward: {
+      metaTitle: "Reward",
+      loading: "Loading…",
+      gateTitle: "Not yet (playful lock)",
+      gateBody:
+        "This room only opens with 100% of achievements on ACH. Go back, unlock what's missing, and try again.",
+      gateCta: "Back to home",
+      fireworksEyebrow: "Party mode",
+      fireworksTitle: "Boom. Well done.",
+      fireworksSub:
+        "Virtual fireworks: no noise for the neighbors, maximum glow on your screen.",
+      prizeTitle: "Your official prize",
+      prizeBody:
+        "I hereby certify you finished the curious path of this site. There is no physical trophy; the emotional trophy is satisfied curiosity and the right to say you saw this through.",
+      prizeFoot:
+        "When you have a real reward (sticker, code, PDF, video), swap this paragraph in the code or tell me what you want here.",
+      backHome: "Back to home",
     },
     footer: {
       copy: "Heitor Cunha Pelizaro · IFTM · Computer Science",

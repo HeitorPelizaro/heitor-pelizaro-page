@@ -1,15 +1,16 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { ACHIEVEMENT_KEYS, loadUnlocked, type AchievementId } from "@/lib/achievements";
 import { messages } from "@/lib/i18n/messages";
-import { EMAIL } from "@/lib/site";
 import { useAppSettings } from "@/context/AppSettingsContext";
 
 export function AchievementBadge() {
   const { locale, lastAchievement } = useAppSettings();
   const t = messages[locale];
   const items = t.achievements.items;
+  const rewardHref = locale === "en" ? "/en/recompensa" : "/recompensa";
   const [open, setOpen] = useState(false);
   const [count, setCount] = useState(0);
   const [unlocked, setUnlocked] = useState<Set<AchievementId>>(new Set());
@@ -87,14 +88,15 @@ export function AchievementBadge() {
                   {t.achievements.allCompleteTitle}
                 </p>
                 <p className="mt-2 text-[10px] leading-relaxed text-[var(--text-muted)]">
-                  {t.achievements.allCompleteBody.replace(/\{\{email\}\}/g, EMAIL)}
+                  {t.achievements.allCompleteBody}
                 </p>
-                <a
-                  href={`mailto:${EMAIL}?subject=${encodeURIComponent("LABMASTER")}`}
+                <Link
+                  href={rewardHref}
+                  onClick={() => setOpen(false)}
                   className="mt-3 inline-block rounded-lg border border-[var(--neon-cyan)]/40 px-3 py-2 font-mono text-[10px] text-[var(--neon-cyan)] transition hover:border-[var(--neon-magenta)]/50 hover:text-[var(--text-primary)]"
                 >
                   {t.achievements.allCompleteCta}
-                </a>
+                </Link>
               </div>
             ) : null}
             <ul className="max-h-[min(60dvh,440px)] space-y-2 overflow-y-auto p-3 font-mono text-xs">
