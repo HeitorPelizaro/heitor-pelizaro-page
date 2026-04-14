@@ -16,8 +16,9 @@ export function GlitchInteractiveLayer() {
   const [flare, setFlare] = useState<string | null>(null);
   const raf = useRef<number>(0);
   const last = useRef({ x: -1, y: -1 });
-  const flareTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const loopTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  /** IDs de timer no browser são `number`; evita colisão NodeJS.Timeout vs DOM no `next build`. */
+  const flareTimerRef = useRef<number | null>(null);
+  const loopTimerRef = useRef<number | null>(null);
 
   const onMouseMove = useCallback((e: MouseEvent) => {
     const dx = Math.abs(e.clientX - last.current.x);
