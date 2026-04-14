@@ -17,12 +17,16 @@ function pointerToHue(clientX: number, clientY: number, el: HTMLElement) {
   return ((rad * 180) / Math.PI + 90 + 360) % 360;
 }
 
-/** Geometria alinhada ao antigo SVG: anel ~r=78±1.5 num quadrado 200. */
+/**
+ * Anel visual: div 79% de L; máscara radial ~58%–77% do raio desse div.
+ * Hit-test alinhado + margem extra para clicar/arrastar com mais folga.
+ */
 function ringMetrics(el: HTMLElement) {
   const r = el.getBoundingClientRect();
   const L = Math.min(r.width, r.height);
-  const innerR = 0.375 * L;
-  const outerR = 0.402 * L;
+  const half = (L * 0.79) / 2;
+  const innerR = half * 0.52;
+  const outerR = half * 0.82;
   return { r, innerR, outerR };
 }
 
@@ -100,13 +104,12 @@ export function HeroSection({ locale }: { locale: Locale }) {
           </div>
         </div>
         <div className="relative mx-auto aspect-square w-full max-w-[280px] sm:max-w-[300px] md:mx-0 md:ml-auto md:w-[min(92vw,270px)] md:-mr-1 lg:w-[min(92vw,288px)] lg:translate-x-3 lg:-mr-3 xl:translate-x-5 xl:-mr-4">
-          <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[var(--neon-cyan)]/20 to-[var(--neon-magenta)]/20 blur-2xl" />
           <div
             ref={cardRef}
             role="group"
             aria-label={t.themePicker}
             aria-describedby="hero-theme-hint"
-            className="panel-glass relative aspect-square w-full overflow-hidden rounded-2xl border-2 border-[var(--border-glow)] outline-none ring-offset-2 ring-offset-[var(--bg-deep)] focus-visible:ring-2 focus-visible:ring-[var(--neon-cyan)]"
+            className="relative aspect-square w-full bg-transparent outline-none focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--neon-cyan)]"
             tabIndex={0}
             onPointerDown={(e) => {
               const el = cardRef.current;
@@ -120,6 +123,7 @@ export function HeroSection({ locale }: { locale: Locale }) {
               const el = cardRef.current;
               if (!el || !ringDrag.current) return;
               if (!e.currentTarget.hasPointerCapture(e.pointerId)) return;
+              /* Com captura ativa, continua a mudar o tema fora do anel (UX de roda) */
               applyFromPointer(e.clientX, e.clientY, el);
             }}
             onPointerUp={(e) => {

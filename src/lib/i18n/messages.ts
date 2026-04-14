@@ -32,7 +32,7 @@ export const messages = {
       themeWheelHint: "Arraste na roda para ajustar o matiz",
       themeReset: "Repor padrão",
       themeRingHint:
-        "Anel ao redor do H: clique ou arraste na cor para definir o tema.",
+        "Anel colorido: clique ou arraste na cor. Com o botão premido, o arraste segue válido um pouco fora do anel.",
       themeSimpleHint: "Modo reduzido: use Repor padrão abaixo.",
     },
     skills: {
@@ -120,7 +120,7 @@ export const messages = {
       themeWheelHint: "Drag on the wheel to adjust hue",
       themeReset: "Restore default",
       themeRingHint:
-        "Ring around H: click or drag a color to set the theme.",
+        "Color ring: click or drag on the hue. While held, dragging still works slightly outside the ring.",
       themeSimpleHint: "Reduced mode: use Restore default below.",
     },
     skills: {

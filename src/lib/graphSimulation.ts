@@ -1,6 +1,6 @@
 /**
- * Física do grafo de fundo: molas, repulsão (grade espacial), teia dinâmica
- * (arestas rompem por stretch e reconectam por proximidade).
+ * Física do grafo de fundo: molas, repulsão (grade espacial), teia dinâmica.
+ * Arestas rompem por esticamento, pelo rato “cortando” o fio, e religam por proximidade.
  */
 
 export type GraphNode = {
@@ -20,7 +20,6 @@ export type GraphEdge = {
   a: number;
   b: number;
   restLength: number;
-  /** Rompe se dist > restLength * maxStretch */
   maxStretch: number;
 };
 
@@ -30,16 +29,36 @@ export type GraphState = {
   cx: number;
   cy: number;
   frame: number;
-  /** Par (a,b) não reconecta até este frame (evita flicker após rutura) */
   pairCooldownUntil: Map<string, number>;
 };
 
 const SPATIAL_CELL = 130;
-/** Frames antes de permitir nova aresta no mesmo par após rutura */
 const PAIR_COOLDOWN_FRAMES = 84;
+const PAIR_COOLDOWN_MOUSE = 32;
 const SWAY_TIME = 0.0165;
 const SWAY_AMP = 4.8;
 const SWAY_BLEND = 0.085;
+
+/** Distância do ponto ao segmento AB (px). */
+function distPointToSegment(
+  px: number,
+  py: number,
+  ax: number,
+  ay: number,
+  bx: number,
+  by: number,
+): number {
+  const abx = bx - ax;
+  const aby = by - ay;
+  const apx = px - ax;
+  const apy = py - ay;
+  const ab2 = abx * abx + aby * aby || 1;
+  let t = (apx * abx + apy * aby) / ab2;
+  t = Math.max(0, Math.min(1, t));
+  const qx = ax + t * abx;
+  const qy = ay + t * aby;
+  return Math.hypot(px - qx, py - qy);
+}
 
 function edgeKey(a: number, b: number): string {
   return a < b ? `${a},${b}` : `${b},${a}`;
@@ -59,6 +78,26 @@ function degreeCount(n: number, edges: GraphEdge[]): Int32Array {
     d[e.b]++;
   }
   return d;
+}
+
+function buildBuckets(
+  nodes: GraphNode[],
+  n: number,
+  cell: number,
+): Map<string, number[]> {
+  const buckets = new Map<string, number[]>();
+  for (let i = 0; i < n; i++) {
+    const xi = Math.floor(nodes[i].x / cell);
+    const yi = Math.floor(nodes[i].y / cell);
+    const key = `${xi},${yi}`;
+    let arr = buckets.get(key);
+    if (!arr) {
+      arr = [];
+      buckets.set(key, arr);
+    }
+    arr.push(i);
+  }
+  return buckets;
 }
 
 export function createGraph(nNodes: number, w: number, h: number): GraphState {
@@ -131,7 +170,14 @@ export function createGraph(nNodes: number, w: number, h: number): GraphState {
 export type StepParams = {
   w: number;
   h: number;
-  mouse: { x: number; y: number; active: boolean };
+  mouse: {
+    x: number;
+    y: number;
+    active: boolean;
+    /** Deslocamento desde o frame anterior (px) — para “cortar” fios */
+    vx: number;
+    vy: number;
+  };
   performanceMode: boolean;
 };
 
@@ -139,6 +185,60 @@ function pruneCooldowns(map: Map<string, number>, frame: number) {
   if (frame % 240 !== 0) return;
   for (const [k, until] of map) {
     if (until < frame) map.delete(k);
+  }
+}
+
+/** Tenta religar pares próximos sem aresta (vizinhança espacial). */
+function snapProximityEdges(
+  state: GraphState,
+  f: number,
+  pairCooldownUntil: Map<string, number>,
+  snapR: number,
+  maxDeg: number,
+  performanceMode: boolean,
+  maxNewPerFrame: number,
+): void {
+  const { nodes, edges } = state;
+  const n = nodes.length;
+  const cell = SPATIAL_CELL;
+  const buckets = buildBuckets(nodes, n, cell);
+  const deg = degreeCount(n, edges);
+  let added = 0;
+
+  outer: for (let i = 0; i < n; i++) {
+    if (deg[i] >= maxDeg) continue;
+    const xi = Math.floor(nodes[i].x / cell);
+    const yi = Math.floor(nodes[i].y / cell);
+    for (let ox = -1; ox <= 1; ox++) {
+      for (let oy = -1; oy <= 1; oy++) {
+        const list = buckets.get(`${xi + ox},${yi + oy}`);
+        if (!list) continue;
+        for (const j of list) {
+          if (j <= i) continue;
+          if (deg[j] >= maxDeg) continue;
+          const k = edgeKey(i, j);
+          if (hasEdge(edges, i, j)) continue;
+          if ((pairCooldownUntil.get(k) ?? 0) > f) continue;
+          const dx = nodes[j].x - nodes[i].x;
+          const dy = nodes[j].y - nodes[i].y;
+          const d = Math.sqrt(dx * dx + dy * dy);
+          const minD = performanceMode ? 14 : 12;
+          if (d < snapR && d > minD) {
+            edges.push({
+              a: i,
+              b: j,
+              restLength: d * 0.82,
+              maxStretch: 1.9 + Math.random() * 0.36,
+            });
+            pairCooldownUntil.delete(k);
+            deg[i]++;
+            deg[j]++;
+            added++;
+            if (added >= maxNewPerFrame) break outer;
+          }
+        }
+      }
+    }
   }
 }
 
@@ -158,21 +258,16 @@ export function stepGraph(state: GraphState, p: StepParams): void {
   const damping = p.performanceMode ? 0.92 : 0.93;
   const attractR = p.performanceMode ? 100 : 165;
 
+  const mx = p.mouse.x;
+  const my = p.mouse.y;
+  const mvx = p.mouse.active ? p.mouse.vx : 0;
+  const mvy = p.mouse.active ? p.mouse.vy : 0;
+  const mouseSpeedSq = mvx * mvx + mvy * mvy;
+
   pruneCooldowns(pairCooldownUntil, f);
 
   const cell = SPATIAL_CELL;
-  const buckets = new Map<string, number[]>();
-  for (let i = 0; i < n; i++) {
-    const xi = Math.floor(nodes[i].x / cell);
-    const yi = Math.floor(nodes[i].y / cell);
-    const key = `${xi},${yi}`;
-    let arr = buckets.get(key);
-    if (!arr) {
-      arr = [];
-      buckets.set(key, arr);
-    }
-    arr.push(i);
-  }
+  const buckets = buildBuckets(nodes, n, cell);
 
   for (let i = 0; i < n; i++) {
     const xi = Math.floor(nodes[i].x / cell);
@@ -208,10 +303,7 @@ export function stepGraph(state: GraphState, p: StepParams): void {
     const dy = B.y - A.y;
     const dist = Math.sqrt(dx * dx + dy * dy) || 1;
     if (dist > e.restLength * e.maxStretch) {
-      pairCooldownUntil.set(
-        edgeKey(e.a, e.b),
-        f + PAIR_COOLDOWN_FRAMES,
-      );
+      pairCooldownUntil.set(edgeKey(e.a, e.b), f + PAIR_COOLDOWN_FRAMES);
       edges.splice(ei, 1);
       continue;
     }
@@ -222,6 +314,29 @@ export function stepGraph(state: GraphState, p: StepParams): void {
     A.vy += fy;
     B.vx -= fx;
     B.vy -= fy;
+  }
+
+  if (p.mouse.active) {
+    const sliceDist = p.performanceMode ? 18 : 24;
+    const speedCut = p.performanceMode ? 2.5 : 2.0;
+    const speedCutSq = speedCut * speedCut;
+    const hardDist = 11;
+    for (let ei = edges.length - 1; ei >= 0; ei--) {
+      const e = edges[ei];
+      const A = nodes[e.a];
+      const B = nodes[e.b];
+      const dSeg = distPointToSegment(mx, my, A.x, A.y, B.x, B.y);
+      const cutBySpeed =
+        dSeg < sliceDist && mouseSpeedSq > speedCutSq;
+      const cutByCross = dSeg < hardDist && mouseSpeedSq > 0.35;
+      if (cutBySpeed || cutByCross) {
+        pairCooldownUntil.set(
+          edgeKey(e.a, e.b),
+          f + PAIR_COOLDOWN_MOUSE,
+        );
+        edges.splice(ei, 1);
+      }
+    }
   }
 
   const t = f * SWAY_TIME;
@@ -237,8 +352,6 @@ export function stepGraph(state: GraphState, p: StepParams): void {
   }
 
   if (p.mouse.active) {
-    const mx = p.mouse.x;
-    const my = p.mouse.y;
     const outer = attractR * 2.25;
     for (const node of nodes) {
       if (node.pinned) continue;
@@ -277,11 +390,21 @@ export function stepGraph(state: GraphState, p: StepParams): void {
     }
   }
 
+  snapProximityEdges(
+    state,
+    f,
+    pairCooldownUntil,
+    p.performanceMode ? 46 : 52,
+    7,
+    p.performanceMode,
+    p.performanceMode ? 4 : 8,
+  );
+
   if (f % 18 === 0) {
     const deg = degreeCount(n, edges);
     const maxDeg = 6;
-    const relinkR = 95;
-    const attempts = p.performanceMode ? 10 : 22;
+    const relinkR = 98;
+    const attempts = p.performanceMode ? 10 : 18;
     const seen = new Set<string>();
     for (let attempt = 0; attempt < attempts; attempt++) {
       const i = 1 + Math.floor(Math.random() * (n - 1));
@@ -310,7 +433,8 @@ export function stepGraph(state: GraphState, p: StepParams): void {
     }
   }
 
-  if (edges.length < n) {
+  const minEdges = Math.max(10, Math.floor(n * 0.32));
+  if (edges.length < minEdges) {
     for (let i = 0; i < n; i++) {
       const j = (i + 1) % n;
       const k = edgeKey(i, j);

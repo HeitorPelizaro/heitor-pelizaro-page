@@ -41,14 +41,18 @@ function toWorldY(y: number, h: number) {
   return -(y - h / 2);
 }
 
+type GraphMouseRef = {
+  x: number;
+  y: number;
+  active: boolean;
+  vx: number;
+  vy: number;
+};
+
 type GraphSceneProps = {
   performanceMode: boolean;
   dims: { w: number; h: number };
-  mouseRef: MutableRefObject<{
-    x: number;
-    y: number;
-    active: boolean;
-  }>;
+  mouseRef: MutableRefObject<GraphMouseRef>;
 };
 
 function GraphScene({
@@ -60,6 +64,8 @@ function GraphScene({
   const lineMatRef = useRef<THREE.LineBasicMaterial>(null);
   const pointsMatRef = useRef<THREE.PointsMaterial>(null);
   const colorTick = useRef(0);
+  const prevMouse = useRef({ x: 0, y: 0 });
+  const mouseVelReady = useRef(false);
 
   const lineGeo = useMemo(() => {
     const g = new THREE.BufferGeometry();
@@ -125,10 +131,33 @@ function GraphScene({
     const { w, h } = dims;
     if (!graph || w < 16 || h < 16) return;
 
+    const m = mouseRef.current;
+    if (m.active) {
+      if (!mouseVelReady.current) {
+        prevMouse.current = { x: m.x, y: m.y };
+        mouseVelReady.current = true;
+        m.vx = 0;
+        m.vy = 0;
+      } else {
+        let dx = m.x - prevMouse.current.x;
+        let dy = m.y - prevMouse.current.y;
+        const cap = 72;
+        dx = Math.max(-cap, Math.min(cap, dx));
+        dy = Math.max(-cap, Math.min(cap, dy));
+        m.vx = dx;
+        m.vy = dy;
+        prevMouse.current = { x: m.x, y: m.y };
+      }
+    } else {
+      mouseVelReady.current = false;
+      m.vx = 0;
+      m.vy = 0;
+    }
+
     stepGraph(graph, {
       w,
       h,
-      mouse: mouseRef.current,
+      mouse: m,
       performanceMode,
     });
 
@@ -195,7 +224,13 @@ function GraphScene({
 
 export function GraphWebGL() {
   const { performanceMode, effectiveReduceMotion } = useAppSettings();
-  const mouseRef = useRef({ x: 0, y: 0, active: false });
+  const mouseRef = useRef<GraphMouseRef>({
+    x: 0,
+    y: 0,
+    active: false,
+    vx: 0,
+    vy: 0,
+  });
   const [dims, setDims] = useState(() => ({
     w: typeof window !== "undefined" ? window.innerWidth : 1200,
     h: typeof window !== "undefined" ? window.innerHeight : 800,
