@@ -97,36 +97,27 @@ export function HeroSection({ locale }: { locale: Locale }) {
             onPointerDown={(e) => {
               const el = cardRef.current;
               if (!el || simpleThemeUi) return;
+              if (ringDrag.current) return;
               if (!isInRing(e.clientX, e.clientY)) return;
               ringDrag.current = true;
-              e.preventDefault();
-              e.currentTarget.setPointerCapture(e.pointerId);
-              applyFromPointer(e.clientX, e.clientY, el);
-            }}
-            onPointerMove={(e) => {
-              const el = cardRef.current;
-              if (!el || !ringDrag.current) return;
-              if (!e.currentTarget.hasPointerCapture(e.pointerId)) return;
-              /* Com captura ativa, continua a mudar o tema fora do anel (UX de roda) */
-              applyFromPointer(e.clientX, e.clientY, el);
-            }}
-            onPointerUp={(e) => {
-              if (ringDrag.current) {
+
+              const onMove = (ev: PointerEvent) => {
+                if (!ringDrag.current) return;
+                const box = cardRef.current;
+                if (!box) return;
+                applyFromPointer(ev.clientX, ev.clientY, box);
+              };
+              const onUp = () => {
                 ringDrag.current = false;
-                try {
-                  e.currentTarget.releasePointerCapture(e.pointerId);
-                } catch {
-                  /* already released */
-                }
-              }
-            }}
-            onPointerCancel={(e) => {
-              ringDrag.current = false;
-              try {
-                e.currentTarget.releasePointerCapture(e.pointerId);
-              } catch {
-                /* */
-              }
+                window.removeEventListener("pointermove", onMove);
+                window.removeEventListener("pointerup", onUp);
+                window.removeEventListener("pointercancel", onUp);
+              };
+
+              window.addEventListener("pointermove", onMove, { passive: true });
+              window.addEventListener("pointerup", onUp);
+              window.addEventListener("pointercancel", onUp);
+              applyFromPointer(e.clientX, e.clientY, el);
             }}
           >
             <Image
