@@ -91,6 +91,23 @@ body.reduce-fx .scanlines::after {
   opacity: 0;
 }
 
+/* Mobile: menos ruído visual (desktop ≥ md inalterado) */
+@media (max-width: 767px) {
+  .scanlines::after {
+    opacity: 0.1;
+    mix-blend-mode: soft-light;
+  }
+
+  .panel-glass {
+    background: color-mix(in srgb, var(--bg-panel) 94%, black);
+    border-color: color-mix(in srgb, var(--border-glow) 65%, transparent);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--neon-magenta) 6%, transparent),
+      0 0 20px color-mix(in srgb, var(--neon-cyan) 3%, transparent);
+    backdrop-filter: blur(10px);
+  }
+}
+
 /* Grid background */
 .cyber-grid {
   background-image:

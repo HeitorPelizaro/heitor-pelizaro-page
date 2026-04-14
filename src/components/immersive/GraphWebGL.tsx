@@ -306,7 +306,7 @@ export function GraphWebGL() {
   if (effectiveReduceMotion || performanceMode) {
     return (
       <div
-        className="pointer-events-none fixed inset-0 -z-10 cyber-grid opacity-40"
+        className="pointer-events-none fixed inset-0 -z-10 cyber-grid opacity-40 max-md:opacity-[0.2]"
         aria-hidden
       />
     );
@@ -314,7 +314,7 @@ export function GraphWebGL() {
 
   return (
     <div
-      className="pointer-events-none fixed inset-0 -z-10 h-full min-h-dvh w-full"
+      className="pointer-events-none fixed inset-0 -z-10 h-full min-h-dvh w-full max-md:opacity-[0.42] md:opacity-100"
       aria-hidden
     >
       <Canvas

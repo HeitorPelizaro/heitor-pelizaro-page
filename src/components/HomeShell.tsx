@@ -32,7 +32,10 @@ export function HomeShell({ initialLocale }: { initialLocale: Locale }) {
         <HtmlLangSync locale={initialLocale} />
         <div className="scanlines relative min-h-dvh w-full max-w-[100vw] overflow-x-clip">
           <GraphCanvas />
-          <DistortionBackdrop />
+          {/* Torus + pós-processamento: pesado e “cheio” em ecrã pequeno; desktop mantém-se */}
+          <div className="hidden md:contents">
+            <DistortionBackdrop />
+          </div>
           <HUD />
           <main className="w-full min-w-0">
             <HeroSection locale={initialLocale} />

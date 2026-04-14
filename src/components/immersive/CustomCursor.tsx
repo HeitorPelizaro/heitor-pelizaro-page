@@ -48,13 +48,13 @@ export function CustomCursor() {
     <>
       <div
         ref={ring}
-        className="pointer-events-none fixed left-0 top-0 z-[100] h-8 w-8 rounded-full border border-[var(--neon-cyan)] mix-blend-difference"
+        className="pointer-events-none fixed left-0 top-0 z-[100] hidden h-8 w-8 rounded-full border border-[var(--neon-cyan)] mix-blend-difference md:block"
         style={{ willChange: "transform" }}
         aria-hidden
       />
       <div
         ref={dot}
-        className="pointer-events-none fixed left-0 top-0 z-[101] h-2 w-2 rounded-full bg-[var(--neon-magenta)] shadow-[0_0_12px_var(--neon-magenta)]"
+        className="pointer-events-none fixed left-0 top-0 z-[101] hidden h-2 w-2 rounded-full bg-[var(--neon-magenta)] shadow-[0_0_12px_var(--neon-magenta)] md:block"
         style={{ willChange: "transform" }}
         aria-hidden
       />
