@@ -20,7 +20,7 @@ export const GITHUB_URL = envOr(
 
 export const EMAIL = envOr(
   process.env.NEXT_PUBLIC_EMAIL,
-  "heitor@pelizaro.com.br",
+  "heitorpelizaro.dev@gmail.com",
 );
 
 export const LINKEDIN_URL =

@@ -34,7 +34,7 @@ export type GraphState = {
 
 const SPATIAL_CELL = 130;
 const PAIR_COOLDOWN_FRAMES = 112;
-const PAIR_COOLDOWN_MOUSE = 38;
+const PAIR_COOLDOWN_MOUSE = 132;
 const SWAY_TIME = 0.012;
 const SWAY_AMP = 1.35;
 const SWAY_BLEND = 0.038;
@@ -536,21 +536,23 @@ export function stepGraph(state: GraphState, p: StepParams): void {
     }
   }
 
-  snapProximityEdges(
-    state,
-    f,
-    pairCooldownUntil,
-    p.performanceMode ? 54 : 64,
-    7,
-    p.performanceMode,
-    p.performanceMode ? 2 : 4,
-  );
+  if (!p.mouse.active) {
+    snapProximityEdges(
+      state,
+      f,
+      pairCooldownUntil,
+      p.performanceMode ? 54 : 64,
+      7,
+      p.performanceMode,
+      p.performanceMode ? 2 : 4,
+    );
 
-  const minEdges = Math.max(12, Math.floor(n * 0.36));
-  if (edges.length < minEdges) {
-    addOneRepairEdge(state, f, pairCooldownUntil, 7);
-  }
-  if (edges.length < minEdges) {
-    addOneRepairEdge(state, f, pairCooldownUntil, 7);
+    const minEdges = Math.max(12, Math.floor(n * 0.36));
+    if (edges.length < minEdges) {
+      addOneRepairEdge(state, f, pairCooldownUntil, 7);
+    }
+    if (edges.length < minEdges) {
+      addOneRepairEdge(state, f, pairCooldownUntil, 7);
+    }
   }
 }

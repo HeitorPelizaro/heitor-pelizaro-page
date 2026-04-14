@@ -3,8 +3,6 @@
 import Image from "next/image";
 import { useCallback, useRef } from "react";
 import { messages, type Locale } from "@/lib/i18n/messages";
-import { EMAIL, GITHUB_URL } from "@/lib/site";
-import { MagneticButton } from "@/components/ui/MagneticButton";
 import { useAppSettings } from "@/context/AppSettingsContext";
 import { useThemeAccent } from "@/context/ThemeAccentContext";
 
@@ -87,21 +85,6 @@ export function HeroSection({ locale }: { locale: Locale }) {
           <p className="mt-4 max-w-xl text-sm italic text-[var(--text-muted)]/90">
             {t.sub}
           </p>
-          <div className="mt-10 flex flex-wrap gap-4">
-            <MagneticButton
-              href={GITHUB_URL}
-              external
-              className="panel-glass rounded-lg px-6 py-3 font-mono text-sm text-[var(--neon-cyan)] transition hover:border-[var(--neon-magenta)]"
-            >
-              {t.ctaGithub}
-            </MagneticButton>
-            <MagneticButton
-              href={`mailto:${EMAIL}`}
-              className="panel-glass rounded-lg px-6 py-3 font-mono text-sm text-[var(--neon-magenta)] transition hover:border-[var(--neon-cyan)]"
-            >
-              {t.ctaEmail}
-            </MagneticButton>
-          </div>
         </div>
         <div className="relative mx-auto aspect-square w-full max-w-[280px] sm:max-w-[300px] md:mx-0 md:ml-auto md:w-[min(92vw,270px)] md:-mr-1 lg:w-[min(92vw,288px)] lg:translate-x-3 lg:-mr-3 xl:translate-x-5 xl:-mr-4">
           <div
