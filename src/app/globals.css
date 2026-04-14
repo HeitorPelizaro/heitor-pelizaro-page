@@ -112,14 +112,14 @@ html.glitch-lab-active {
   --neon-magenta: #ff00ff;
   --text-primary: #f4f6fb;
   --text-muted: #8799b5;
-  --border-glow: rgba(0, 255, 255, 0.28);
-  --grid-line: rgba(0, 255, 255, 0.1);
-  letter-spacing: 0.014em;
+  --border-glow: rgba(0, 255, 255, 0.42);
+  --grid-line: rgba(0, 255, 255, 0.16);
+  letter-spacing: 0.028em;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   html.glitch-lab-active:not(.glitch-lab-reduced) {
-    animation: glitch-signal-drift 4.6s steps(16, end) infinite;
+    animation: glitch-signal-drift 3.1s steps(18, end) infinite;
   }
 }
 
@@ -129,10 +129,10 @@ html.glitch-lab-active {
     filter: hue-rotate(0deg) saturate(1) contrast(1);
   }
   33% {
-    filter: hue-rotate(3.5deg) saturate(1.06) contrast(1.02);
+    filter: hue-rotate(9deg) saturate(1.14) contrast(1.06);
   }
   66% {
-    filter: hue-rotate(-2.5deg) saturate(1.04) contrast(1.03);
+    filter: hue-rotate(-7deg) saturate(1.1) contrast(1.08);
   }
 }
 
@@ -147,64 +147,67 @@ html.glitch-lab-active {
     background: repeating-linear-gradient(
       180deg,
       transparent 0 2px,
-      rgba(0, 0, 0, 0.06) 2px 3px,
-      rgba(255, 255, 255, 0.04) 3px 4px,
+      rgba(0, 0, 0, 0.12) 2px 3px,
+      rgba(255, 255, 255, 0.07) 3px 4px,
       transparent 4px 6px
     );
-    opacity: 0.22;
+    opacity: 0.38;
     mix-blend-mode: overlay;
-    animation: glitch-vhs-crawl 9.5s linear infinite;
+    animation: glitch-vhs-crawl 7s linear infinite;
   }
 }
 
 @keyframes glitch-vhs-crawl {
   0% {
     transform: translate3d(0, 0, 0);
-    opacity: 0.16;
+    opacity: 0.28;
   }
   50% {
-    transform: translate3d(0, -0.8%, 0);
-    opacity: 0.26;
+    transform: translate3d(0, -1.6%, 0);
+    opacity: 0.48;
   }
   100% {
     transform: translate3d(0, 0, 0);
-    opacity: 0.16;
+    opacity: 0.28;
   }
 }
 
 html.glitch-lab-active .scanlines::after {
-  opacity: 0.38;
+  opacity: 0.52;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   html.glitch-lab-active:not(.glitch-lab-reduced) .scanlines::after {
     animation:
-      glitch-scan-breathe 4.8s ease-in-out infinite,
-      glitch-scan-tracking 6.2s steps(1, end) infinite;
+      glitch-scan-breathe 3.4s ease-in-out infinite,
+      glitch-scan-tracking 4.2s steps(1, end) infinite;
   }
 }
 
 @keyframes glitch-scan-breathe {
   0%,
   100% {
-    opacity: 0.34;
+    opacity: 0.46;
   }
   50% {
-    opacity: 0.48;
+    opacity: 0.72;
   }
 }
 
 @keyframes glitch-scan-tracking {
   0%,
-  97%,
+  94%,
   100% {
     transform: translate3d(0, 0, 0);
   }
-  97.6% {
-    transform: translate3d(0, 2px, 0);
+  94.8% {
+    transform: translate3d(0, 5px, 0);
   }
-  98.2% {
-    transform: translate3d(0, -1px, 0);
+  95.4% {
+    transform: translate3d(0, -3px, 0);
+  }
+  96% {
+    transform: translate3d(0, 2px, 0);
   }
 }
 
@@ -222,33 +225,50 @@ html.glitch-lab-reduced .scanlines::after {
     pointer-events: none;
     background: linear-gradient(
       102deg,
-      transparent 42%,
-      color-mix(in srgb, var(--neon-cyan) 12%, transparent) 49.2%,
-      color-mix(in srgb, var(--neon-magenta) 10%, transparent) 50.2%,
-      transparent 58%
+      transparent 38%,
+      color-mix(in srgb, var(--neon-cyan) 28%, transparent) 48%,
+      color-mix(in srgb, var(--neon-magenta) 24%, transparent) 50.5%,
+      transparent 62%
     );
     mix-blend-mode: screen;
-    animation: glitch-tear-band 10.8s steps(1, end) infinite;
+    animation: glitch-tear-band 8.2s steps(1, end) infinite;
     opacity: 0;
   }
 }
 
 @keyframes glitch-tear-band {
   0%,
-  99.45%,
+  91.2%,
   100% {
     opacity: 0;
     transform: translate3d(0, 0, 0) skewX(0);
   }
-  99.55% {
-    opacity: 0.9;
-    transform: translate3d(-8px, 0, 0) skewX(-0.5deg);
+  91.35% {
+    opacity: 0.72;
+    transform: translate3d(-14px, 3px, 0) skewX(-1.1deg);
   }
-  99.65% {
-    opacity: 0.45;
-    transform: translate3d(5px, 2px, 0) skewX(0.35deg);
+  91.5% {
+    opacity: 0.55;
+    transform: translate3d(10px, -4px, 0) skewX(0.85deg);
   }
-  99.78% {
+  91.65% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+  97.1%,
+  97.25% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) skewX(0);
+  }
+  97.32% {
+    opacity: 0.95;
+    transform: translate3d(-18px, 0, 0) skewX(-1.4deg);
+  }
+  97.48% {
+    opacity: 0.5;
+    transform: translate3d(12px, 5px, 0) skewX(0.9deg);
+  }
+  97.62% {
     opacity: 0;
     transform: translate3d(0, 0, 0);
   }
@@ -263,68 +283,119 @@ html.glitch-lab-reduced .scanlines::after {
     z-index: 47;
     pointer-events: none;
     background:
-      radial-gradient(ellipse 120% 80% at 50% -10%, rgba(255, 45, 106, 0.07), transparent 55%),
-      radial-gradient(ellipse 90% 60% at 100% 50%, rgba(0, 240, 255, 0.05), transparent 50%),
-      radial-gradient(ellipse 70% 50% at 0% 80%, rgba(0, 0, 0, 0.25), transparent 55%);
+      radial-gradient(ellipse 120% 80% at 50% -10%, rgba(255, 0, 255, 0.14), transparent 52%),
+      radial-gradient(ellipse 90% 60% at 100% 50%, rgba(0, 255, 255, 0.12), transparent 48%),
+      radial-gradient(ellipse 70% 50% at 0% 80%, rgba(0, 0, 0, 0.38), transparent 52%);
     mix-blend-mode: soft-light;
-    animation: glitch-gpu-flicker 5.5s steps(1, end) infinite;
-    opacity: 0.55;
+    animation: glitch-gpu-flicker 3.8s steps(1, end) infinite;
+    opacity: 0.72;
   }
 }
 
 @keyframes glitch-gpu-flicker {
   0%,
-  94%,
+  88%,
   100% {
-    opacity: 0.45;
+    opacity: 0.58;
     transform: scale(1);
   }
-  95.2% {
-    opacity: 0.62;
-    transform: scale(1.004) translate3d(1px, 0, 0);
+  89.1% {
+    opacity: 0.92;
+    transform: scale(1.009) translate3d(3px, -1px, 0);
   }
-  96.1% {
-    opacity: 0.38;
-    transform: scale(0.998) translate3d(-1px, 0, 0);
+  89.7% {
+    opacity: 0.32;
+    transform: scale(0.992) translate3d(-4px, 2px, 0);
+  }
+  90.4% {
+    opacity: 0.78;
+    transform: scale(1.005) translate3d(2px, 0, 0);
   }
 }
 
 /* Quebra de renderização leve no miolo (sem afetar o HUD fixo) */
 @media (prefers-reduced-motion: no-preference) {
   html.glitch-lab-active:not(.glitch-lab-reduced) main {
-    animation: glitch-render-skip 14s steps(1, end) infinite;
+    animation: glitch-render-skip 9.5s steps(1, end) infinite;
   }
 }
 
 @keyframes glitch-render-skip {
   0%,
-  97.6%,
   100% {
     clip-path: inset(0 0 0 0);
     transform: translate3d(0, 0, 0);
   }
-  /* slice horizontal tipo “frame corrompido” */
-  97.75% {
-    clip-path: inset(42% 0 52% 0);
-    transform: translate3d(-2px, 0, 0);
-  }
-  97.85% {
-    clip-path: inset(0 0 22% 0);
-    transform: translate3d(1px, 0, 0);
-  }
-  97.95% {
+  /* blocos “corrompidos” mais frequentes e com deslocamento maior */
+  71.2% {
     clip-path: inset(0 0 0 0);
     transform: translate3d(0, 0, 0);
   }
-  99.42% {
-    clip-path: inset(0 0.15% 0 0);
-    transform: translate3d(-1px, 0, 0);
+  71.35% {
+    clip-path: inset(58% 0 30% 0);
+    transform: translate3d(5px, 0, 0);
   }
-  99.5% {
-    clip-path: inset(0.08% 0 0 0);
-    transform: translate3d(1px, 0, 0);
+  71.5% {
+    clip-path: inset(0 0 0 0);
+    transform: translate3d(-4px, 0, 0);
   }
-  99.58% {
+  71.65% {
+    clip-path: inset(0 0 0 0);
+    transform: translate3d(0, 0, 0);
+  }
+  84.05% {
+    clip-path: inset(12% 0 70% 0);
+    transform: translate3d(-6px, 1px, 0);
+  }
+  84.2% {
+    clip-path: inset(0 18% 0 0);
+    transform: translate3d(7px, -1px, 0);
+  }
+  84.38% {
+    clip-path: inset(0 0 0 0);
+    transform: translate3d(0, 0, 0);
+  }
+  94.55% {
+    clip-path: inset(0 0 0 0);
+    transform: translate3d(0, 0, 0);
+  }
+  94.72% {
+    clip-path: inset(38% 0 48% 0);
+    transform: translate3d(-8px, 0, 0);
+  }
+  94.88% {
+    clip-path: inset(0 0 35% 0);
+    transform: translate3d(6px, 2px, 0);
+  }
+  95.05% {
+    clip-path: inset(0 0 0 0);
+    transform: translate3d(0, 0, 0);
+  }
+  97.45% {
+    clip-path: inset(0 0 0 0);
+    transform: translate3d(0, 0, 0);
+  }
+  97.62% {
+    clip-path: inset(42% 0 52% 0);
+    transform: translate3d(-5px, 0, 0);
+  }
+  97.78% {
+    clip-path: inset(0 0 22% 0);
+    transform: translate3d(6px, 0, 0);
+  }
+  97.92% {
+    clip-path: inset(0 0 0 0);
+    transform: translate3d(0, 0, 0);
+  }
+  99.18% {
+    clip-path: inset(0 0.35% 0 0);
+    transform: translate3d(-4px, 0, 0);
+  }
+  99.32% {
+    clip-path: inset(0.22% 0 0 0);
+    transform: translate3d(4px, 0, 0);
+  }
+  99.48% {
     clip-path: inset(0 0 0 0);
     transform: translate3d(0, 0, 0);
   }
@@ -334,38 +405,45 @@ html.glitch-lab-reduced .scanlines::after {
 html.glitch-lab-active h1,
 html.glitch-lab-active h2 {
   text-shadow:
-    0.04em 0 0 color-mix(in srgb, var(--neon-cyan) 45%, transparent),
-    -0.035em 0 0 color-mix(in srgb, var(--neon-magenta) 40%, transparent),
-    0 0 0.45em color-mix(in srgb, var(--neon-cyan) 18%, transparent);
+    0.07em 0 0 color-mix(in srgb, var(--neon-cyan) 62%, transparent),
+    -0.06em 0 0 color-mix(in srgb, var(--neon-magenta) 55%, transparent),
+    0 0 0.55em color-mix(in srgb, var(--neon-cyan) 28%, transparent);
 }
 
 @media (prefers-reduced-motion: no-preference) {
   html.glitch-lab-active:not(.glitch-lab-reduced) h1,
   html.glitch-lab-active:not(.glitch-lab-reduced) h2 {
-    animation: glitch-chroma-jitter 3.2s steps(5, end) infinite;
+    animation: glitch-chroma-jitter 2.1s steps(6, end) infinite;
   }
 }
 
 @keyframes glitch-chroma-jitter {
   0%,
-  86%,
+  72%,
   100% {
     text-shadow:
-      0.04em 0 0 color-mix(in srgb, var(--neon-cyan) 45%, transparent),
-      -0.035em 0 0 color-mix(in srgb, var(--neon-magenta) 40%, transparent),
-      0 0 0.45em color-mix(in srgb, var(--neon-cyan) 18%, transparent);
+      0.07em 0 0 color-mix(in srgb, var(--neon-cyan) 62%, transparent),
+      -0.06em 0 0 color-mix(in srgb, var(--neon-magenta) 55%, transparent),
+      0 0 0.55em color-mix(in srgb, var(--neon-cyan) 28%, transparent);
   }
-  88% {
+  76% {
     text-shadow:
-      0.09em 0 0 color-mix(in srgb, var(--neon-cyan) 55%, transparent),
-      -0.07em 0 0 color-mix(in srgb, var(--neon-magenta) 50%, transparent),
-      0 0 0.35em color-mix(in srgb, var(--neon-magenta) 22%, transparent);
+      0.16em -0.02em 0 color-mix(in srgb, var(--neon-cyan) 78%, transparent),
+      -0.14em 0.03em 0 color-mix(in srgb, var(--neon-magenta) 72%, transparent),
+      0.08em 0.06em 0 color-mix(in srgb, #00ff00 35%, transparent),
+      0 0 0.4em color-mix(in srgb, var(--neon-magenta) 35%, transparent);
   }
-  90% {
+  80% {
     text-shadow:
-      0.02em 0 0 color-mix(in srgb, var(--neon-cyan) 35%, transparent),
-      -0.02em 0 0 color-mix(in srgb, var(--neon-magenta) 32%, transparent),
-      0 0 0.5em color-mix(in srgb, var(--neon-cyan) 20%, transparent);
+      0.03em 0 0 color-mix(in srgb, var(--neon-cyan) 45%, transparent),
+      -0.03em 0 0 color-mix(in srgb, var(--neon-magenta) 42%, transparent),
+      0 0 0.65em color-mix(in srgb, var(--neon-cyan) 32%, transparent);
+  }
+  84% {
+    text-shadow:
+      0.12em 0.04em 0 color-mix(in srgb, var(--neon-cyan) 70%, transparent),
+      -0.1em -0.03em 0 color-mix(in srgb, var(--neon-magenta) 65%, transparent),
+      0 0 0.45em color-mix(in srgb, var(--neon-magenta) 40%, transparent);
   }
 }
 
@@ -388,27 +466,35 @@ html.glitch-lab-active .panel-glass::before {
   border-radius: inherit;
   pointer-events: none;
   opacity: 0;
-  border: 1px solid color-mix(in srgb, var(--neon-cyan) 35%, transparent);
+  border: 1px solid color-mix(in srgb, var(--neon-cyan) 52%, transparent);
   mix-blend-mode: screen;
-  animation: glitch-panel-ghost-rim 8.6s steps(1, end) infinite;
+  animation: glitch-panel-ghost-rim 5.5s steps(1, end) infinite;
 }
 
 @keyframes glitch-panel-ghost-rim {
   0%,
-  95%,
+  88%,
   100% {
     opacity: 0;
     transform: translate3d(0, 0, 0) skew(0);
   }
-  95.6% {
-    opacity: 0.65;
-    transform: translate3d(1px, -0.5px, 0) skew(-0.4deg);
+  88.7% {
+    opacity: 0.88;
+    transform: translate3d(3px, -2px, 0) skew(-1deg);
   }
-  96.2% {
-    opacity: 0.35;
-    transform: translate3d(-1px, 0.5px, 0) skew(0.3deg);
+  89.4% {
+    opacity: 0.5;
+    transform: translate3d(-3px, 2px, 0) skew(0.75deg);
   }
-  96.8% {
+  90.1% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+  94.2% {
+    opacity: 0.75;
+    transform: translate3d(-2px, -1px, 0) skew(0.5deg);
+  }
+  94.9% {
     opacity: 0;
     transform: translate3d(0, 0, 0);
   }
@@ -416,23 +502,26 @@ html.glitch-lab-active .panel-glass::before {
 
 @media (prefers-reduced-motion: no-preference) {
   html.glitch-lab-active:not(.glitch-lab-reduced) .panel-glass {
-    animation: glitch-panel-nudge 8s ease-in-out infinite;
+    animation: glitch-panel-nudge 5.2s ease-in-out infinite;
   }
 }
 
 @keyframes glitch-panel-nudge {
   0%,
-  96%,
+  90%,
   100% {
     transform: translate3d(0, 0, 0);
   }
-  96.8% {
-    transform: translate3d(0.6px, 0, 0);
+  91.2% {
+    transform: translate3d(2px, -1px, 0);
   }
-  97.4% {
-    transform: translate3d(-0.45px, 0.2px, 0);
+  92.1% {
+    transform: translate3d(-2px, 1px, 0);
   }
-  98% {
+  93% {
+    transform: translate3d(1px, 0.5px, 0);
+  }
+  93.8% {
     transform: translate3d(0, 0, 0);
   }
 }
@@ -440,23 +529,41 @@ html.glitch-lab-active .panel-glass::before {
 /* RGB split ocasional em imagens */
 @media (prefers-reduced-motion: no-preference) {
   html.glitch-lab-active:not(.glitch-lab-reduced) img {
-    animation: glitch-img-chroma 13s steps(1, end) infinite;
+    animation: glitch-img-chroma 7.5s steps(1, end) infinite;
   }
 }
 
 @keyframes glitch-img-chroma {
   0%,
-  96.4%,
   100% {
     filter: none;
     transform: none;
   }
-  96.75% {
-    filter: drop-shadow(2px 0 0 rgba(0, 255, 255, 0.35))
-      drop-shadow(-2px 0 0 rgba(255, 0, 255, 0.28));
-    transform: translate(0.5px, 0);
+  78.2% {
+    filter: drop-shadow(4px 0 0 rgba(0, 255, 255, 0.65))
+      drop-shadow(-4px 0 0 rgba(255, 0, 255, 0.55))
+      drop-shadow(0 2px 0 rgba(0, 255, 0, 0.25));
+    transform: translate(2px, -1px);
   }
-  97.1% {
+  78.45% {
+    filter: none;
+    transform: none;
+  }
+  88.6% {
+    filter: drop-shadow(5px 1px 0 rgba(0, 255, 255, 0.55))
+      drop-shadow(-4px -1px 0 rgba(255, 0, 255, 0.5));
+    transform: translate(-2px, 1px);
+  }
+  88.85% {
+    filter: none;
+    transform: none;
+  }
+  95.1% {
+    filter: drop-shadow(3px 0 0 rgba(0, 255, 255, 0.5))
+      drop-shadow(-3px 0 0 rgba(255, 0, 255, 0.45));
+    transform: translate(1px, 0);
+  }
+  95.35% {
     filter: none;
     transform: none;
   }
@@ -467,43 +574,50 @@ html.glitch-lab-active .panel-glass::before {
   html.glitch-lab-active:not(.glitch-lab-reduced) main :is(a, button):hover,
   html.glitch-lab-active:not(.glitch-lab-reduced) header :is(a, button):hover {
     transition:
-      transform 0.08s steps(2),
-      text-shadow 0.08s steps(2),
-      filter 0.08s steps(2);
-    transform: translate(0.5px, -0.5px) skewX(-0.45deg);
+      transform 0.06s steps(3),
+      text-shadow 0.06s steps(3),
+      filter 0.06s steps(3);
+    transform: translate(1px, -1px) skewX(-1.1deg);
     text-shadow:
-      0.06em 0 0 color-mix(in srgb, var(--neon-cyan) 42%, transparent),
-      -0.05em 0 0 color-mix(in srgb, var(--neon-magenta) 38%, transparent);
-    filter: contrast(1.06);
+      0.11em 0 0 color-mix(in srgb, var(--neon-cyan) 58%, transparent),
+      -0.09em 0 0 color-mix(in srgb, var(--neon-magenta) 52%, transparent),
+      0 0 0.35em color-mix(in srgb, var(--neon-cyan) 22%, transparent);
+    filter: contrast(1.14) saturate(1.08);
   }
 }
 
 /* Grade CRT levemente fora de eixo */
 @media (prefers-reduced-motion: no-preference) {
   html.glitch-lab-active:not(.glitch-lab-reduced) .cyber-grid {
-    animation: glitch-grid-warp 14s steps(4, end) infinite;
+    animation: glitch-grid-warp 8s steps(5, end) infinite;
     transform-origin: 50% 20%;
   }
 }
 
 @keyframes glitch-grid-warp {
   0%,
-  90%,
+  82%,
   100% {
     transform: skewX(0deg) translateX(0);
   }
-  92% {
-    transform: skewX(0.14deg) translateX(-1px);
+  84% {
+    transform: skewX(0.45deg) translateX(-3px);
   }
-  94% {
-    transform: skewX(-0.11deg) translateX(1px);
+  86% {
+    transform: skewX(-0.38deg) translateX(3px);
+  }
+  88% {
+    transform: skewX(0.2deg) translateX(-2px);
   }
 }
 
 /* Micro “crash” visual em clique (classe pós-JS) */
 @keyframes glitch-click-flash {
   0% {
-    filter: invert(0.14) contrast(1.12) hue-rotate(95deg);
+    filter: invert(0.38) contrast(1.28) hue-rotate(140deg) saturate(1.35);
+  }
+  45% {
+    filter: invert(0.12) contrast(1.18) hue-rotate(-40deg);
   }
   100% {
     filter: none;
@@ -511,7 +625,7 @@ html.glitch-lab-active .panel-glass::before {
 }
 
 html.glitch-lab-flash {
-  animation: glitch-click-flash 0.11s steps(1) forwards;
+  animation: glitch-click-flash 0.16s steps(2) forwards;
 }
 
 /* Modo reduzido: sem animações pesadas, só camadas estáticas leves */

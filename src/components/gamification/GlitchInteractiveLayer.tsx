@@ -49,7 +49,7 @@ export function GlitchInteractiveLayer() {
       document.documentElement.classList.add("glitch-lab-flash");
       window.setTimeout(() => {
         document.documentElement.classList.remove("glitch-lab-flash");
-      }, 120);
+      }, 200);
     };
 
     window.addEventListener("mousemove", onMouseMove, { passive: true });
@@ -116,12 +116,12 @@ export function GlitchInteractiveLayer() {
         aria-hidden
         style={{
           background: `
-            radial-gradient(340px circle at var(--glitch-cx, 50%) var(--glitch-cy, 42%),
-              color-mix(in srgb, var(--neon-cyan) 12%, transparent) 0%,
-              transparent 70%),
-            radial-gradient(200px circle at calc(var(--glitch-cx, 50%) + 6%) calc(var(--glitch-cy, 42%) - 5%),
-              color-mix(in srgb, var(--neon-magenta) 10%, transparent) 0%,
-              transparent 68%)
+            radial-gradient(420px circle at var(--glitch-cx, 50%) var(--glitch-cy, 42%),
+              color-mix(in srgb, var(--neon-cyan) 26%, transparent) 0%,
+              transparent 62%),
+            radial-gradient(260px circle at calc(var(--glitch-cx, 50%) + 8%) calc(var(--glitch-cy, 42%) - 6%),
+              color-mix(in srgb, var(--neon-magenta) 22%, transparent) 0%,
+              transparent 58%)
           `,
         }}
       />
