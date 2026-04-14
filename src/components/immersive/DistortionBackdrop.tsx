@@ -3,10 +3,20 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { EffectComposer, ChromaticAberration, Noise, Vignette } from "@react-three/postprocessing";
 import { BlendFunction } from "postprocessing";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { useAppSettings } from "@/context/AppSettingsContext";
 import { readCssHexVar } from "@/lib/cssColor";
+
+/** Rotação base dos torus (rad/s) — valores ~45% dos originais para movimento mais calmo */
+const RING_SPEED_Y_1 = 0.036;
+const RING_SPEED_X_1 = 0.0135;
+const RING_SPEED_Y_2 = 0.0315;
+const RING_SPEED_X_2 = 0.018;
+/** Impulso do scroll sobre a rotação */
+const WHEEL_GAIN_Y = 0.001;
+const WHEEL_GAIN_X = 0.00032;
+const WHEEL_DECAY = 0.92;
 
 function WireOrbit() {
   const mesh1 = useRef<THREE.Mesh>(null);
@@ -16,8 +26,8 @@ function WireOrbit() {
   useEffect(() => {
     const onWheel = (e: WheelEvent) => {
       const dy = Math.max(-80, Math.min(80, e.deltaY));
-      wheelImpulse.current.y += dy * 0.0018;
-      wheelImpulse.current.x += dy * 0.00055;
+      wheelImpulse.current.y += dy * WHEEL_GAIN_Y;
+      wheelImpulse.current.x += dy * WHEEL_GAIN_X;
     };
     window.addEventListener("wheel", onWheel, { passive: true });
     return () => window.removeEventListener("wheel", onWheel);
@@ -48,8 +58,8 @@ function WireOrbit() {
   useFrame((_, delta) => {
     const iy = wheelImpulse.current.y;
     const ix = wheelImpulse.current.x;
-    wheelImpulse.current.y *= 0.92;
-    wheelImpulse.current.x *= 0.92;
+    wheelImpulse.current.y *= WHEEL_DECAY;
+    wheelImpulse.current.x *= WHEEL_DECAY;
 
     const cHex = readCssHexVar("--neon-cyan", "#00f0ff");
     const mHex = readCssHexVar("--neon-magenta", "#ff2d6a");
@@ -57,12 +67,12 @@ function WireOrbit() {
     matM.color.set(mHex);
 
     if (mesh1.current) {
-      mesh1.current.rotation.y += delta * 0.08 + iy;
-      mesh1.current.rotation.x += delta * 0.03 + ix * 0.42;
+      mesh1.current.rotation.y += delta * RING_SPEED_Y_1 + iy;
+      mesh1.current.rotation.x += delta * RING_SPEED_X_1 + ix * 0.42;
     }
     if (mesh2.current) {
-      mesh2.current.rotation.y += delta * 0.07 - iy * 0.35;
-      mesh2.current.rotation.x += delta * 0.04 + ix * 0.58;
+      mesh2.current.rotation.y += delta * RING_SPEED_Y_2 - iy * 0.35;
+      mesh2.current.rotation.x += delta * RING_SPEED_X_2 + ix * 0.58;
     }
   });
 
@@ -79,7 +89,7 @@ function WireOrbit() {
   );
 }
 
-function Scene() {
+function Scene({ lightPostFx }: { lightPostFx: boolean }) {
   return (
     <>
       <ambientLight intensity={0.55} />
@@ -87,19 +97,42 @@ function Scene() {
       <EffectComposer multisampling={0}>
         <ChromaticAberration
           blendFunction={BlendFunction.NORMAL}
-          offset={new THREE.Vector2(0.0012, 0.0008)}
-          radialModulation
+          offset={
+            lightPostFx
+              ? new THREE.Vector2(0, 0)
+              : new THREE.Vector2(0.0012, 0.0008)
+          }
+          radialModulation={!lightPostFx}
           modulationOffset={0.5}
         />
-        <Noise blendFunction={BlendFunction.OVERLAY} opacity={0.12} />
-        <Vignette eskil={false} offset={0.35} darkness={0.62} />
+        <Noise
+          blendFunction={BlendFunction.OVERLAY}
+          opacity={lightPostFx ? 0.05 : 0.12}
+        />
+        <Vignette eskil={false} offset={0.35} darkness={lightPostFx ? 0.52 : 0.62} />
       </EffectComposer>
     </>
   );
 }
 
+function useLightBackdropFx() {
+  const [light, setLight] = useState(false);
+  useEffect(() => {
+    const q = () => {
+      const w = window.innerWidth;
+      const dpr = window.devicePixelRatio || 1;
+      setLight(w >= 1920 || dpr > 1.5);
+    };
+    q();
+    window.addEventListener("resize", q);
+    return () => window.removeEventListener("resize", q);
+  }, []);
+  return light;
+}
+
 export function DistortionBackdrop() {
   const { performanceMode, effectiveReduceMotion } = useAppSettings();
+  const lightPostFx = useLightBackdropFx();
   if (performanceMode || effectiveReduceMotion) return null;
 
   return (
@@ -115,9 +148,9 @@ export function DistortionBackdrop() {
         }}
         onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
         camera={{ position: [0, 0, 10], fov: 45 }}
-        dpr={[1, 1.5]}
+        dpr={lightPostFx ? [1, 1.25] : [1, 1.5]}
       >
-        <Scene />
+        <Scene lightPostFx={lightPostFx} />
       </Canvas>
     </div>
   );
