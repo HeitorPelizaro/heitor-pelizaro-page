@@ -17,9 +17,7 @@ export function loadUnlocked(): Set<AchievementId> {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return new Set();
-    const arr = (JSON.parse(raw) as string[]).map((k) =>
-      k === "graph_untangle" ? "graph_cut_50" : k,
-    );
+    const arr = JSON.parse(raw) as string[];
     return new Set(
       arr.filter((k): k is AchievementId =>
         ACHIEVEMENT_KEYS.includes(k as AchievementId),
