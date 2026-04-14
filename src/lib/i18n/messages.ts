@@ -24,9 +24,9 @@ export const messages = {
     hero: {
       role: "DevOps · Fullcycle · IA",
       tagline:
-        "Trago escalabilidade, segurança e automação para o ciclo de desenvolvimento. Quando quebra, o foco é achar rápido e corrigir ainda mais rápido.",
+        "Atuo com foco em escalabilidade, segurança e automação ao longo do ciclo de entrega. Em incidentes, priorizo diagnóstico objetivo e restauração do serviço com o menor impacto possível.",
       sub:
-        "Ciência da Computação (IFTM). DevOps na NovaHaus; fullcycle quando o projeto exige ir além do pipe.",
+        "Ciência da Computação (IFTM). DevOps na NovaHaus — com escopo full cycle quando o contexto exige ir além da automação do pipeline.",
       ctaGithub: "GitHub",
       ctaEmail: "E-mail",
       themePicker: "Escolher cores de destaque do tema",
@@ -171,9 +171,9 @@ export const messages = {
     hero: {
       role: "DevOps · Fullcycle · AI",
       tagline:
-        "I bring scalability, security, and automation into the development lifecycle. When something breaks, the focus is to find it fast—and fix it faster.",
+        "I focus on scalability, security, and automation across the delivery lifecycle. In incidents, I prioritize clear root-cause analysis and restoring service with minimal downtime.",
       sub:
-        "Computer Science (IFTM). DevOps at NovaHaus; fullcycle work when the project needs more than the pipeline.",
+        "Computer Science (IFTM). DevOps at NovaHaus — with end-to-end ownership when delivery calls for more than CI/CD automation.",
       ctaGithub: "GitHub",
       ctaEmail: "Email",
       themePicker: "Choose accent theme colors",
