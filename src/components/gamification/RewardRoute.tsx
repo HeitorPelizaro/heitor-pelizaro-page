@@ -73,9 +73,6 @@ export function RewardRoute({ locale }: { locale: Locale }) {
           <p className="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">
             {r.prizeBody}
           </p>
-          <p className="mt-4 border-t border-white/10 pt-4 text-[11px] italic text-[var(--text-muted)]/80">
-            {r.prizeFoot}
-          </p>
         </div>
 
         {glitchHydrated ? (

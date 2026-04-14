@@ -124,8 +124,6 @@ export const messages = {
       prizeTitle: "Seu prêmio oficial",
       prizeBody:
         "Certifico que você completou o tour curioso deste site. Não tem troféu físico; o troféu emocional é a curiosidade satisfeita e o direito de dizer que viu isso até o fim.",
-      prizeFoot:
-        "Quando tiver um prêmio de verdade (sticker, código, PDF, vídeo), troque este parágrafo no código ou me diga o que quer aqui.",
       unlockGlitch: "Liberar tema glitch exclusivo",
       glitchUnlockedHint:
         "Tema liberado. Ligue ou desligue quando quiser no painel de cima (interruptor Glitch).",
@@ -262,8 +260,6 @@ export const messages = {
       prizeTitle: "Your official prize",
       prizeBody:
         "I hereby certify you finished the curious path of this site. There is no physical trophy; the emotional trophy is satisfied curiosity and the right to say you saw this through.",
-      prizeFoot:
-        "When you have a real reward (sticker, code, PDF, video), swap this paragraph in the code or tell me what you want here.",
       unlockGlitch: "Unlock exclusive glitch theme",
       glitchUnlockedHint:
         "Theme unlocked. Toggle it anytime from the top bar (Glitch switch).",
