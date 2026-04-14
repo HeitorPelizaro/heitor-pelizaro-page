@@ -19,6 +19,7 @@ export const messages = {
       motion: "Reduzir movimento",
       lang: "Idioma",
       glitch: "Glitch",
+      glitchAria: "Tema visual glitch exclusivo (liga e desliga)",
     },
     hero: {
       role: "DevOps · Fullcycle · IA",
@@ -30,10 +31,10 @@ export const messages = {
       ctaEmail: "E-mail",
       themePicker: "Escolher cores de destaque do tema",
       themeWheelHint: "Arraste na roda para ajustar o matiz",
-      themeReset: "Repor padrão",
+      themeReset: "Voltar ao padrão",
       themeRingHint:
-        "Anel colorido: clique ou arraste na cor. Com o botão premido, o arraste segue válido um pouco fora do anel.",
-      themeSimpleHint: "Modo reduzido: use Repor padrão abaixo.",
+        "Anel colorido: clique ou arraste na cor. Com o botão do mouse pressionado, o arraste continua válido um pouco fora do anel.",
+      themeSimpleHint: "Modo reduzido: use Voltar ao padrão abaixo.",
     },
     skills: {
       title: "Módulos",
@@ -73,11 +74,11 @@ export const messages = {
       close: "Fechar",
       lockedLabel: "Bloqueada",
       exclusiveThemeHint:
-        "Conclui todas as conquistas para desbloquear um tema visual exclusivo na página (modo glitch), ativável no painel superior.",
+        "Complete todas as conquistas para liberar um tema visual exclusivo na página (modo glitch). Você liga e desliga no painel de cima.",
       allCompleteTitle: "Parabéns!",
       allCompleteBody:
-        "Desbloqueaste todas as conquistas. Vais à celebração; lá desbloqueias o tema glitch e depois podes ligá-lo ou desligá-lo no HUD.",
-      allCompleteCta: "Ir à celebração",
+        "Você liberou todas as conquistas. Vá na página de celebração para ativar o tema glitch; depois use o interruptor no topo do site.",
+      allCompleteCta: "Ir para a celebração",
       items: {
         a11y_motion: {
           name: "Modo acessível",
@@ -97,7 +98,7 @@ export const messages = {
         },
         graph_cut_50: {
           name: "Cinquenta cortes",
-          desc: "Desfaz 50 conexões no grafo de fundo cortando os fios com o movimento do rato.",
+          desc: "Corte 50 conexões no grafo de fundo passando o mouse pelos fios como se estivesse cortando.",
         },
         theme_chroma_3: {
           name: "Cromático ×3",
@@ -105,30 +106,30 @@ export const messages = {
         },
         easter_egg: {
           name: "Konami",
-          desc: "Existe um comando secreto neste site. Consegues descobrir qual é?",
+          desc: "Tem um comando secreto neste site. Consegue descobrir qual é?",
         },
       },
     },
     reward: {
       metaTitle: "Recompensa",
-      loading: "A carregar…",
-      gateTitle: "Acesso negado (de brincadeira)",
+      loading: "Carregando…",
+      gateTitle: "Acesso negado (só de brincadeira)",
       gateBody:
-        "Esta sala só abre com 100% das conquistas no ACH. Volta ao site, desbloqueia o que falta e tenta outra vez.",
+        "Esta página só abre com 100% das conquistas no ACH. Volte ao site, complete o que falta e tente de novo.",
       gateCta: "Voltar ao início",
       fireworksEyebrow: "Modo festa",
       fireworksTitle: "Boom. Parabéns.",
       fireworksSub:
-        "Fogos de artifício virtuais: zero ruído para os vizinhos, 100% de poluição luminosa no ecrã.",
-      prizeTitle: "O teu prémio oficial",
+        "Fogos de artifício virtuais: zero barulho pros vizinhos, 100% de poluição luminosa na tela.",
+      prizeTitle: "Seu prêmio oficial",
       prizeBody:
-        "Certifico que completaste o percurso curioso deste site. O troféu físico não existe; o troféu emocional é a curiosidade satisfeita e o direito de dizeres que viste isto até ao fim.",
+        "Certifico que você completou o tour curioso deste site. Não tem troféu físico; o troféu emocional é a curiosidade satisfeita e o direito de dizer que viu isso até o fim.",
       prizeFoot:
-        "Quando tiveres uma recompensa real (sticker, código, PDF, vídeo), substitui este parágrafo no código ou diz-me o que queres aqui.",
-      unlockGlitch: "Desbloquear tema glitch exclusivo",
+        "Quando tiver um prêmio de verdade (sticker, código, PDF, vídeo), troque este parágrafo no código ou me diga o que quer aqui.",
+      unlockGlitch: "Liberar tema glitch exclusivo",
       glitchUnlockedHint:
-        "Tema desbloqueado. Liga ou desliga quando quiseres no painel superior (interruptor «Glitch»).",
-      glitchAlreadyUnlocked: "O tema glitch já está desbloqueado neste browser.",
+        "Tema liberado. Ligue ou desligue quando quiser no painel de cima (interruptor Glitch).",
+      glitchAlreadyUnlocked: "O tema glitch já está liberado neste navegador.",
       backHome: "Voltar ao início",
     },
     footer: {
@@ -156,6 +157,7 @@ export const messages = {
       motion: "Reduce motion",
       lang: "Language",
       glitch: "Glitch",
+      glitchAria: "Exclusive glitch visual theme (toggle)",
     },
     hero: {
       role: "DevOps · Fullcycle · AI",

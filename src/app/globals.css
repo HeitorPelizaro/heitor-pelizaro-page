@@ -102,105 +102,114 @@ body.reduce-fx .scanlines::after {
   text-shadow: 0 0 20px color-mix(in srgb, var(--neon-magenta) 40%, transparent);
 }
 
-/* --- Tema glitch exclusivo (lab 100%) --- */
-html.glitch-lab-active {
-  --glitch-cyan: #5dffe8;
-  --glitch-magenta: #ff5a9d;
+/* --- Tema glitch (lab 100%): mesma identidade, cor “instável” + falhas leves --- */
+
+/* Leve deriva de matiz no site inteiro — parece vídeo com sync quase certo */
+@media (prefers-reduced-motion: no-preference) {
+  html.glitch-lab-active:not(.glitch-lab-reduced) {
+    animation: glitch-color-wobble 6.8s ease-in-out infinite;
+  }
 }
 
-html.glitch-lab-active body {
-  box-shadow:
-    inset 0 0 0 1px color-mix(in srgb, var(--neon-cyan) 22%, transparent),
-    inset 0 0 80px color-mix(in srgb, var(--neon-magenta) 8%, transparent);
+@keyframes glitch-color-wobble {
+  0%,
+  100% {
+    filter: hue-rotate(0deg) saturate(1);
+  }
+  35% {
+    filter: hue-rotate(2.2deg) saturate(1.025);
+  }
+  70% {
+    filter: hue-rotate(-1.6deg) saturate(1.018);
+  }
+}
+
+html.glitch-lab-active .scanlines::after {
+  opacity: 0.36;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  html.glitch-lab-active:not(.glitch-lab-reduced) body {
-    animation: glitch-body-flicker 5.2s steps(2, end) infinite;
-  }
-
   html.glitch-lab-active:not(.glitch-lab-reduced) .scanlines::after {
-    opacity: 0.62;
-    animation: glitch-scan-jitter 0.45s steps(2) infinite;
-  }
-
-  html.glitch-lab-active:not(.glitch-lab-reduced) main {
-    animation: glitch-hue-drift 7s ease-in-out infinite;
+    animation: glitch-scan-breathe 5.2s ease-in-out infinite;
   }
 }
 
-html.glitch-lab-active .panel-glass {
-  border-color: color-mix(in srgb, var(--neon-magenta) 45%, transparent);
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--neon-cyan) 18%, transparent),
-    0 0 28px color-mix(in srgb, var(--neon-magenta) 14%, transparent),
-    0 0 48px color-mix(in srgb, var(--neon-cyan) 8%, transparent);
-}
-
-html.glitch-lab-active h1,
-html.glitch-lab-active h2 {
-  text-shadow:
-    1.5px 0 color-mix(in srgb, var(--neon-cyan) 70%, transparent),
-    -1.5px 0 color-mix(in srgb, var(--neon-magenta) 65%, transparent),
-    0 0 18px color-mix(in srgb, var(--neon-cyan) 35%, transparent);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  html.glitch-lab-active:not(.glitch-lab-reduced) h1,
-  html.glitch-lab-active:not(.glitch-lab-reduced) h2 {
-    animation: glitch-chroma-nudge 3.2s ease-in-out infinite;
+@keyframes glitch-scan-breathe {
+  0%,
+  100% {
+    opacity: 0.32;
+  }
+  50% {
+    opacity: 0.42;
   }
 }
 
 html.glitch-lab-reduced .scanlines::after {
-  opacity: 0.48;
+  opacity: 0.34;
 }
 
-@keyframes glitch-body-flicker {
-  0%,
-  94%,
-  100% {
-    filter: brightness(1);
-  }
-  95% {
-    filter: brightness(1.04) contrast(1.03);
-  }
-  97% {
-    filter: brightness(0.97) contrast(1.06);
-  }
-}
-
-@keyframes glitch-scan-jitter {
-  0%,
-  100% {
-    transform: translateY(0);
-    opacity: 0.55;
-  }
-  50% {
-    transform: translateY(1px);
-    opacity: 0.68;
+/* “Rasgo” raro no brilho — lembra frame corrompido sem mudar layout */
+@media (prefers-reduced-motion: no-preference) {
+  html.glitch-lab-active:not(.glitch-lab-reduced) body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 51;
+    pointer-events: none;
+    background: linear-gradient(
+      105deg,
+      transparent 44%,
+      color-mix(in srgb, var(--neon-cyan) 7%, transparent) 49.5%,
+      color-mix(in srgb, var(--neon-magenta) 6%, transparent) 50.5%,
+      transparent 56%
+    );
+    mix-blend-mode: screen;
+    animation: glitch-shard 11.2s steps(1, end) infinite;
+    opacity: 0;
   }
 }
 
-@keyframes glitch-hue-drift {
+@keyframes glitch-shard {
   0%,
+  99.52%,
   100% {
-    filter: hue-rotate(0deg) saturate(1.05);
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
   }
-  50% {
-    filter: hue-rotate(18deg) saturate(1.12);
+  99.62% {
+    opacity: 0.85;
+    transform: translate3d(-5px, 0, 0);
+  }
+  99.72% {
+    opacity: 0.4;
+    transform: translate3d(3px, 1px, 0);
+  }
+  99.82% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
   }
 }
 
-@keyframes glitch-chroma-nudge {
+/* Micro-deslocamento em painéis — quase imperceptível, sensação de bug */
+@media (prefers-reduced-motion: no-preference) {
+  html.glitch-lab-active:not(.glitch-lab-reduced) .panel-glass {
+    animation: glitch-panel-nudge 8.4s ease-in-out infinite;
+  }
+}
+
+@keyframes glitch-panel-nudge {
   0%,
+  96.5%,
   100% {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
-  33% {
-    transform: translateX(0.4px);
+  97.4% {
+    transform: translate3d(0.5px, 0, 0);
   }
-  66% {
-    transform: translateX(-0.35px);
+  98.1% {
+    transform: translate3d(-0.4px, 0.2px, 0);
+  }
+  98.8% {
+    transform: translate3d(0, 0, 0);
   }
 }

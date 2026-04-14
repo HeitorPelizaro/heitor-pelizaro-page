@@ -100,18 +100,30 @@ export function HUD() {
           {t.hud.motion}
         </label>
         {glitchHydrated && glitchUnlocked ? (
-          <label
-            className="flex cursor-pointer items-center gap-2 font-mono text-[10px] text-[var(--neon-amber)]"
-            title={locale === "pt" ? "Tema exclusivo do lab 100%" : "Exclusive lab-100% theme"}
-          >
-            <input
-              type="checkbox"
-              checked={glitchOn}
-              onChange={(e) => setGlitchEnabled(e.target.checked)}
-              className="accent-[var(--neon-amber)]"
-            />
-            {t.hud.glitch}
-          </label>
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-[10px] text-[var(--text-muted)]">
+              {t.hud.glitch}
+            </span>
+            <button
+              type="button"
+              role="switch"
+              aria-checked={glitchOn}
+              aria-label={t.hud.glitchAria}
+              title={locale === "pt" ? "Tema exclusivo (100% no lab)" : "Exclusive theme (lab 100%)"}
+              onClick={() => setGlitchEnabled(!glitchOn)}
+              className={`relative h-[22px] w-10 shrink-0 rounded-full border transition-colors duration-200 ease-out ${
+                glitchOn
+                  ? "border-[var(--neon-cyan)]/55 bg-[var(--neon-cyan)]/15"
+                  : "border-white/25 bg-black/55"
+              }`}
+            >
+              <span
+                className={`pointer-events-none absolute top-[3px] left-[3px] h-4 w-4 rounded-full bg-[var(--text-primary)] shadow transition-transform duration-200 ease-out ${
+                  glitchOn ? "translate-x-[18px]" : "translate-x-0"
+                }`}
+              />
+            </button>
+          </div>
         ) : null}
       </div>
     </header>
