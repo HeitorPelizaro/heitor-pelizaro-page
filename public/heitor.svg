@@ -1,4 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Avatar">
-  <rect width="200" height="200" fill="#03060a"/>
-  <text x="100" y="118" text-anchor="middle" fill="#e8f4ff" font-family="monospace" font-size="52" font-weight="bold">H</text>
+  <text
+    x="100"
+    y="118"
+    text-anchor="middle"
+    fill="#e8f4ff"
+    font-family="monospace"
+    font-size="52"
+    font-weight="bold"
+    style="pointer-events: none; user-select: none"
+  >H</text>
 </svg>

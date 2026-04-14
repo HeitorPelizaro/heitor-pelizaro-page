@@ -92,13 +92,14 @@ export function HeroSection({ locale }: { locale: Locale }) {
             role="group"
             aria-label={t.themePicker}
             aria-describedby="hero-theme-hint"
-            className="relative aspect-square w-full bg-transparent outline-none focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--neon-cyan)]"
+            className="relative aspect-square w-full select-none bg-transparent [-webkit-tap-highlight-color:transparent] outline-none focus-visible:rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--neon-cyan)]"
             tabIndex={0}
             onPointerDown={(e) => {
               const el = cardRef.current;
               if (!el || simpleThemeUi) return;
               if (!isInRing(e.clientX, e.clientY)) return;
               ringDrag.current = true;
+              e.preventDefault();
               e.currentTarget.setPointerCapture(e.pointerId);
               applyFromPointer(e.clientX, e.clientY, el);
             }}
@@ -133,7 +134,8 @@ export function HeroSection({ locale }: { locale: Locale }) {
               alt="Heitor Pelizaro"
               width={400}
               height={400}
-              className={`relative z-0 h-full w-full object-cover ${!simpleThemeUi ? "pointer-events-none" : ""}`}
+              draggable={false}
+              className={`relative z-0 h-full w-full object-contain select-none ${!simpleThemeUi ? "pointer-events-none" : ""}`}
               priority
             />
             {!simpleThemeUi && (
