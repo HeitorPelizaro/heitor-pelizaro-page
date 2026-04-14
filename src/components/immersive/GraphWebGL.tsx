@@ -244,10 +244,18 @@ export function GraphWebGL() {
     vx: 0,
     vy: 0,
   });
-  const [dims, setDims] = useState(() => ({
-    w: typeof window !== "undefined" ? window.innerWidth : 1200,
-    h: typeof window !== "undefined" ? window.innerHeight : 800,
-  }));
+  const readSize = () => {
+    if (typeof window === "undefined") return { w: 1200, h: 800 };
+    const vv = window.visualViewport;
+    return {
+      w: vv?.width ?? window.innerWidth,
+      h: vv?.height ?? window.innerHeight,
+    };
+  };
+
+  const [dims, setDims] = useState(() =>
+    typeof window !== "undefined" ? readSize() : { w: 1200, h: 800 },
+  );
 
   useEffect(() => {
     if (effectiveReduceMotion || performanceMode) return;
@@ -259,19 +267,39 @@ export function GraphWebGL() {
     const onLeave = () => {
       mouseRef.current.active = false;
     };
+    const onTouch = (e: TouchEvent) => {
+      if (e.touches.length === 0) return;
+      const t = e.touches[0];
+      mouseRef.current.x = t.clientX;
+      mouseRef.current.y = t.clientY;
+      mouseRef.current.active = true;
+    };
+    const onTouchEnd = () => {
+      mouseRef.current.active = false;
+    };
     const onResize = () => {
-      setDims({
-        w: window.innerWidth,
-        h: window.innerHeight,
-      });
+      setDims(readSize());
     };
     window.addEventListener("mousemove", onMove);
     window.addEventListener("mouseleave", onLeave);
     window.addEventListener("resize", onResize);
+    window.addEventListener("touchstart", onTouch, { passive: true });
+    window.addEventListener("touchmove", onTouch, { passive: true });
+    window.addEventListener("touchend", onTouchEnd);
+    window.addEventListener("touchcancel", onTouchEnd);
+    const vv = window.visualViewport;
+    vv?.addEventListener("resize", onResize);
+    vv?.addEventListener("scroll", onResize);
     return () => {
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseleave", onLeave);
       window.removeEventListener("resize", onResize);
+      window.removeEventListener("touchstart", onTouch);
+      window.removeEventListener("touchmove", onTouch);
+      window.removeEventListener("touchend", onTouchEnd);
+      window.removeEventListener("touchcancel", onTouchEnd);
+      vv?.removeEventListener("resize", onResize);
+      vv?.removeEventListener("scroll", onResize);
     };
   }, [effectiveReduceMotion, performanceMode]);
 

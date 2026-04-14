@@ -37,7 +37,7 @@ export function AchievementToast() {
 
   return (
     <div
-      className="panel-glass fixed bottom-6 left-1/2 z-[90] max-w-sm -translate-x-1/2 rounded-lg border border-[var(--neon-magenta)]/40 px-4 py-3 font-mono text-xs text-[var(--text-primary)] shadow-[0_0_30px_rgba(255,45,106,0.25)]"
+      className="panel-glass fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] left-1/2 z-[90] w-[min(100%,22rem)] max-w-[calc(100vw-1.5rem)] -translate-x-1/2 rounded-lg border border-[var(--neon-magenta)]/40 px-3 py-2.5 font-mono text-[11px] text-[var(--text-primary)] shadow-[0_0_30px_rgba(255,45,106,0.25)] sm:bottom-6 sm:max-w-sm sm:px-4 sm:py-3 sm:text-xs"
       role="status"
     >
       <p className="text-[10px] uppercase tracking-widest text-[var(--neon-cyan)]">

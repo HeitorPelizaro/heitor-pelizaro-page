@@ -31,8 +31,8 @@ export function HUD() {
   const t = messages[locale];
 
   return (
-    <header className="fixed left-0 right-0 top-0 z-40 flex flex-col gap-3 p-4 md:flex-row md:items-start md:justify-between md:p-6">
-      <div className="panel-glass flex flex-wrap items-center gap-2 rounded-lg px-3 py-2 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--text-muted)] md:text-xs">
+    <header className="fixed left-0 right-0 top-0 z-40 flex w-full max-w-[100vw] flex-col gap-2 px-2 pb-2 pt-[max(0.35rem,env(safe-area-inset-top))] sm:gap-3 sm:p-4 md:flex-row md:items-start md:justify-between md:p-6">
+      <div className="panel-glass flex min-w-0 flex-wrap items-center gap-2 rounded-lg px-2.5 py-1.5 font-mono text-[9px] uppercase tracking-[0.14em] text-[var(--text-muted)] sm:px-3 sm:py-2 sm:text-[10px] sm:tracking-[0.2em] md:text-xs">
         <span className="text-[var(--neon-cyan)]">{t.hud.orbit}</span>
         <span className="opacity-40">|</span>
         <span>{t.hud.sys}</span>
@@ -41,7 +41,7 @@ export function HUD() {
       </div>
 
       <nav
-        className="panel-glass flex max-w-full flex-wrap items-center justify-center gap-1 rounded-lg px-2 py-2 md:max-w-[min(100%,520px)] md:justify-end md:gap-2"
+        className="panel-glass flex min-w-0 max-w-full flex-wrap items-center justify-center gap-0.5 rounded-lg px-1.5 py-1.5 sm:gap-1 sm:px-2 sm:py-2 md:max-w-[min(100%,520px)] md:justify-end md:gap-2"
         aria-label={locale === "pt" ? "Seções" : "Sections"}
       >
         {sections.map((s) => (
@@ -49,15 +49,15 @@ export function HUD() {
             key={s.id}
             type="button"
             onClick={() => scrollToId(s.id)}
-            className="rounded px-2 py-1 font-mono text-[10px] text-[var(--text-muted)] transition hover:bg-white/5 hover:text-[var(--neon-cyan)] md:text-xs"
+            className="rounded px-1.5 py-1 font-mono text-[9px] text-[var(--text-muted)] transition hover:bg-white/5 hover:text-[var(--neon-cyan)] sm:px-2 sm:text-[10px] md:text-xs"
           >
             {t.nav[s.key]}
           </button>
         ))}
       </nav>
 
-      <div className="panel-glass flex flex-wrap items-center justify-end gap-3 rounded-lg px-3 py-2 md:flex-nowrap">
-        <div className="flex items-center gap-2">
+      <div className="panel-glass grid w-full min-w-0 grid-cols-2 gap-x-2 gap-y-2 rounded-lg px-2 py-2 sm:flex sm:w-auto sm:flex-wrap sm:items-center sm:justify-end sm:gap-3 sm:px-3 md:flex-nowrap">
+        <div className="col-span-2 flex items-center justify-center gap-2 sm:col-span-1 sm:justify-end">
           <span className="font-mono text-[10px] text-[var(--text-muted)]">
             {t.hud.lang}
           </span>
@@ -79,16 +79,16 @@ export function HUD() {
             ))}
           </div>
         </div>
-        <label className="flex cursor-pointer items-center gap-2 font-mono text-[10px] text-[var(--text-muted)]">
+        <label className="flex min-w-0 cursor-pointer items-center gap-1.5 font-mono text-[9px] text-[var(--text-muted)] sm:gap-2 sm:text-[10px]">
           <input
             type="checkbox"
             checked={performanceMode}
             onChange={(e) => setPerformanceMode(e.target.checked)}
             className="accent-[var(--neon-cyan)]"
           />
-          {t.hud.perf}
+          <span className="min-w-0 leading-tight">{t.hud.perf}</span>
         </label>
-        <label className="flex cursor-pointer items-center gap-2 font-mono text-[10px] text-[var(--text-muted)]">
+        <label className="flex min-w-0 cursor-pointer items-center gap-1.5 font-mono text-[9px] text-[var(--text-muted)] sm:gap-2 sm:text-[10px]">
           <input
             type="checkbox"
             checked={effectiveReduceMotion}
@@ -97,10 +97,10 @@ export function HUD() {
             }
             className="accent-[var(--neon-magenta)]"
           />
-          {t.hud.motion}
+          <span className="min-w-0 leading-tight">{t.hud.motion}</span>
         </label>
         {glitchHydrated && glitchUnlocked ? (
-          <div className="flex items-center gap-2">
+          <div className="col-span-2 flex items-center justify-center gap-2 sm:col-span-1 sm:justify-end">
             <span className="font-mono text-[10px] text-[var(--text-muted)]">
               {t.hud.glitch}
             </span>

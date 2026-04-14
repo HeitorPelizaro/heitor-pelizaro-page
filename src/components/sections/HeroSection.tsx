@@ -65,28 +65,28 @@ export function HeroSection({ locale }: { locale: Locale }) {
   return (
     <section
       id="hero"
-      className="relative flex min-h-[100dvh] flex-col justify-center px-6 pb-24 pt-32 md:px-16"
+      className="relative flex min-h-dvh flex-col justify-center px-4 pb-20 pt-[clamp(7.5rem,22vw,10rem)] sm:px-6 sm:pb-24 sm:pt-36 md:px-16 md:pt-32"
     >
-      <div className="mx-auto grid w-full max-w-7xl gap-12 md:grid-cols-[1.72fr_1fr] md:items-center md:gap-x-10 lg:gap-x-16">
-        <div>
-          <p className="font-mono text-xs uppercase tracking-[0.35em] text-[var(--neon-cyan)]">
+      <div className="mx-auto grid w-full min-w-0 max-w-7xl gap-10 sm:gap-12 md:grid-cols-[1.72fr_1fr] md:items-center md:gap-x-10 lg:gap-x-16">
+        <div className="min-w-0">
+          <p className="break-words font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--neon-cyan)] sm:text-xs sm:tracking-[0.35em]">
             heitor.pelizaro.com.br
           </p>
-          <h1 className="mt-4 font-sans text-4xl font-bold leading-tight text-[var(--text-primary)] md:text-6xl">
+          <h1 className="mt-3 font-sans text-3xl font-bold leading-[1.1] text-[var(--text-primary)] sm:mt-4 sm:text-5xl md:text-6xl">
             <span className="text-glow-cyan">Heitor</span>{" "}
             <span className="text-glow-magenta">Pelizaro</span>
           </h1>
           <p className="mt-4 font-mono text-sm text-[var(--neon-amber)] md:text-base">
             {t.role}
           </p>
-          <p className="mt-6 max-w-xl text-lg text-[var(--text-muted)] md:text-xl">
+          <p className="mt-4 max-w-xl text-base leading-relaxed text-[var(--text-muted)] sm:mt-6 sm:text-lg md:text-xl">
             {t.tagline}
           </p>
-          <p className="mt-4 max-w-xl text-sm italic text-[var(--text-muted)]/90">
+          <p className="mt-3 max-w-xl text-sm italic leading-relaxed text-[var(--text-muted)]/90 sm:mt-4">
             {t.sub}
           </p>
         </div>
-        <div className="relative mx-auto aspect-square w-full max-w-[280px] sm:max-w-[300px] md:mx-0 md:ml-auto md:w-[min(92vw,270px)] md:-mr-1 lg:w-[min(92vw,288px)] lg:translate-x-3 lg:-mr-3 xl:translate-x-5 xl:-mr-4">
+        <div className="relative mx-auto aspect-square w-full max-w-[min(260px,88vw)] sm:max-w-[300px] md:mx-0 md:ml-auto md:w-[min(92vw,270px)] md:-mr-1 lg:w-[min(92vw,288px)] lg:translate-x-3 lg:-mr-3 xl:translate-x-5 xl:-mr-4">
           <div
             ref={cardRef}
             role="group"

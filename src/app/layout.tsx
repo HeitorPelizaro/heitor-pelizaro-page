@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Orbitron, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ClientLabProviders } from "@/components/ClientLabProviders";
@@ -15,6 +15,13 @@ const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#03060a",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

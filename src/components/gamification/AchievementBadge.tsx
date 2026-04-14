@@ -42,7 +42,7 @@ export function AchievementBadge() {
           refresh();
           setOpen(true);
         }}
-        className="panel-glass fixed bottom-24 right-4 z-[85] cursor-pointer rounded-lg px-3 py-2 text-left font-mono text-[10px] text-[var(--text-muted)] transition hover:border-[var(--neon-cyan)]/40 hover:text-[var(--text-primary)] md:bottom-6 md:right-6"
+        className="panel-glass fixed bottom-28 right-3 z-[85] cursor-pointer rounded-lg px-3 py-2 text-left font-mono text-[10px] text-[var(--text-muted)] transition hover:border-[var(--neon-cyan)]/40 hover:text-[var(--text-primary)] sm:bottom-24 sm:right-4 md:bottom-6 md:right-6"
         title={t.achievements.title}
         aria-expanded={open}
         aria-haspopup="dialog"

@@ -30,11 +30,11 @@ export function HomeShell({ initialLocale }: { initialLocale: Locale }) {
     <AppSettingsProvider initialLocale={initialLocale}>
       <ThemeAccentProvider>
         <HtmlLangSync locale={initialLocale} />
-        <div className="scanlines relative min-h-dvh">
+        <div className="scanlines relative min-h-dvh w-full max-w-[100vw] overflow-x-clip">
           <GraphCanvas />
           <DistortionBackdrop />
           <HUD />
-          <main>
+          <main className="w-full min-w-0">
             <HeroSection locale={initialLocale} />
             <SkillsSection locale={initialLocale} />
             <ProjectsSection locale={initialLocale} />
