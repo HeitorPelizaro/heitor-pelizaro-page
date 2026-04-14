@@ -10,7 +10,6 @@ export const messages = {
       skills: "Stack",
       projects: "Projetos",
       authority: "Lab",
-      instagram: "Instagram",
       contact: "Contato",
     },
     hud: {
@@ -62,25 +61,46 @@ export const messages = {
         "Pretendo usar este bloco para artigos, talks e cases. Por enquanto não tem texto de enchimento: quando publicar, será algo que eu considerar útil de fato.",
       soon: "Em breve",
     },
-    instagram: {
-      title: "Instagram",
-      subtitle: "Outro canal pra me conhecer",
-      body:
-        "Fotos do dia a dia, projeto e viagem. O feed oficial continua no app; aqui é um recorte que combina com o resto do site.",
-      cta: "Abrir perfil",
-    },
     contact: {
       title: "Canal aberto",
       subtitle: "Networking antes de tudo",
+      instagram: "Instagram",
     },
     achievements: {
       title: "Conquistas",
       unlocked: "desbloqueada",
-      a11y: "Modo acessível",
-      perf: "Modo performance",
-      lang: "Poliglota",
-      projects: "Explorador de builds",
-      egg: "Init 0",
+      close: "Fechar",
+      lockedLabel: "Bloqueada",
+      items: {
+        a11y_motion: {
+          name: "Modo acessível",
+          desc: 'Ative "Reduzir movimento" no painel superior.',
+        },
+        performance_mode: {
+          name: "Modo performance",
+          desc: "Ligue o modo performance para um traço mais leve no fundo.",
+        },
+        switched_lang: {
+          name: "Poliglota",
+          desc: "Alterne entre PT e EN pelo link de idioma no HUD.",
+        },
+        visited_projects: {
+          name: "Explorador de builds",
+          desc: "Role até a seção Projetos (ou use o atalho no menu).",
+        },
+        graph_untangle: {
+          name: "Teia desfeita",
+          desc: "Corte ligações do grafo de fundo com o rato até quase não sobrar fios.",
+        },
+        theme_chroma_3: {
+          name: "Cromático ×3",
+          desc: "Mude as cores de destaque pelo anel no hero pelo menos 3 vezes.",
+        },
+        easter_egg: {
+          name: "Init 0",
+          desc: "Há um atalho escondido no teclado. Descubra sozinho.",
+        },
+      },
     },
     footer: {
       copy: "Heitor Cunha Pelizaro · IFTM · Ciência da Computação",
@@ -98,7 +118,6 @@ export const messages = {
       skills: "Stack",
       projects: "Projects",
       authority: "Lab",
-      instagram: "Instagram",
       contact: "Contact",
     },
     hud: {
@@ -150,25 +169,46 @@ export const messages = {
         "I'll use this section for articles, talks, and case studies. No filler for now—when something goes live, it'll be because it's worth your time.",
       soon: "Coming soon",
     },
-    instagram: {
-      title: "Instagram",
-      subtitle: "Another way to get to know me",
-      body:
-        "Day-to-day, builds, trips. The real feed lives in the app; this panel matches the rest of the site.",
-      cta: "Open profile",
-    },
     contact: {
       title: "Open channel",
       subtitle: "Networking first",
+      instagram: "Instagram",
     },
     achievements: {
       title: "Achievements",
       unlocked: "unlocked",
-      a11y: "Accessible mode",
-      perf: "Performance mode",
-      lang: "Polyglot",
-      projects: "Build explorer",
-      egg: "Init 0",
+      close: "Close",
+      lockedLabel: "Locked",
+      items: {
+        a11y_motion: {
+          name: "Accessible mode",
+          desc: 'Turn on "Reduce motion" in the top panel.',
+        },
+        performance_mode: {
+          name: "Performance mode",
+          desc: "Enable performance mode for a lighter background graph.",
+        },
+        switched_lang: {
+          name: "Polyglot",
+          desc: "Switch between PT and EN using the language links in the HUD.",
+        },
+        visited_projects: {
+          name: "Build explorer",
+          desc: "Scroll to the Projects section (or use the nav shortcut).",
+        },
+        graph_untangle: {
+          name: "Web untangled",
+          desc: "Cut background graph edges with the mouse until almost none remain.",
+        },
+        theme_chroma_3: {
+          name: "Chromatic ×3",
+          desc: "Change accent colors from the hero ring at least 3 times.",
+        },
+        easter_egg: {
+          name: "Init 0",
+          desc: "There is a hidden keyboard shortcut. Find it on your own.",
+        },
+      },
     },
     footer: {
       copy: "Heitor Cunha Pelizaro · IFTM · Computer Science",

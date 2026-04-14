@@ -3,19 +3,6 @@
 import { useEffect } from "react";
 import { messages } from "@/lib/i18n/messages";
 import { useAppSettings } from "@/context/AppSettingsContext";
-import type { AchievementId } from "@/lib/achievements";
-
-const labels: Record<
-  AchievementId,
-  keyof (typeof messages)["pt"]["achievements"]
-> = {
-  a11y_motion: "a11y",
-  performance_mode: "perf",
-  switched_lang: "lang",
-  visited_projects: "projects",
-  easter_egg: "egg",
-};
-
 export function AchievementToast() {
   const { locale, lastAchievement, clearLastAchievement } = useAppSettings();
   const t = messages[locale];
@@ -27,7 +14,8 @@ export function AchievementToast() {
   }, [lastAchievement, clearLastAchievement]);
 
   if (!lastAchievement) return null;
-  const key = labels[lastAchievement];
+  const row = t.achievements.items[lastAchievement];
+  if (!row) return null;
 
   return (
     <div
@@ -38,7 +26,7 @@ export function AchievementToast() {
         {t.achievements.title}
       </p>
       <p className="mt-1 text-[var(--neon-amber)]">
-        {(t.achievements as Record<string, string>)[key]}{" "}
+        {row.name}{" "}
         <span className="text-[var(--text-muted)]">
           — {t.achievements.unlocked}
         </span>

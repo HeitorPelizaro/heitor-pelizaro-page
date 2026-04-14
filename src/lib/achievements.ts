@@ -3,6 +3,8 @@ export const ACHIEVEMENT_KEYS = [
   "performance_mode",
   "switched_lang",
   "visited_projects",
+  "graph_untangle",
+  "theme_chroma_3",
   "easter_egg",
 ] as const;
 
@@ -16,7 +18,11 @@ export function loadUnlocked(): Set<AchievementId> {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return new Set();
     const arr = JSON.parse(raw) as string[];
-    return new Set(arr.filter((k): k is AchievementId => ACHIEVEMENT_KEYS.includes(k as AchievementId)));
+    return new Set(
+      arr.filter((k): k is AchievementId =>
+        ACHIEVEMENT_KEYS.includes(k as AchievementId),
+      ),
+    );
   } catch {
     return new Set();
   }

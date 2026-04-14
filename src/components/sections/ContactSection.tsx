@@ -1,7 +1,7 @@
 "use client";
 
 import { messages, type Locale } from "@/lib/i18n/messages";
-import { EMAIL, GITHUB_URL, LINKEDIN_URL } from "@/lib/site";
+import { EMAIL, GITHUB_URL, INSTAGRAM_URL, LINKEDIN_URL } from "@/lib/site";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 
 export function ContactSection({ locale }: { locale: Locale }) {
@@ -33,6 +33,13 @@ export function ContactSection({ locale }: { locale: Locale }) {
             className="panel-glass rounded-lg px-6 py-3 font-mono text-sm text-[var(--neon-magenta)]"
           >
             GitHub
+          </MagneticButton>
+          <MagneticButton
+            href={INSTAGRAM_URL}
+            external
+            className="panel-glass rounded-lg px-6 py-3 font-mono text-sm text-[var(--text-primary)]"
+          >
+            {t.instagram}
           </MagneticButton>
           {LINKEDIN_URL ? (
             <MagneticButton

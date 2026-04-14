@@ -53,13 +53,16 @@ type GraphSceneProps = {
   performanceMode: boolean;
   dims: { w: number; h: number };
   mouseRef: MutableRefObject<GraphMouseRef>;
+  onGraphSparse: () => void;
 };
 
 function GraphScene({
   performanceMode,
   dims,
   mouseRef,
+  onGraphSparse,
 }: GraphSceneProps) {
+  const untangleNotified = useRef(false);
   const graphRef = useRef<GraphState | null>(null);
   const lineMatRef = useRef<THREE.LineBasicMaterial>(null);
   const pointsMatRef = useRef<THREE.PointsMaterial>(null);
@@ -161,6 +164,15 @@ function GraphScene({
       performanceMode,
     });
 
+    if (
+      !untangleNotified.current &&
+      graph.nodes.length >= 18 &&
+      graph.edges.length <= 8
+    ) {
+      untangleNotified.current = true;
+      onGraphSparse();
+    }
+
     const nodes = graph.nodes;
     const edges = graph.edges;
     const n = nodes.length;
@@ -223,7 +235,8 @@ function GraphScene({
 }
 
 export function GraphWebGL() {
-  const { performanceMode, effectiveReduceMotion } = useAppSettings();
+  const { performanceMode, effectiveReduceMotion, onAchievement } =
+    useAppSettings();
   const mouseRef = useRef<GraphMouseRef>({
     x: 0,
     y: 0,
@@ -295,6 +308,7 @@ export function GraphWebGL() {
           performanceMode={performanceMode}
           dims={dims}
           mouseRef={mouseRef}
+          onGraphSparse={() => onAchievement("graph_untangle")}
         />
       </Canvas>
     </div>

@@ -23,26 +23,8 @@ npm run build
 | `NEXT_PUBLIC_GITHUB_URL` | Perfil/repo GitHub |
 | `NEXT_PUBLIC_EMAIL` | E-mail do CTA |
 | `NEXT_PUBLIC_PRONTO_DENTAL_URL` | Link “Visitar” do card Pronto Dental (default `https://italo.pelizaro.com.br`) |
-| `NEXT_PUBLIC_INSTAGRAM_URL` | URL do perfil Instagram (default `https://www.instagram.com/heitor.pelizaro/`) |
-| `NEXT_PUBLIC_INSTAGRAM_WIDGET_IFRAME_SRC` | Opcional: URL de iframe (ex. SnapWidget) para feed embutido acima da grade |
+| `NEXT_PUBLIC_INSTAGRAM_URL` | Link do perfil Instagram na seção Contato (default `https://www.instagram.com/heitor.pelizaro`) |
 | `NEXT_PUBLIC_LINKEDIN_URL` | LinkedIn (opcional) |
-
-### Feed Instagram (API — recomendado para posts reais)
-
-O build corre `scripts/fetch-instagram-feed.mjs` (`prebuild`) e gera `public/instagram-feed.json` com até **6** posts. A página lê esse JSON no cliente.
-
-**Requisitos (Meta):**
-
-1. Instagram em modo **Profissional** (Empresa ou Criador).
-2. [App no Facebook Developers](https://developers.facebook.com/) com produto **Instagram** / acesso à **Instagram API**.
-3. Obter um **access token** válido para a Graph API (`graph.instagram.com`) com permissões para ler media da conta (fluxo atual da Meta: [Instagram Platform](https://developers.facebook.com/docs/instagram-platform)).
-4. Definir **secrets** no GitHub (environment `vps` ou do repositório):
-   - `INSTAGRAM_ACCESS_TOKEN` — token (idealmente long-lived; renovar antes de expirar).
-   - `INSTAGRAM_USER_ID` — opcional; se omitido, o script usa `GET /me` para descobrir o ID.
-
-Localmente: `INSTAGRAM_ACCESS_TOKEN=... npm run instagram:fetch` e depois `npm run dev` (ou `npm run build`).
-
-**Alternativas sem app Meta:** widget por iframe (`NEXT_PUBLIC_INSTAGRAM_WIDGET_IFRAME_SRC`, ex. SnapWidget) ou imagens estáticas em `public/instagram/grid-1.jpg` … `grid-6.*`.
 
 Copie `.env.example` para `.env.local` se quiser testar localmente.
 

@@ -33,16 +33,16 @@ export type GraphState = {
 };
 
 const SPATIAL_CELL = 130;
-const PAIR_COOLDOWN_FRAMES = 84;
-const PAIR_COOLDOWN_MOUSE = 32;
+const PAIR_COOLDOWN_FRAMES = 112;
+const PAIR_COOLDOWN_MOUSE = 38;
 const SWAY_TIME = 0.0165;
 const SWAY_AMP = 4.8;
 const SWAY_BLEND = 0.085;
 
 /** Atração fraca estilo “imã” entre nós (só não-fixos); não colapsa o grupo — arestas continuam a definir vínculos rígidos. */
-const MAGNET_D_MIN = 56;
-const MAGNET_D_MAX = 300;
-const MAGNET_SOFTEN = 14500;
+const MAGNET_D_MIN = 52;
+const MAGNET_D_MAX = 340;
+const MAGNET_SOFTEN = 12800;
 
 /** Distância do ponto ao segmento AB (px). */
 function distPointToSegment(
@@ -108,7 +108,7 @@ function buildBuckets(
 export function createGraph(nNodes: number, w: number, h: number): GraphState {
   const cx = w / 2;
   const cy = h / 2;
-  const spreadR = Math.min(w, h) * 0.22;
+  const spreadR = Math.min(w, h) * 0.175;
   const nodes: GraphNode[] = [];
 
   nodes.push({
@@ -146,19 +146,31 @@ export function createGraph(nNodes: number, w: number, h: number): GraphState {
 
   const edges: GraphEdge[] = [];
   for (let i = 0; i < nNodes; i++) {
-    const rest1 = 78 + (i % 5) * 10;
-    const rest2 = 92 + ((i * 3) % 5) * 9;
+    const rest1 = 58 + (i % 5) * 8;
+    const rest2 = 72 + ((i * 3) % 5) * 8;
     edges.push({
       a: i,
       b: (i + 1) % nNodes,
       restLength: rest1,
-      maxStretch: 1.82 + Math.random() * 0.28,
+      maxStretch: 1.68 + Math.random() * 0.22,
     });
     edges.push({
       a: i,
       b: (i + 7) % nNodes,
       restLength: rest2,
-      maxStretch: 1.78 + Math.random() * 0.3,
+      maxStretch: 1.62 + Math.random() * 0.24,
+    });
+  }
+
+  for (let i = 1; i < nNodes; i += 2) {
+    const nx = nodes[i].x - cx;
+    const ny = nodes[i].y - cy;
+    const d0 = Math.sqrt(nx * nx + ny * ny) || 1;
+    edges.push({
+      a: 0,
+      b: i,
+      restLength: d0 * 0.88,
+      maxStretch: 1.48 + Math.random() * 0.12,
     });
   }
 
@@ -247,6 +259,83 @@ function snapProximityEdges(
   }
 }
 
+/** Uma nova aresta por frame quando abaixo do mínimo — reconexão gradual (estilo ímã). */
+function addOneRepairEdge(
+  state: GraphState,
+  f: number,
+  pairCooldownUntil: Map<string, number>,
+  maxDeg: number,
+): void {
+  const { nodes, edges } = state;
+  const n = nodes.length;
+  const cell = SPATIAL_CELL;
+  const buckets = buildBuckets(nodes, n, cell);
+  const deg = degreeCount(n, edges);
+  let bestI = -1;
+  let bestJ = -1;
+  let bestD = Infinity;
+
+  const consider = (i: number, j: number, dMax: number) => {
+    if (deg[i] >= maxDeg || deg[j] >= maxDeg) return;
+    const k = edgeKey(i, j);
+    if (hasEdge(edges, i, j)) return;
+    if ((pairCooldownUntil.get(k) ?? 0) > f) return;
+    const dx = nodes[j].x - nodes[i].x;
+    const dy = nodes[j].y - nodes[i].y;
+    const d = Math.sqrt(dx * dx + dy * dy);
+    if (d < 14 || d > dMax) return;
+    if (d < bestD) {
+      bestD = d;
+      bestI = i;
+      bestJ = j;
+    }
+  };
+
+  for (let i = 0; i < n; i++) {
+    if (deg[i] >= maxDeg) continue;
+    const xi = Math.floor(nodes[i].x / cell);
+    const yi = Math.floor(nodes[i].y / cell);
+    for (let ox = -1; ox <= 1; ox++) {
+      for (let oy = -1; oy <= 1; oy++) {
+        const list = buckets.get(`${xi + ox},${yi + oy}`);
+        if (!list) continue;
+        for (const j of list) {
+          if (j <= i) continue;
+          consider(i, j, 235);
+        }
+      }
+    }
+  }
+
+  if (bestI < 0) {
+    for (let i = 0; i < n; i++) {
+      if (deg[i] >= maxDeg) continue;
+      const xi = Math.floor(nodes[i].x / cell);
+      const yi = Math.floor(nodes[i].y / cell);
+      for (let ox = -2; ox <= 2; ox++) {
+        for (let oy = -2; oy <= 2; oy++) {
+          const list = buckets.get(`${xi + ox},${yi + oy}`);
+          if (!list) continue;
+          for (const j of list) {
+            if (j <= i) continue;
+            consider(i, j, 320);
+          }
+        }
+      }
+    }
+  }
+
+  if (bestI >= 0 && bestJ >= 0) {
+    edges.push({
+      a: bestI,
+      b: bestJ,
+      restLength: bestD * 0.85,
+      maxStretch: 1.88 + Math.random() * 0.34,
+    });
+    pairCooldownUntil.delete(edgeKey(bestI, bestJ));
+  }
+}
+
 export function stepGraph(state: GraphState, p: StepParams): void {
   const { nodes, edges, pairCooldownUntil } = state;
   const n = nodes.length;
@@ -257,9 +346,9 @@ export function stepGraph(state: GraphState, p: StepParams): void {
   state.frame += 1;
   const f = state.frame;
 
-  const repulse = p.performanceMode ? 2900 : 4200;
-  const spring = p.performanceMode ? 0.0145 : 0.017;
-  const kHome = p.performanceMode ? 0.004 : 0.0052;
+  const repulse = p.performanceMode ? 2700 : 4000;
+  const spring = p.performanceMode ? 0.016 : 0.019;
+  const kHome = p.performanceMode ? 0.0048 : 0.0064;
   const damping = p.performanceMode ? 0.92 : 0.93;
   const attractR = p.performanceMode ? 100 : 165;
 
@@ -300,7 +389,8 @@ export function stepGraph(state: GraphState, p: StepParams): void {
     }
   }
 
-  const magnetK = p.performanceMode ? 22 : 34;
+  const magnetMul = p.mouse.active ? 0.48 : 1;
+  const magnetK = (p.performanceMode ? 26 : 40) * magnetMul;
   for (let i = 0; i < n; i++) {
     if (nodes[i].pinned) continue;
     const xi = Math.floor(nodes[i].x / cell);
@@ -374,6 +464,7 @@ export function stepGraph(state: GraphState, p: StepParams): void {
     }
   }
 
+  const homeMul = p.mouse.active ? 0.52 : 1;
   const t = f * SWAY_TIME;
   for (const node of nodes) {
     if (node.pinned) continue;
@@ -382,8 +473,8 @@ export function stepGraph(state: GraphState, p: StepParams): void {
     const targetY = node.anchorY + Math.cos(t + off * 1.06) * SWAY_AMP;
     node.restX += SWAY_BLEND * (targetX - node.restX);
     node.restY += SWAY_BLEND * (targetY - node.restY);
-    node.vx += kHome * (node.restX - node.x);
-    node.vy += kHome * (node.restY - node.y);
+    node.vx += kHome * homeMul * (node.restX - node.x);
+    node.vy += kHome * homeMul * (node.restY - node.y);
   }
 
   if (p.mouse.active) {
@@ -429,62 +520,14 @@ export function stepGraph(state: GraphState, p: StepParams): void {
     state,
     f,
     pairCooldownUntil,
-    p.performanceMode ? 46 : 52,
+    p.performanceMode ? 50 : 58,
     7,
     p.performanceMode,
-    p.performanceMode ? 4 : 8,
+    p.performanceMode ? 1 : 2,
   );
 
-  if (f % 18 === 0) {
-    const deg = degreeCount(n, edges);
-    const maxDeg = 6;
-    const relinkR = 98;
-    const attempts = p.performanceMode ? 10 : 18;
-    const seen = new Set<string>();
-    for (let attempt = 0; attempt < attempts; attempt++) {
-      const i = 1 + Math.floor(Math.random() * (n - 1));
-      const j = 1 + Math.floor(Math.random() * (n - 1));
-      if (i === j) continue;
-      if (deg[i] >= maxDeg || deg[j] >= maxDeg) continue;
-      const k = edgeKey(i, j);
-      if (seen.has(k)) continue;
-      seen.add(k);
-      if (hasEdge(edges, i, j)) continue;
-      if ((pairCooldownUntil.get(k) ?? 0) > f) continue;
-      const dx = nodes[i].x - nodes[j].x;
-      const dy = nodes[i].y - nodes[j].y;
-      const d = Math.sqrt(dx * dx + dy * dy);
-      if (d < relinkR && d > 18) {
-        edges.push({
-          a: i,
-          b: j,
-          restLength: d * 0.84,
-          maxStretch: 1.92 + Math.random() * 0.38,
-        });
-        pairCooldownUntil.delete(k);
-        deg[i]++;
-        deg[j]++;
-      }
-    }
-  }
-
-  const minEdges = Math.max(10, Math.floor(n * 0.32));
+  const minEdges = Math.max(12, Math.floor(n * 0.36));
   if (edges.length < minEdges) {
-    for (let i = 0; i < n; i++) {
-      const j = (i + 1) % n;
-      const k = edgeKey(i, j);
-      if (!hasEdge(edges, i, j)) {
-        const A = nodes[i];
-        const B = nodes[j];
-        const d = Math.hypot(B.x - A.x, B.y - A.y) || 90;
-        edges.push({
-          a: i,
-          b: j,
-          restLength: Math.min(d * 0.88, 118),
-          maxStretch: 2.55,
-        });
-        pairCooldownUntil.delete(k);
-      }
-    }
+    addOneRepairEdge(state, f, pairCooldownUntil, 7);
   }
 }

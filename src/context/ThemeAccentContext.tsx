@@ -10,6 +10,7 @@ import {
   type ReactNode,
 } from "react";
 import { hexToRgb, hslToHex } from "@/lib/cssColor";
+import { useAppSettings } from "@/context/AppSettingsContext";
 
 const STORAGE_KEY = "heitor_lab_theme";
 
@@ -74,6 +75,7 @@ function saveStored(s: ThemeState) {
 }
 
 export function ThemeAccentProvider({ children }: { children: ReactNode }) {
+  const { onAchievement } = useAppSettings();
   const [state, setState] = useState<ThemeState>({
     cyan: DEFAULT_CYAN,
     magenta: DEFAULT_MAGENTA,
@@ -90,12 +92,21 @@ export function ThemeAccentProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const applyPair = useCallback((cyan: string, magenta: string) => {
-    setState({ cyan, magenta });
-    applyToRoot(cyan, magenta);
-    saveStored({ cyan, magenta });
-    setVersion((v) => v + 1);
-  }, []);
+  const applyPair = useCallback(
+    (cyan: string, magenta: string) => {
+      setState({ cyan, magenta });
+      applyToRoot(cyan, magenta);
+      saveStored({ cyan, magenta });
+      setVersion((v) => {
+        const nv = v + 1;
+        if (nv >= 3) {
+          queueMicrotask(() => onAchievement("theme_chroma_3"));
+        }
+        return nv;
+      });
+    },
+    [onAchievement],
+  );
 
   const applyFromHue = useCallback(
     (hueDeg: number) => {

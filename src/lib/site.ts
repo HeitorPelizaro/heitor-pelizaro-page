@@ -32,14 +32,10 @@ export const PRONTO_DENTAL_URL = envOr(
   "https://italo.pelizaro.com.br",
 );
 
-/** Instagram @heitor.pelizaro */
+/** Instagram — link de contato (perfil público) */
 export const INSTAGRAM_URL = envOr(
   process.env.NEXT_PUBLIC_INSTAGRAM_URL,
-  "https://www.instagram.com/heitor.pelizaro/",
+  "https://www.instagram.com/heitor.pelizaro",
 );
 
 export const INSTAGRAM_HANDLE = "heitor.pelizaro";
-
-/** Opcional: iframe de widget (ex. SnapWidget). Se vazio, só o bloco nativo + grade de imagens. */
-export const INSTAGRAM_WIDGET_IFRAME_SRC =
-  process.env.NEXT_PUBLIC_INSTAGRAM_WIDGET_IFRAME_SRC?.trim() ?? "";

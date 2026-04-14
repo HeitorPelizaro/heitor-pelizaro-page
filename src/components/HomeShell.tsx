@@ -15,7 +15,6 @@ import { HeroSection } from "@/components/sections/HeroSection";
 import { SkillsSection } from "@/components/sections/SkillsSection";
 import { ProjectsSection } from "@/components/sections/ProjectsSection";
 import { AuthoritySection } from "@/components/sections/AuthoritySection";
-import { InstagramSection } from "@/components/sections/InstagramSection";
 import { ContactSection } from "@/components/sections/ContactSection";
 
 const DistortionBackdrop = dynamic(
@@ -40,7 +39,6 @@ export function HomeShell({ initialLocale }: { initialLocale: Locale }) {
             <SkillsSection locale={initialLocale} />
             <ProjectsSection locale={initialLocale} />
             <AuthoritySection locale={initialLocale} />
-            <InstagramSection locale={initialLocale} />
             <ContactSection locale={initialLocale} />
           </main>
         <CustomCursor />
