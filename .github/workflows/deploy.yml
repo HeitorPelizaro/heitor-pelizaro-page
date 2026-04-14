@@ -47,6 +47,8 @@ jobs:
           NEXT_PUBLIC_EMAIL: ${{ vars.NEXT_PUBLIC_EMAIL }}
           NEXT_PUBLIC_PRONTO_DENTAL_URL: ${{ vars.NEXT_PUBLIC_PRONTO_DENTAL_URL || 'https://italo.pelizaro.com.br' }}
           NEXT_PUBLIC_LINKEDIN_URL: ${{ vars.NEXT_PUBLIC_LINKEDIN_URL }}
+          # Pode ser secret ou variable (o ID G-… vai no bundle público de qualquer forma)
+          NEXT_PUBLIC_GA_MEASUREMENT_ID: ${{ secrets.NEXT_PUBLIC_GA_MEASUREMENT_ID || vars.NEXT_PUBLIC_GA_MEASUREMENT_ID }}
         run: |
           npm ci
           npm run build

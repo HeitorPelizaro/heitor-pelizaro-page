@@ -25,6 +25,7 @@ npm run build
 | `NEXT_PUBLIC_PRONTO_DENTAL_URL` | Link “Visitar” do card Pronto Dental (default `https://italo.pelizaro.com.br`) |
 | `NEXT_PUBLIC_INSTAGRAM_URL` | Link do perfil Instagram na seção Contato (default `https://www.instagram.com/heitor.pelizaro`) |
 | `NEXT_PUBLIC_LINKEDIN_URL` | LinkedIn (opcional) |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | GA4 (ex. `G-XXXXXXXXXX`); omitir desliga o script |
 
 Copie `.env.example` para `.env.local` se quiser testar localmente.
 
@@ -55,7 +56,7 @@ Substitua `public/heitor.svg` por `public/heitor.jpg` (ou ajuste o `src` em `src
 
   Ou na UI: **Settings → Environments → vps → Add secret**.
 
-- **Variables:** `HEITOR_DEPLOY_PATH` (opcional, default `/var/www/heitor-pelizaro`), `CERTBOT_EMAIL` (opcional, default `admin@pelizaro.com.br` no passo Certbot), e `NEXT_PUBLIC_*` se quiser sobrescrever links no build.
+- **Variables:** `HEITOR_DEPLOY_PATH` (opcional, default `/var/www/heitor-pelizaro`), `CERTBOT_EMAIL` (opcional, default `admin@pelizaro.com.br` no passo Certbot), e `NEXT_PUBLIC_*` se quiser sobrescrever links no build. GA4: `NEXT_PUBLIC_GA_MEASUREMENT_ID` como **secret** ou **variable** do repo ou do environment `vps` (o workflow prioriza secret).
 
 Se você usa alias SSH (ex.: `Host github-gmail` no `~/.ssh/config`), o remoto pode ser `git@github-gmail:HeitorPelizaro/heitor-pelizaro-page.git`.
 
